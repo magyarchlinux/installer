@@ -1,0 +1,1874 @@
+#! /bin/sh
+
+. gettext.sh
+
+
+export TEXTDOMAINDIR=$PWD/lang
+export TEXTDOMAIN=ayi
+# export LANGUAGE=en_GB
+
+alias GETTEXT='gettext'
+alias EGETTEXT='eval_gettext'
+
+# System check.
+[ -d "/sys/firmware/efi/" ] && SYSTEM="UEFI" || SYSTEM="BIOS"
+DETECT_CARD="$(lspci -nn | grep "$(lspci -n | awk -F " " '{print $2 $3}' | grep ^"03" | awk -F ":" '{print $2":"$3}')" | awk -F ": " '{print $2}' | cut -d "[" -f1)"
+
+declare -a MAIN_LIST
+declare -a OTHER_LIST
+declare -a KSWP_LIST
+# Variables
+
+# installer_lang
+
+# TITLE=$(EGETTEXT "Arch Installer - \$SYSTEM mode")
+# YES=$(GETTEXT "Yes")
+# NO=$(GETTEXT "No")
+# MAIN001=$(GETTEXT "Installer language")
+# LAN=$(GETTEXT "Language")
+
+# Functions
+arch_chroot() {
+    arch-chroot /mnt /bin/bash -c "${1}"
+}
+
+# Mit particionál
+Parted() {
+    parted --script "$dev" "$1"
+}
+
+
+installer_lang() {
+
+    # Variables
+    TITLE=$(EGETTEXT "Arch Installer - \$SYSTEM mode")
+    MAIN001=$(GETTEXT "Installer language")
+    MAIN002=$(GETTEXT "Keyboard settings")
+    LAN=$(GETTEXT "Language")
+
+    lang="$(yad --width=400 --center --title="$TITLE" --text="$MAIN001" \
+        --buttons-layout=center --image=language-selector \
+        --form --item-separator="," \
+        --field="$LAN":CB \
+        "^English,Magyar")"
+    
+    
+
+    if [ "$(echo "$lang" | cut -d '|' -f1)" = "Magyar" ]
+    then
+        export LANGUAGE=hu_HU
+    else
+        export LANGUAGE=en_GB
+    fi
+    
+    # Variables
+
+    TITLE=$(EGETTEXT "Arch Installer - \$SYSTEM mode")
+    YES=$(GETTEXT "Yes")
+    NO=$(GETTEXT "No")
+    MAIN000=$(GETTEXT "Reply from list:")
+    MAIN001=$(GETTEXT "Installer language")
+    MAIN002=$(GETTEXT "System language")
+    MAIN003=$(GETTEXT "Keyboard settings")
+    MAIN004=$(GETTEXT "Choose your location")
+    MAIN005=$(GETTEXT "Hostname settings")
+    MAIN006=$(GETTEXT "Username, password and root password settings")
+    MAIN007=$(GETTEXT "Kernel, shell and printer settings")
+    MAIN008=$(GETTEXT "Video card settings")
+    MAIN009=$(GETTEXT "Display manager and desktop settings")
+    MAIN010=$(GETTEXT "Other applications")
+    MAIN011=$(GETTEXT "Bootloader settings")
+    MAIN012=$(GETTEXT "Partition settings")
+    MAIN013=$(GETTEXT "Install")
+    MAIN014=$(GETTEXT "Installation is complete.")
+    MAIN015=$(GETTEXT "Summary")
+
+    LAN=$(GETTEXT "Language")
+    KBL=$(GETTEXT "Keyboard layputs")
+    KBM=$(GETTEXT "Keyboard models")
+    TZZ=$(GETTEXT "Zone")
+    TZSZ=$(GETTEXT "Sub zone")
+    CLCK=$(GETTEXT "Use UTC or local time?")
+    TIM=$(GETTEXT "Time")
+    HSNM=$(EGETTEXT "Please enter a hostname!\nUse lowercase letters only." )
+    HSNM1=$(GETTEXT "Hostname")
+    URSET001=$(GETTEXT "User name")
+    URSET002=$(GETTEXT "User password")
+    URSET003=$(GETTEXT "Repeat user password")
+    URSET004=$(GETTEXT "Root password")
+    URSET005=$(GETTEXT "Repeat root password")
+    ERR_USER_PASS=$(GETTEXT "User passwords do not match, please try again.")
+    ERR_ROOT_PASS=$(GETTEXT "Root passwords do not match, please try again.")
+    KSC001=$(GETTEXT "Kernel")
+    KSC002=$(GETTEXT "Shell")
+    KSC003=$(GETTEXT "Printer support (cups)")
+    GRC001=$(GETTEXT "Video card")
+    GRC002=$(EGETTEXT "\n\nDetected:\n\$DETECT_CARD\n")
+    DEFAULT=$(GETTEXT "Default")
+    DMDE001=$(GETTEXT "Display manager")
+    DMDE002=$(GETTEXT "Desktop and WM")
+
+    OTHER000=$(GETTEXT "Internet")
+    OTHER001=$(GETTEXT "Security")
+    OTHER002=$(GETTEXT "Media")
+    OTHER003=$(GETTEXT "Office")
+    OTHER004=$(GETTEXT "Utility")
+    OTHER005=$(GETTEXT "Terminal base applications")
+
+    OTHER_LIST=("true" "$OTHER000" "false" "$OTHER001" "false" "$OTHER002" \
+        "false" "$OTHER003" "false" "$OTHER004" "false" "$OTHER005")
+
+
+    INTER000=$(GETTEXT "A web browser built for speed, simplicity, and security")
+    INTER001=$(GETTEXT "Standalone web browser from mozilla.org")
+    INTER002=$(GETTEXT "Lightweight and fast web browser")
+    INTER003=$(GETTEXT "Fast and reliable FTP, FTPS and SFTP client")
+    INTER004=$(GETTEXT "Manage your email, contacts and schedule")
+    INTER005=$(GETTEXT "A lightweight email client for the GNOME desktop")
+    INTER006=$(GETTEXT "Standalone mail and news reader from mozilla.org")
+    INTER007=$(GETTEXT "Fast, easy, and free BitTorrent client (GTK+ GUI)")
+    INTER008=$(GETTEXT "Fast, easy, and free BitTorrent client (Qt GUI)")
+    INTER009=$(GETTEXT "An advanced BitTorrent client programmed in C++, based on Qt toolkit and libtorrent-rasterbar.")
+    INTER010=$(GETTEXT "Ncurses BitTorrent client based on libTorrent")
+    INTER011=$(GETTEXT "A popular and easy to use graphical IRC (chat) client")
+    INTER012=$(GETTEXT "All-in-one voice and text chat for gamers that's free and secure.")
+    # INTER013=$(GETTEXT "")
+
+    OTHER_LIST_INT=("false" "chromium" "$INTER000" "false" "firefox" "$INTER001" "false" "netsurf" "$INTER002" \
+        "false" "filezilla" "$INTER003" "false" "evolution" "$INTER004" "false" "geary" "$INTER005" \
+        "false" "thunderbird" "$INTER006" "false" "transmission-gtk" "$INTER007" "false" "transmission-qt" "$INTER008" \
+        "false" "qbittorrent" "$INTER009" "false" "rtorrent" "$INTER010" "false" "hexchat" "$INTER011" "false" "discord" "$INTER012")
+
+    SEC001=$(GETTEXT "Cross platform password manager")
+    SEC002=$(GETTEXT "Disk encryption with strong security based on TrueCrypt")
+    SEC003=$(GETTEXT "Uncomplicated way to manage your Linux firewall")
+    SEC004=$(GETTEXT "Anti-virus toolkit for Unix")
+    SEC005=$(GETTEXT "Easy to use, light-weight, on-demand virus scanner for Linux systems")
+
+    OTHER_LIST_SEC=("false" "keepassx2" "$SEC001" "false" "veracrypt" "$SEC002" "false" "gufw" "$SEC003" \
+        "false" "clamav" "$SEC004" "false" "clamtk" "$SEC005")
+
+    MEDI000=$(GETTEXT "GNU Image Manipulation Program")
+    MEDI001=$(GETTEXT "Multi-platform MPEG, VCD/DVD, and DivX player")
+    MEDI002=$(GETTEXT "Movie player for the GNOME desktop based on GStreamer")
+    MEDI003=$(GETTEXT "Modern media player based on the GStreamer framework")
+    MEDI004=$(GETTEXT "Lightweight, advanced audio player focused on audio quality")
+    MEDI005=$(GETTEXT "A modern music player and library organizer")
+    MEDI006=$(GETTEXT "Image browser and viewer for the GNOME Desktop")
+    MEDI007=$(GETTEXT "A digital photo organizer designed for the GNOME desktop environment")
+    MEDI008=$(GETTEXT "Fast and lightweight picture-viewer for Xfce4")
+    MEDI009=$(GETTEXT "Lightweight image viewer")
+    MEDI010=$(GETTEXT "A program that lets you manipulate digital audio waveforms")
+    MEDI011=$(GETTEXT "A feature-rich screen recorder that supports X11 and OpenGL.")
+    # medi013=$(GETTEXT "")
+    # medi014=$(GETTEXT "")
+    # medi015=$(GETTEXT "")
+
+    OTHER_LIST_MED=("false" "gimp" "$MEDI000" "false" "vlc" "$MEDI001" "false" "totem" "$MEDI002"\
+        "false" "parole" "$MEDI003" "false" "audacious" "$MEDI004" "false" "clementine" "$MEDI005" "false" "gthumb" "$MEDI006" \
+        "false" "shotwell" "$MEDI007" "false" "ristretto" "$MEDI008" "false" "gpicview" "$MEDI009" \
+        "false" "audacity" "$MEDI010" "false" "simplescreenrecorder" "$MEDI011" )
+
+
+    OFFI000=$(GETTEXT "A set of applications for productivity and creative usage")
+    OFFI001=$(GETTEXT "Fully-featured word processor")
+    OFFI002=$(GETTEXT "A GNOME Spreadsheet Program")
+    OFFI003=$(GETTEXT "Simple application for modifying PDF written in C Sharp")
+    OFFI004=$(GETTEXT "Document viewer (PDF, Postscript, djvu, tiff, dvi, XPS, SyncTex support with gedit")
+    OFFI005=$(GETTEXT "Lightweight PDF document viewer")
+    OFFI006=$(GETTEXT "An e-book reader for Linux")
+    OFFI007=$(GETTEXT "LibreOffice branch which contains new features and program enhancements")
+    OFFI008=$(GETTEXT "LibreOffice maintenance branch")
+
+    OTHER_LIST_OFI=("false" "calligra" "$OFFI000" "false" "abiword" "$OFFI001" "false" "gnumeric" "$OFFI002" \
+        "false" "pdfmod" "$OFFI003" "false" "evince" "$OFFI004" "false" "epdfview" "$OFFI005" \
+        "false" "fbreader" "$OFFI006" "false" "libreoffice-fresh" "$OFFI007" "false" "libreoffice-still" "$OFFI008")
+
+    UTI000=$(GETTEXT "Interactive process viewer")
+    UTI001=$(GETTEXT "Disk Management Utility for GNOME")
+    UTI002=$(GETTEXT "A Partition Magic clone, frontend to GNU Parted")
+    UTI003=$(GETTEXT "Adjusts the color temperature of your screen according to your surroundings.")
+    UTI004=$(GETTEXT "Fast and lightweight IDE")
+    UTI005=$(GETTEXT "Lightweight GTK+ clipboard manager")
+    UTI006=$(GETTEXT "GTK+ GUI for rsync to synchronize folders, files and make backups")
+    UTI007=$(GETTEXT "Drop-down terminal for GNOME")
+    UTI008=$(GETTEXT "NTFS filesystem driver and utilities")
+    UTI009=$(GETTEXT "Btrfs filesystem utilities")
+    # UTI010=$(GETTEXT "A Gtk3 frontend for libalpm")
+    # UTI011=$(GETTEXT "A powerful Pacman frontend using Qt libs")
+    # UTI012=$(GETTEXT "")
+    # UTI013=$(GETTEXT "")
+    # UTI014=$(GETTEXT "")
+    # UTI015=$(GETTEXT "")
+
+    OTHER_LIST_UTI=( "false" "htop" "$UTI000" "false" "gnome-disk-utility" "$UTI001" \
+        "false" "gparted" "$UTI002"  "false" "redshift" "$UTI003" "false" "geany" "$UTI004" \
+        "false" "parcellite" "$UTI005" "false" "grsync" "$UTI006" "false" "guake" "$UTI007" \
+        "false" "ntfs-3g" "$UTI008" "false" "btrfs-progs" "$UTI009")
+
+
+    TER000=$(GETTEXT "Fast and light imlib2-based image viewer")
+    TER001=$(GETTEXT "Vi Improved, a highly configurable, improved version of the vi text editor")
+    TER002=$(GETTEXT "Pico editor clone with enhancements")
+    TER003=$(GETTEXT "Wallpaper setting utility for X")
+    TER004=$(GETTEXT "Customizable and lightweight notification-daemon")
+    TER005=$(GETTEXT "A version of mutt with added features")
+    TER006=$(GETTEXT "Minimalistic document viewer")
+    TER007=$(GETTEXT "Simple, vim-like file manager")
+    TER008=$(GETTEXT "A keyboard-driven, vim-like browser based on PyQt5")
+    TER009=$(GETTEXT "A simple web browser based on WebKit/GTK+.")
+    TER010=$(GETTEXT "A cross-platform, GPU-accelerated terminal emulator")
+    # TER011=$(GETTEXT "")
+    # TER012=$(GETTEXT "")
+    # TER013=$(GETTEXT "")
+    # TER014=$(GETTEXT "")
+    # TER015=$(GETTEXT "")
+
+    OTHER_LIST_TER=("false" "feh" "$TER000" "false" "vim" "$TER001" "false" "nano" "$TER002" \
+        "false" "xwallpaper" "$TER003" "false" "dunst" "$TER004" "false" "neomutt" "$TER005" \
+        "false" "zathura" "$TER006" "false" "ranger" "$TER007" "false" "qutebrowser" "$TER008" \
+        "false" "surf" "$TER009" "false" "alacritty" "$TER010")
+
+    PART000=$(GETTEXT "Automatic partitioning")
+    PART001=$(GETTEXT "Manual partitioning")
+
+    PART_LIST=("false" "$PART000" "false" "$PART001")
+
+    QUEPART000=$(EGETTEXT "ATTENTION!\nThis will erase ALL data here: ")
+    QUEPART001=$(EGETTEXT "\nAre you sure you want to continue?")
+
+    CRBIOS=$(GETTEXT "Creating BIOS partition...")
+    CRUEFI=$(GETTEXT "Creating UEFI partition...")
+
+    MANQ000=$(EGETTEXT "Do you need to partition?\n\
+If you select \${YES}, the GParted partitioning program will open.\n\
+Partition and format your hard disk, as this is not done by the installer!")
+
+    KSWP000=$(GETTEXT "Swap partition")
+    KSWP001=$(GETTEXT "Swap file")
+    KSWP002=$(GETTEXT "No swap")
+    KSWP003=$(GETTEXT "What kind of swap do you want?")
+    KSWP004=$(GETTEXT "Choose swapfile size")
+    KSWP005=$(GETTEXT "Choose swapfile size")
+
+    KSWP_LIST=("false" "$KSWP000" "true" "$KSWP001" "false" "$KSWP002")
+
+    MNT001=$(GETTEXT "Mount point (/)")
+    MNT002=$(GETTEXT "Mount point (/boot)")
+    MNT003=$(GETTEXT "Mount point (/boot/efi)")
+    MNT004=$(GETTEXT "Mount point (/home)")
+    MNT005=$(GETTEXT "Mount point (/opt)")
+    MNT006=$(GETTEXT "Mount point (swap)")
+    MNT007=$(GETTEXT "Mount point (/srv)")
+    MNT008=$(GETTEXT "Mount point (/tmp)")
+    MNT009=$(GETTEXT "Mount point (/usr)")
+    MNT010=$(GETTEXT "Mount point (/var)")
+    NONE=$(GETTEXT "None")
+    ERROR000=$(GETTEXT "No root partition selected!")
+    ERROR001=$(GETTEXT "No swap partition selected!")
+    ERROR002=$(EGETTEXT "No boot / efi partition selected!\nA boot / efi partition is required for UEFI installation.")
+    ERROR003=$(GETTEXT "You have chosen the same partition multiple times!")
+    # ERROR004=$(GETTEXT "")
+    
+    BTL000=$(GETTEXT "Bootloader")
+    BTL001=$(GETTEXT "Grub install")
+
+    INS000=$(GETTEXT "Creating mirror list...")
+    INS001=$(GETTEXT "Making fstab...")
+    INS002=$(GETTEXT "Set the root password...")
+    INS002=$(GETTEXT "Set the user password...")
+    INS003=$(GETTEXT "Set Language...")
+    INS004=$(GETTEXT "Set timezone...")
+    INS005=$(GETTEXT "Install default applications...")
+    INS006=$(GETTEXT "Set video card...")
+    INS007=$(GETTEXT "Create a swap file...")
+    INS008=$(GETTEXT "Other install...")
+    INS009=$(GETTEXT "Install base...")
+    INS010=$(GETTEXT "Installing bootloader...")
+    INS011=$(GETTEXT "Installation is complete!")
+    # INS00=$(GETTEXT "")
+    # INS00=$(GETTEXT "")
+
+
+            
+    MAIN_LIST=("false" "$MAIN001" "true" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
+        "false" "$MAIN005" "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
+        "false" "$MAIN009" "false" "$MAIN010" "false" "$MAIN011")
+
+}
+
+
+system_lang() {
+
+    lang_list="$(grep -v "#  " /etc/locale.gen | sed 's/#//g' | sed 's/ UTF-8//g' | \
+        grep .UTF-8  | tr ' ' '\n' | sort | uniq | tr "\n" "," | sed "s/${LANGUAGE}/^${LANGUAGE}/")"
+
+    sys_lang="$(yad --width=400 --center --title="$TITLE" --text="$MAIN002" \
+        --buttons-layout=center --image=language-selector \
+        --form --item-separator="," \
+        --field="$LAN":CB \
+        "${lang_list:0:-1}")"
+
+    echo $sys_lang
+    KEYBOARD_LAYOUT=$(echo "${sys_lang,,}" | sed "s/.utf-8|//" | cut -d '_' -f2)
+    echo ${KEYBOARD_LAYOUT}
+    echo ${KEYBOARD_LAYOUT^^}
+
+    unset MAIN_LIST
+
+    MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "true" "$MAIN003" "false" "$MAIN004" \
+        "false" "$MAIN005" "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
+        "false" "$MAIN009" "false" "$MAIN010" "false" "$MAIN011")
+}
+
+
+keyboard_set() {
+
+    kb_set="$(yad --width=400 --center --title="$TITLE" --text="$MAIN003" \
+        --buttons-layout=center --image=input-keyboard \
+        --form --item-separator="," \
+        --field="$KBL":CBE \
+        --field="$KBM":CBE \
+        "$(localectl list-x11-keymap-layouts | awk '{ printf ""$0"," }' | sed "s/${KEYBOARD_LAYOUT}/^$KEYBOARD_LAYOUT/")" \
+        "$(localectl list-x11-keymap-models | awk '{ printf ""$0"," }' | sed "s/pc105/^pc105/")")"
+
+    echo $kb_set | cut -d '|' -f1
+    setxkbmap $(echo $kb_set | cut -d '|' -f1)
+
+    unset MAIN_LIST
+    
+    MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "true" "$MAIN004" \
+        "false" "$MAIN005" "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
+        "false" "$MAIN009" "false" "$MAIN010" "false" "$MAIN011")
+}
+
+
+timezone_set() {
+
+    DEFAULT_ZONE="$(awk '{print $1 "," $3 }' /usr/share/zoneinfo/zone.tab | \
+        grep "${KEYBOARD_LAYOUT^^}" | sort | awk -F ',' '{print $2}' | cut -d "/" -f1 | sed -n "1p")"
+
+    DEFAULT_SUBZONE="$(awk '{print $1 "," $3 }' /usr/share/zoneinfo/zone.tab | \
+        grep "${KEYBOARD_LAYOUT^^}" | sort | awk -F ',' '{print $2}' | cut -d "/" -f2 | sed -n "1p")"
+
+    tzzone_set="$(yad --width=400 --center --title="$TITLE" --text="$MAIN004" \
+        --buttons-layout=center --image=globe \
+        --form --item-separator="," \
+        --field="$TZZ":CB \
+        "$(awk '{print $3}' /usr/share/zoneinfo/zone.tab | grep "/" | cut -d "/" -f1 | sort -ud | tr "\n" "," | \
+            sed "s/${DEFAULT_ZONE}/^${DEFAULT_ZONE}/")")"
+
+    TZONE=$(echo $tzzone_set | cut -d "|" -f1)
+    echo $TZONE
+    
+    if [ "$DEFAULT_ZONE" = "$(echo "$tzzone_set" | cut -d "|" -f1)" ]
+    then
+        tzszone_set=$(yad --width=400 --center --title="$TITLE" --text="$MAIN004" \
+            --buttons-layout=center --image=globe \
+            --form --item-separator="," \
+            --field="$TZSZ":CB \
+            "$(awk '{print $3}' /usr/share/zoneinfo/zone.tab | grep "${DEFAULT_ZONE}" | cut -d "/" -f2 | sort | tr "\n" "," |\
+                sed "s/${DEFAULT_SUBZONE}/^${DEFAULT_SUBZONE}/")")
+    else
+        tzszone_set=$(yad --width=400 --center --title="$TITLE" --text="$MAIN004" \
+            --buttons-layout=center --image=globe \
+            --form --item-separator="," \
+            --field="$TZSZ":CB \
+            "$(awk '{print $3}' /usr/share/zoneinfo/zone.tab | grep "$(echo "$tzzone_set" | cut -d "|" -f1)" | cut -d "/" -f2 | sort | tr "\n" "," )")
+    fi
+
+    clock="$(yad --width=400 --center --title="$TITLE" --text="$CLCK" \
+        --buttons-layout=center --image=clock \
+        --form --item-separator="," \
+        --field="$TIM":CB \
+        "^utc,localtime")"
+
+    unset MAIN_LIST
+    
+    MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
+        "true" "$MAIN005" "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
+        "false" "$MAIN009" "false" "$MAIN010" "false" "$MAIN011")
+}
+
+
+hname() {
+
+    hsname="$(yad --width=400 --center --title="$TITLE" --text="$HSNM" \
+        --buttons-layout=center --image=network \
+        --form --field="$HSNM1" \
+        "magyarch" )"
+
+    unset MAIN_LIST 
+    MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
+        "false" "$MAIN005" "true" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
+        "false" "$MAIN009" "false" "$MAIN010" "false" "$MAIN011")
+}
+
+
+user_root_set() {
+
+    pass_check $(yad --width=400 --center --title="$TITLE" --text="$MAIN006" \
+        --buttons-layout=center --image=password \
+        --form  --separator="\t" \
+        --field="$URSET001" \
+        --field="$URSET002":H \
+        --field="$URSET003":H \
+        --field="$URSET004":H \
+        --field="$URSET005":H)
+
+    unset MAIN_LIST
+
+    MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
+        "false" "$MAIN005" "false" "$MAIN006" "true" "$MAIN007" "false" "$MAIN008" \
+        "false" "$MAIN009" "false" "$MAIN010" "false" "$MAIN011")
+}
+
+
+# Check password
+pass_check() {
+
+    user_name=$1
+    userpass1=$2
+    userpass2=$3
+    rootpass1=$4
+    rootpass2=$5
+    
+    if [ "$userpass1" != "$userpass2" ]
+    then
+        yad --image=error --title="$TITLE"  --buttons-layout=center --text="$ERR_USER_PASS"
+        user_root_set
+    elif [ "$rootpass1" != "$rootpass2" ]
+    then
+        yad --image=error --title="$TITLE" --buttons-layout=center --text="$ERR_ROOT_PASS"
+        user_root_set
+    fi
+}
+
+
+kernel_shell_cups_set() {
+
+    ker_sh_cup="$(yad --width=400 --center --title="$TITLE" --text="$MAIN007" \
+        --buttons-layout=center --image=preferences \
+        --form  --item-separator="," \
+        --field="$KSC001":CB \
+        --field="$KSC002":CB \
+        --field="$KSC003":CB \
+        "^linux,linux-lts" \
+        "^bash,zsh,fish" \
+        "^${NO},${YES}" )"
+
+    unset MAIN_LIST
+    
+    MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
+        "false" "$MAIN005" "false" "$MAIN006" "false" "$MAIN007" "true" "$MAIN008" \
+        "false" "$MAIN009" "false" "$MAIN010" "false" "$MAIN011")
+}
+
+
+graphics_set() {
+    grap="$(yad --width=400 --center --title="$TITLE" --text="$MAIN008" \
+        --buttons-layout=center --image=input-gaming \
+        --form  --item-separator="," \
+        --field="$GRC001":CB \
+        --field="$GRC002":LBL \
+        "${NONE},amdgpu,i915,nouveau,nvidia,virtualbox")"
+
+    unset MAIN_LIST
+    
+    MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
+        "false" "$MAIN005" "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
+        "true" "$MAIN009" "false" "$MAIN010" "false" "$MAIN011")
+}
+
+
+dm_desktop_set() {
+
+    dm_des="$(yad --width=400 --center --title="$TITLE" --text="$MAIN009" \
+        --buttons-layout=center --image=desktop \
+        --form  --item-separator="," \
+        --field="$DMDE001":CB \
+        --field="$DMDE002":CB \
+        "^lightdm,lxdm,sddm,gdm,${DEFAULT}" \
+        "gnome,gnome gnome-extra,plasma,plasma kde-applications,xfce4,xfce4 xfce4-goodies,lxde,lxqt, \
+mate,mate mate-extra,budgie-desktop,cinnamon,deepin,enlightenment,jwm,bspwm,qtile,i3,xmonad,openbox")"
+
+    unset MAIN_LIST
+    
+    MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
+        "false" "$MAIN005" "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
+        "false" "$MAIN009" "true" "$MAIN010" "false" "$MAIN011")
+}
+
+
+other_apps_int() {
+
+    oth_int="$(yad  --width=400 --height=450 --center \
+        --buttons-layout=center --title="$TITLE" --text="$OTHER000"\
+        --no-selection  --image=preferences --checklist --list \
+        --column="" --column="" --column="" "${OTHER_LIST_INT[@]}")"
+
+    pack_int=$(echo $oth_int  echo $a | sed "s/ TRUE/;TRUE/g" | tr ";" "\n" | cut -d '|' -f2 | tr '\n' " ")
+
+
+    unset OTHER_LIST
+
+    OTHER_LIST=("false" "$OTHER000" "true" "$OTHER001" "false" "$OTHER002" \
+        "false" "$OTHER003" "false" "$OTHER004" "false" "$OTHER005")
+}
+
+
+other_apps_sec() {
+
+    oth_sec="$(yad  --width=400 --height=400 --center \
+        --buttons-layout=center --title="$TITLE" --text="$OTHER001"\
+        --no-selection  --image=preferences --checklist --list \
+        --column="" --column="" --column="" "${OTHER_LIST_SEC[@]}")"
+
+    pack_sec=$(echo $oth_sec  echo $a | sed "s/ TRUE/;TRUE/g" | tr ";" "\n" | cut -d '|' -f2 | tr '\n' " ")
+
+    
+    unset OTHER_LIST
+
+    OTHER_LIST=("false" "$OTHER000" "false" "$OTHER001" "true" "$OTHER002" \
+        "false" "$OTHER003" "false" "$OTHER004" "false" "$OTHER005")
+}
+
+
+other_apps_med() {
+
+    oth_med="$(yad  --width=400 --height=400 --center \
+        --buttons-layout=center --title="$TITLE" --text="$OTHER002"\
+        --no-selection  --image=preferences --checklist --list \
+        --column="" --column="" --column="" "${OTHER_LIST_MED[@]}")"
+
+    pack_med=$(echo $oth_med  echo $a | sed "s/ TRUE/;TRUE/g" | tr ";" "\n" | cut -d '|' -f2 | tr '\n' " ")
+
+   
+   unset OTHER_LIST
+
+   OTHER_LIST=("false" "$OTHER000" "false" "$OTHER001" "false" "$OTHER002" \
+        "true" "$OTHER003" "false" "$OTHER004"  "false" "$OTHER005")
+}
+
+
+other_apps_ofi() {
+
+    oth_ofi="$(yad  --width=400 --height=400 --center \
+        --buttons-layout=center --title="$TITLE" --text="$OTHER003"\
+        --no-selection  --image=preferences --checklist --list \
+        --column="" --column="" --column="" "${OTHER_LIST_OFI[@]}")"
+
+    pack_ofi=$(echo $oth_ofi  echo $a | sed "s/ TRUE/;TRUE/g" | tr ";" "\n" | cut -d '|' -f2 | tr '\n' " ")
+
+
+    unset OTHER_LIST
+
+    OTHER_LIST=("false" "$OTHER000"  "false" "$OTHER001" "false" "$OTHER002" \
+        "false" "$OTHER003" "true" "$OTHER004" "false" "$OTHER005")
+}
+
+
+other_apps_uti() {
+
+    oth_uti="$(yad  --width=400 --height=400 --center \
+        --buttons-layout=center --title="$TITLE" --text="$OTHER004"\
+        --no-selection  --image=preferences --checklist --list \
+        --column="" --column="" --column="" "${OTHER_LIST_UTI[@]}")"
+
+    pack_uti=$(echo $oth_uti  echo $a | sed "s/ TRUE/;TRUE/g" | tr ";" "\n" | cut -d '|' -f2 | tr '\n' " ")
+
+     unset OTHER_LIST
+
+    OTHER_LIST=("false" "$OTHER000"  "false" "$OTHER001" "false" "$OTHER002" \
+        "false" "$OTHER003" "false" "$OTHER004" "true" "$OTHER005")
+
+    
+   # OTHER_LIST=("false" "$OTHER000" "false" "$OTHER001" "false" "$OTHER002" \
+   #     "false" "$OTHER003" "true" "$OTHER004" )
+}
+
+other_apps_ter() {
+
+    oth_ter="$(yad  --width=400 --height=400 --center \
+        --buttons-layout=center --title="$TITLE" --text="$OTHER005"\
+        --no-selection  --image=preferences --checklist --list \
+        --column="" --column="" --column="" "${OTHER_LIST_TER[@]}")"
+
+    pack_ter=$(echo $oth_ter  echo $a | sed "s/ TRUE/;TRUE/g" | tr ";" "\n" | cut -d '|' -f2 | tr '\n' " ")
+}
+
+other_app_set() {
+
+    oth_app="$(yad  --width=400 --height=400 --center \
+        --buttons-layout=center --title="$TITLE" --text="$MAIN010" \
+        --no-selection  --image=preferences --radiolist --list \
+        --column="" --column="" "${OTHER_LIST[@]}")"
+    
+    if [ "$(echo "$oth_app" | cut -d "|" -f2)" = "$OTHER000" ]
+    then
+        other_apps_int;other_app_set
+    
+    elif [ "$(echo "$oth_app" | cut -d "|" -f2)" = "$OTHER001" ]
+    then
+        other_apps_sec;other_app_set    
+    
+    elif [ "$(echo "$oth_app" | cut -d "|" -f2)" = "$OTHER002" ]
+    then
+        other_apps_med;other_app_set
+    
+    elif [ "$(echo "$oth_app" | cut -d "|" -f2)" = "$OTHER003" ]
+    then
+        other_apps_ofi;other_app_set
+    
+    elif [ "$(echo "$oth_app" | cut -d "|" -f2)" = "$OTHER004" ]
+    then
+        other_apps_uti;other_app_set
+
+    elif [ "$(echo "$oth_app" | cut -d "|" -f2)" = "$OTHER005" ]
+    then
+        other_apps_ter
+    fi
+    
+    unset MAIN_LIST
+    
+    MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
+        "false" "$MAIN005" "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
+        "false" "$MAIN009" "false" "$MAIN010" "true" "$MAIN011")
+}
+
+grub_set() {
+
+    devices="$(lsblk -lno NAME,TYPE | grep 'disk' | awk '{print "/dev/" $1 " " $2}' | sort -u | sed 's/disk//g' | awk '{print "false " $0}')"
+
+    # grub_dev=
+    grb_set="$(yad  --width=400 --center \
+        --buttons-layout=center --title="$TITLE" --text="$BTL001" \
+        --no-selection  --image=preferences --radiolist --list \
+        --column="" --column="" $devices)"
+
+    # grb_dev=$(echo $grb_set | cut -d '|' -f2)
+}
+
+
+bootloader_set() {
+    bootloader="$(yad  --width=400 --height=250 --center \
+        --buttons-layout=center --title="$TITLE" --text="$BTL000" \
+        --no-selection  --image=preferences --radiolist --list \
+        --column="" --column="" false grub false refind false ${NONE})"
+
+    
+    # boot_sel=$(echo $bootloader | cut -d '|' -f2)
+    MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
+        "false" "$MAIN005" "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
+        "false" "$MAIN009" "false" "$MAIN010" "False" "$MAIN011" "true" "$MAIN013")
+
+    if [ "$(echo "$bootloader" | cut -d "|" -f2)" = "grub" ]
+    then
+        grub_set
+    fi
+    
+}
+
+
+auto_part() {
+    devices="$(lsblk -lno NAME,TYPE | grep 'disk' | awk '{print "/dev/" $1 " " $2}' | sort -u | sed "s/ disk//g" | awk '{print "false " $0}')"
+    device="$(yad  --width=400 --center \
+        --buttons-layout=center --title="$TITLE" --text="$MAIN012" \
+        --no-selection  --image=preferences --radiolist --list \
+        --column="" --column="" $devices)"
+    dev="$(echo "$device" | cut -d "|" -f2)"
+    echo "$dev"
+
+    yad --image=help --title="$TITLE" --buttons-layout=center --text="$QUEPART000 $dev $QUEPART001" --button="${NO}!gtk-no:1" --button="${YES}!gtk-yes:0"
+    ans="$?"
+
+    if [ "$ans" = "0" ]
+    then
+        if [ "${dev:0:9}" = "/dev/nvme" -a "$SYSTEM" = "BIOS" ]
+        then
+            root_part=${dev}p1
+        elif [ "${dev:0:9}" = "/dev/nvme" -a "$SYSTEM" != "BIOS" ]
+        then
+            gpt_part=${dev}p1
+            root_part=${dev}p2
+        elif [ "${dev:0:9}" != "/dev/nvme" -a "$SYSTEM" = "BIOS" ]
+        then
+            root_part=${dev}1
+        elif [ "${dev:0:9}" != "/dev/nvme" -a "$SYSTEM" != "BIOS" ]  
+        then
+            gpt_part=${dev}1
+            root_part=${dev}2
+        fi
+        
+        ram="$(grep MemTotal /proc/meminfo | awk '{print $2/1024}' | sed 's/\..*//')"
+        num=4000
+
+        if [ "$ram" -gt "$num" ]
+        then
+            swap_space=4096
+        else
+            swap_space="$ram"
+        fi
+
+        if [ "$SYSTEM" = "BIOS" ]
+        then
+            (echo "# $CRBIOS"
+            dd if=/dev/zero of="$dev" bs=512 count=1
+            Parted "mklabel msdos"
+            Parted "mkpart primary ext4 1MiB 100%"
+            Parted "set 1 boot on"
+            mkfs.ext4 -F "$root_part"
+            mount "$root_part" /mnt
+            touch /mnt/swapfile
+            dd if=/dev/zero of=/mnt/swapfile bs=1M count="${swap_space}"
+            chmod 600 /mnt/swapfile
+            mkswap /mnt/swapfile
+            swapon /mnt/swapfile
+            swapfile="yes") | yad --progress --title="$TITLE" --width=450 --pulsate --auto-close --no-buttons
+        else
+            (echo "# $CRUEFI"
+            dd if=/dev/zero of="$dev" bs=512 count=1
+            Parted "mklabel gpt"
+            Parted "mkpart primary fat32 1MiB 513MiB"
+            Parted "mkpart primary ext4 513MiB 100%"
+            Parted "set 1 boot on"
+            mkfs.fat -F32 "$gpt_part"
+            mkfs.ext4 -F "$root_part"
+            mount "$root_part" /mnt
+            mkdir -p /mnt/boot/efi
+            mount "$gpt_part" /mnt/boot/efi
+            touch /mnt/swapfile
+            dd if=/dev/zero of=/mnt/swapfile bs=1M count="${swap_space}"
+            chmod 600 /mnt/swapfile
+            mkswap /mnt/swapfile
+            swapon /mnt/swapfile
+            swapfile="yes" ) | yad --progress --title="$TITLE" --width=450 --pulsate --auto-close --no-buttons
+        fi
+    else
+        partition_set
+    fi
+}
+
+
+man_part() {
+
+    yad --image=help --title="$TITLE" --buttons-layout=center --text="$MANQ000" --button="${NO}!gtk-no:1" --button="${YES}!gtk-yes:0"
+    ans1="$?"
+
+    if [ "$ans1" = "0" ]
+    then
+        gparted
+        kswp
+    else
+        kswp
+    fi      
+}
+
+
+kswp() {
+
+    
+
+    swap_query="$(yad  --width=400 --center \
+        --buttons-layout=center --title="$TITLE" --text="$KSWP003" \
+        --no-selection  --image=help --radiolist --list \
+        --column="" --column="" "${KSWP_LIST[@]}")"
+
+    swap_que=$(echo $swap_query | cut -d "|" -f2)
+
+
+    if [ "$$swap_que" = "$KSWP000" ]
+    then
+        kswpnofile
+    elif [ "$swap_que" = "$KSWP001" ]
+    then
+        kswpf
+    else
+        kswpno
+    fi
+}
+
+
+check_kswpnofile() {
+    echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10}
+
+    rootszamlal=0
+    bootszamlal=0
+    bootefiszamlal=0
+    homeszamlal=0
+    optszamlal=0
+    swapszamlal=0
+    srvszamlal=0
+    tmpszamlal=0
+    usrszamlal=0
+    varszamlal=0
+    nincsszamlal=0
+
+    root_part=$1
+    boot_part=$2
+    bootefi_part=$3
+    home_part=$4
+    opt_part=$5
+    swap_part=$6
+    srv_part=$7
+    tmp_part=$8
+    usr_part=$9
+    var_part=${10}
+
+    echo "$root_part $boot_part $bootefi_part $home_part $opt_part $swap_part $srv_part $tmp_part $usr_part $var_part"
+
+    # Root csatolás nem lehet üres...
+    if [ "$root_part" = "${NONE}" ]
+    then
+        yad --image=error --title="$TITLE" --buttons-layout=center --text="$ERROR000"
+        kswpnofile
+        return 1
+    # Ha swap partíció, ez se lehet üres...
+    elif [ "$swap_part" = "${NONE}" ]
+    then
+        yad --image=error --title="$TITLE" --buttons-layout=center --text="$ERROR001"
+        kswpnofile
+        return 1
+    elif [ "$SYSTEM" = "UEFI" -a "$bootefi_part" = "${NONE}" ]
+    then
+        yad --image=error --title="$TITLE" --buttons-layout=center --text="$ERROR002"
+        kswpnofile
+        return 1
+    fi
+    
+    # Hányszor szerepel a partíció
+    #sas=($root_part $boot_part $bootefi_part $home_part  $opt_part $swap_part $srv_part $tmp_part $usr_part $var_part)
+    for i in { $root_part $boot_part $bootefi_part $home_part  $opt_part $swap_part $srv_part $tmp_part $usr_part $var_part }
+    do
+        if [ "$i" = "$root_part" ]
+        then
+            ((rootszamlal++))
+        fi
+
+        if [ "$i" = "$boot_part" -a "$i" != "${NONE}" ]
+        then
+            ((bootszamlal++))
+        fi
+
+        if [ "$i" = "$bootefi_part" -a "$i" != "${NONE}" ]
+        then
+            ((bootefiszamlal++))
+        fi
+
+        if [ "$i" = "$home_part" -a "$i" != "${NONE}" ]
+        then
+            ((homeszamlal++))
+        fi
+
+        if [ "$i" = "$opt_part" -a "$i" != "${NONE}" ]
+        then
+            ((optszamlal++))
+        fi
+
+        if [ "$i" = "$swap_part" ]
+        then
+            ((swapszamlal++))
+        fi
+
+        if [ "$i" = "$srv_part" -a "$i" != "${NONE}" ]
+        then
+            ((srvszamlal++))
+        fi
+
+        if [ "$i" = "$tmp_part" -a "$i" != "${NONE}" ]
+        then
+            ((tmpszamlal++))
+        fi
+
+        if [ "$i" = "$usr_part" -a "$i" != "${NONE}" ]
+        then
+            ((usrszamlal++))
+        fi
+
+        if [ "$i" = "$var_part" -a "$i" != "${NONE}" ]
+        then
+            ((varszamlal++))
+        fi
+
+        if [ "$i" = "${NONE}" ]
+        then
+            ((nincsszamlal++))
+        fi
+
+    done
+
+    echo $rootszamlal $bootszamlal $bootefiszamlal $homeszamlal $optszamlal $swapszamlal $srvszamlal $tmpszamlal $usrszamlal $varszamlal $nincsszamlal
+
+    # Check double selection
+    if [ "$rootszamlal" -gt "1" -o "$bootszamlal" -gt "1" -o \
+        "$bootefiszamlal" -gt "1" -o "$homeszamlal" -gt "1" -o \
+        "$optszamlal" -gt "1" -o "$swapszamlal" -gt "1" -o \
+        "$srvszamlal" -gt "1" -o "$tmpszamlal" -gt "1" -o \
+        "$usrszamlal" -gt "1" -o "$varszamlal" -gt "1" ]
+        then 
+            yad --image=error --title="$TITLE" --buttons-layout=center --text="$ERROR003"
+            kswpnofile
+            return 1
+    fi
+
+    # Mount
+    mount "$root_part" /mnt
+    
+    # mkdir -p /mnt/boot/efi
+    # mount "$bootefi_part" /mnt/boot/efi
+
+    mkswap "$swap_part"
+    swapon "$swap_part"
+
+    if [ "$boot_part" != "$NONE" ]
+    then
+        mkdir /mnt/boot/
+        mount "$boot_part" /mnt/boot
+    fi
+
+    if [ "$bootefi_part" != "$NONE" ]
+    then
+        mkdir -p /mnt/boot/efi
+        mount "$bootefi_part" /mnt/boot/efi
+    fi
+
+    if [ "$home_part" != "$NONE" ]
+    then
+        mkdir /mnt/home
+        mount "$home_part" /mnt/home
+    fi
+
+    if [ "$opt_part" != "$NONE" ]
+    then
+        mkdir /mnt/opt
+        mount "$opt_part" /mnt/opt
+    fi
+
+    if [ "$srv_part" != "$NONE" ]
+    then
+        mkdir /mnt/srv
+        mount "$srv_part" /mnt/srv
+    fi
+
+    if [ "$tmp_part" != "$NONE" ]
+    then
+        mkdir /mnt/tmp
+        mount "$tmp_part" /mnt/tmp
+    fi
+
+    if [ "$usr_part" != "$NONE" ]
+    then
+        mkdir /mnt/usr
+        mount "$usr_part" /mnt/usr
+    fi
+
+    if [ "$var_part" != "$NONE" ]
+    then
+        mkdir /mnt/var
+        mount "$var_part" /mnt/var
+    fi    
+}
+
+
+kswpnofile() {
+
+    devices="$(lsblk -lno NAME,TYPE | grep 'disk' | awk '{print "/dev/" $1 " " $2}' | sort -u | sed "s/ disk//g" | awk '{print "false " $0}')"
+
+    device="$(yad  --width=400 --center \
+        --buttons-layout=center --title="$TITLE" --text="$MAIN012" \
+        --no-selection  --image=preferences --radiolist --list \
+        --column="" --column="" $devices)"
+    dev="$(echo "$device" | cut -d "|" -f2)"
+    echo $dev
+
+    las=$(sudo fdisk -l | grep "$dev" | grep -v Disk | awk '{print $1}' | tr "\n" ",")
+    echo $las
+
+    check_kswpnofile $(yad --width=400 --center --title="$TITLE" --text="$KSWP005" \
+        --buttons-layout=center --image=preferences \
+        --form  --item-separator="," --separator=" " \
+        --field="$MNT001":CB \
+        --field="$MNT002":CB \
+        --field="$MNT003":CB \
+        --field="$MNT004":CB \
+        --field="$MNT005":CB \
+        --field="$MNT006":CB \
+        --field="$MNT007":CB \
+        --field="$MNT008":CB \
+        --field="$MNT009":CB \
+        --field="$MNT010":CB \
+        "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" \
+        "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" \
+        "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" \
+        "^${NONE},${las:0:-1}")
+}
+
+
+check_kswpf() {
+    echo $1 $2 $3 $4 $5 $6 $7 $8 $9
+
+    rootszamlal=0
+    bootszamlal=0
+    bootefiszamlal=0
+    homeszamlal=0
+    optszamlal=0
+    # swapszamlal=0
+    srvszamlal=0
+    tmpszamlal=0
+    usrszamlal=0
+    varszamlal=0
+    nincsszamlal=0
+
+    root_part=$1
+    boot_part=$2
+    bootefi_part=$3
+    home_part=$4
+    opt_part=$5
+    # swap_part=$6
+    srv_part=$6
+    tmp_part=$7
+    usr_part=$8
+    var_part=$9
+
+    echo "$root_part $boot_part $bootefi_part $home_part $opt_part $srv_part $tmp_part $usr_part $var_part"
+
+    # Root csatolás nem lehet üres...
+    if [ "$root_part" = "${NONE}" ]
+    then
+        yad --image=error --title="$TITLE" --buttons-layout=center --text="$ERROR000"
+        kswpf
+        return 1
+    # Ha swap partíció, ez se lehet üres...
+    # elif [ "$swap_part" = "${NONE}" ]
+    # then
+    #     yad --image=error  --buttons-layout=center --text="$ERROR001"
+    #     kswpnofile
+    #     return 1
+    elif [ "$SYSTEM" = "UEFI" -a "$bootefi_part" = "${NONE}" ]
+    then
+        yad --image=error --title="$TITLE" --buttons-layout=center --text="$ERROR002"
+        kswpf
+        return 1
+    fi
+    
+    # Hányszor szerepel a partíció
+    #sas=($root_part $boot_part $bootefi_part $home_part  $opt_part $swap_part $srv_part $tmp_part $usr_part $var_part)
+    for i in { $root_part $boot_part $bootefi_part $home_part  $opt_part $srv_part $tmp_part $usr_part $var_part }
+    do
+        if [ "$i" = "$root_part" ]
+        then
+            ((rootszamlal++))
+        fi
+
+        if [ "$i" = "$boot_part" -a "$i" != "${NONE}" ]
+        then
+            ((bootszamlal++))
+        fi
+
+        if [ "$i" = "$bootefi_part" -a "$i" != "${NONE}" ]
+        then
+            ((bootefiszamlal++))
+        fi
+
+        if [ "$i" = "$home_part" -a "$i" != "${NONE}" ]
+        then
+            ((homeszamlal++))
+        fi
+
+        if [ "$i" = "$opt_part" -a "$i" != "${NONE}" ]
+        then
+            ((optszamlal++))
+        fi
+
+        # if [ "$i" = "$swap_part" ]
+        # then
+        #     ((swapszamlal++))
+        # fi
+
+        if [ "$i" = "$srv_part" -a "$i" != "${NONE}" ]
+        then
+            ((srvszamlal++))
+        fi
+
+        if [ "$i" = "$tmp_part" -a "$i" != "${NONE}" ]
+        then
+            ((tmpszamlal++))
+        fi
+
+        if [ "$i" = "$usr_part" -a "$i" != "${NONE}" ]
+        then
+            ((usrszamlal++))
+        fi
+
+        if [ "$i" = "$var_part" -a "$i" != "${NONE}" ]
+        then
+            ((varszamlal++))
+        fi
+
+        if [ "$i" = "${NONE}" ]
+        then
+            ((nincsszamlal++))
+        fi
+
+    done
+
+    echo $rootszamlal $bootszamlal $bootefiszamlal $homeszamlal $optszamlal $srvszamlal $tmpszamlal $usrszamlal $varszamlal $nincsszamlal
+
+    # Check double selection
+    if [ "$rootszamlal" -gt "1" -o "$bootszamlal" -gt "1" -o \
+        "$bootefiszamlal" -gt "1" -o "$homeszamlal" -gt "1" -o \
+        "$optszamlal" -gt "1" -o \
+        "$srvszamlal" -gt "1" -o "$tmpszamlal" -gt "1" -o \
+        "$usrszamlal" -gt "1" -o "$varszamlal" -gt "1" ]
+        then 
+            yad --image=error --title="$TITLE" --buttons-layout=center --text="$ERROR003"
+            kswpf
+            return 1
+    fi
+
+    # Mount
+    # mount $root_part /mnt
+    
+    # mkdir -p /mnt/boot/efi
+    # mount "$bootefi_part" /mnt/boot/efi
+
+    # mkswap "$swap_part"
+    # swapon "$swap_part"
+
+    echo $root_part
+
+    if [ "$root_part" != "$NONE" ]
+    then
+        # mkdir -p /mnt/boot
+        mount "$root_part" /mnt
+        echo $root_part
+    fi
+
+    if [ "$boot_part" != "$NONE" ]
+    then
+        mkdir -p /mnt/boot
+        mount "$boot_part" /mnt/boot
+    fi
+
+    if [ "$bootefi_part" != "$NONE" ]
+    then
+        mkdir -p /mnt/boot/efi
+        mount "$bootefi_part" /mnt/boot/efi
+    fi
+
+    if [ "$home_part" != "$NONE" ]
+    then
+        mkdir /mnt/home
+        mount "$home_part" /mnt/home
+    fi
+
+    if [ "$opt_part" != "$NONE" ]
+    then
+        mkdir /mnt/opt
+        mount "$opt_part" /mnt/opt
+    fi
+
+    if [ "$srv_part" != "$NONE" ]
+    then
+        mkdir /mnt/srv
+        mount "$srv_part" /mnt/srv
+    fi
+
+    if [ "$tmp_part" != "$NONE" ]
+    then
+        mkdir /mnt/tmp
+        mount "$tmp_part" /mnt/tmp
+    fi
+
+    if [ "$usr_part" != "$NONE" ]
+    then
+        mkdir /mnt/usr
+        mount "$usr_part" /mnt/usr
+    fi
+
+    if [ "$var_part" != "$NONE" ]
+    then
+        mkdir /mnt/var
+        mount "$var_part" /mnt/var
+    fi
+
+    kswpfsize
+}
+
+
+kswpfsize() {
+
+    # FALSE "3072" FALSE "4096" 
+    swapsize=$(yad --width=400 --center --title="$TITLE" --text="$KSWP004" \
+        --buttons-layout=center --image=preferences \
+        --form  --item-separator="," --separator=" " \
+        --field="$MNT001":CB \
+        "1024,2046,3072,4096")
+    swaps=$(echo $swapsize | cut -d "|" -f2)
+        
+    if [ "$?" = "0" ]
+    then
+        swapfile="yes"
+        (echo "# $INS007"
+        touch /mnt/swapfile
+        dd if=/dev/zero of=/mnt/swapfile bs=1M count=${swaps}
+        chmod 600 /mnt/swapfile
+        mkswap /mnt/swapfile
+        swapon /mnt/swapfile) | yad --progress --title="$TITLE" --width=450 --pulsate --auto-close --no-buttons
+        #echo "swap készítés"
+        # egyeb_csatolas
+    else
+        kswp
+    fi
+}
+
+
+kswpf() {
+
+    devices="$(lsblk -lno NAME,TYPE | grep 'disk' | awk '{print "/dev/" $1 " " $2}' | sort -u | sed "s/ disk//g" | awk '{print "false " $0}')"
+
+    device="$(yad  --width=400 --center \
+        --buttons-layout=center --title="$TITLE" --text="$MAIN012" \
+        --no-selection  --image=preferences --radiolist --list \
+        --column="" --column="" $devices)"
+    dev="$(echo "$device" | cut -d "|" -f2)"
+    echo $dev
+
+    las=$(sudo fdisk -l | grep "$dev" | grep -v Disk | awk '{print $1}' | tr "\n" ",")
+    echo $las
+
+    check_kswpf $(yad --width=400 --center --title="$TITLE" --text="$KSWP005" \
+        --buttons-layout=center --image=preferences \
+        --form  --item-separator="," --separator=" " \
+        --field="$MNT001":CB \
+        --field="$MNT002":CB \
+        --field="$MNT003":CB \
+        --field="$MNT004":CB \
+        --field="$MNT005":CB \
+        --field="$MNT007":CB \
+        --field="$MNT008":CB \
+        --field="$MNT009":CB \
+        --field="$MNT010":CB \
+        "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" \
+        "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" \
+        "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}")
+}
+
+
+check_kswpno() {
+    echo $1 $2 $3 $4 $5 $6 $7 $8 $9
+
+    rootszamlal=0
+    bootszamlal=0
+    bootefiszamlal=0
+    homeszamlal=0
+    optszamlal=0
+    # swapszamlal=0
+    srvszamlal=0
+    tmpszamlal=0
+    usrszamlal=0
+    varszamlal=0
+    nincsszamlal=0
+
+    root_part=$1
+    boot_part=$2
+    bootefi_part=$3
+    home_part=$4
+    opt_part=$5
+    # swap_part=$6
+    srv_part=$6
+    tmp_part=$7
+    usr_part=$8
+    var_part=$9
+
+    echo "$root_part $boot_part $bootefi_part $home_part $opt_part $srv_part $tmp_part $usr_part $var_part"
+
+    # Root csatolás nem lehet üres...
+    if [ "$root_part" = "${NONE}" ]
+    then
+        yad --image=error --title="$TITLE" --buttons-layout=center --text="$ERROR000"
+        kswpno
+        return 1
+    # Ha swap partíció, ez se lehet üres...
+    # elif [ "$swap_part" = "${NONE}" ]
+    # then
+    #     yad --image=error  --buttons-layout=center --text="$ERROR001"
+    #     kswpnofile
+    #     return 1
+    elif [ "$SYSTEM" = "UEFI" -a "$bootefi_part" = "${NONE}" ]
+    then
+        yad --image=error --title="$TITLE" --buttons-layout=center --text="$ERROR002"
+        kswpno
+        return 1
+    fi
+    
+    # Hányszor szerepel a partíció
+    #sas=($root_part $boot_part $bootefi_part $home_part  $opt_part $swap_part $srv_part $tmp_part $usr_part $var_part)
+    for i in { $root_part $boot_part $bootefi_part $home_part  $opt_part $srv_part $tmp_part $usr_part $var_part }
+    do
+        if [ "$i" = "$root_part" ]
+        then
+            ((rootszamlal++))
+        fi
+
+        if [ "$i" = "$boot_part" -a "$i" != "${NONE}" ]
+        then
+            ((bootszamlal++))
+        fi
+
+        if [ "$i" = "$bootefi_part" -a "$i" != "${NONE}" ]
+        then
+            ((bootefiszamlal++))
+        fi
+
+        if [ "$i" = "$home_part" -a "$i" != "${NONE}" ]
+        then
+            ((homeszamlal++))
+        fi
+
+        if [ "$i" = "$opt_part" -a "$i" != "${NONE}" ]
+        then
+            ((optszamlal++))
+        fi
+
+        # if [ "$i" = "$swap_part" ]
+        # then
+        #     ((swapszamlal++))
+        # fi
+
+        if [ "$i" = "$srv_part" -a "$i" != "${NONE}" ]
+        then
+            ((srvszamlal++))
+        fi
+
+        if [ "$i" = "$tmp_part" -a "$i" != "${NONE}" ]
+        then
+            ((tmpszamlal++))
+        fi
+
+        if [ "$i" = "$usr_part" -a "$i" != "${NONE}" ]
+        then
+            ((usrszamlal++))
+        fi
+
+        if [ "$i" = "$var_part" -a "$i" != "${NONE}" ]
+        then
+            ((varszamlal++))
+        fi
+
+        if [ "$i" = "${NONE}" ]
+        then
+            ((nincsszamlal++))
+        fi
+
+    done
+
+    echo $rootszamlal $bootszamlal $bootefiszamlal $homeszamlal $optszamlal $srvszamlal $tmpszamlal $usrszamlal $varszamlal $nincsszamlal
+
+    # Check double selection
+    if [ "$rootszamlal" -gt "1" -o "$bootszamlal" -gt "1" -o \
+        "$bootefiszamlal" -gt "1" -o "$homeszamlal" -gt "1" -o \
+        "$optszamlal" -gt "1" -o \
+        "$srvszamlal" -gt "1" -o "$tmpszamlal" -gt "1" -o \
+        "$usrszamlal" -gt "1" -o "$varszamlal" -gt "1" ]
+        then 
+            yad --image=error --title="$TITLE" --buttons-layout=center --text="$ERROR003"
+            kswpno
+            return 1
+    fi
+
+    # Mount
+    mount "$root_part" /mnt
+    
+    # mkdir -p /mnt/boot/efi
+    # mount "$bootefi_part" /mnt/boot/efi
+
+    # mkswap "$swap_part"
+    # swapon "$swap_part"
+
+    if [ "$boot_part" != "$NONE" ]
+    then
+        mkdir -p /mnt/boot
+        mount "$boot_part" /mnt/boot
+    fi
+
+    if [ "$bootefi_part" != "$NONE" ]
+    then
+        mkdir -p /mnt/boot/efi
+        mount "$bootefi_part" /mnt/boot/efi
+    fi
+
+    if [ "$home_part" != "$NONE" ]
+    then
+        mkdir /mnt/home
+        mount "$home_part" /mnt/home
+    fi
+
+    if [ "$opt_part" != "$NONE" ]
+    then
+        mkdir /mnt/opt
+        mount "$opt_part" /mnt/opt
+    fi
+
+    if [ "$srv_part" != "$NONE" ]
+    then
+        mkdir /mnt/srv
+        mount "$srv_part" /mnt/srv
+    fi
+
+    if [ "$tmp_part" != "$NONE" ]
+    then
+        mkdir /mnt/tmp
+        mount "$tmp_part" /mnt/tmp
+    fi
+
+    if [ "$usr_part" != "$NONE" ]
+    then
+        mkdir /mnt/usr
+        mount "$usr_part" /mnt/usr
+    fi
+
+    if [ "$var_part" != "$NONE" ]
+    then
+        mkdir /mnt/var
+        mount "$var_part" /mnt/var
+    fi
+}
+
+kswpno() {
+
+    devices="$(lsblk -lno NAME,TYPE | grep 'disk' | awk '{print "/dev/" $1 " " $2}' | sort -u | sed "s/ disk//g" | awk '{print "false " $0}')"
+
+    device="$(yad  --width=400 --center \
+        --buttons-layout=center --title="$TITLE" --text="$MAIN012" \
+        --no-selection  --image=preferences --radiolist --list \
+        --column="" --column="" $devices)"
+    dev="$(echo "$device" | cut -d "|" -f2)"
+    echo $dev
+
+    las=$(sudo fdisk -l | grep "$dev" | grep -v Disk | awk '{print $1}' | tr "\n" ",")
+    echo $las
+
+    check_kswpno $(yad --width=400 --center --title="$TITLE" --text="$KSWP005" \
+        --buttons-layout=center --image=preferences \
+        --form  --item-separator="," --separator=" " \
+        --field="$MNT001":CB \
+        --field="$MNT002":CB \
+        --field="$MNT003":CB \
+        --field="$MNT004":CB \
+        --field="$MNT005":CB \
+        --field="$MNT007":CB \
+        --field="$MNT008":CB \
+        --field="$MNT009":CB \
+        --field="$MNT010":CB \
+        "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" \
+        "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" \
+        "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}")
+}
+
+partition_set() {
+
+    partition="$(yad  --width=400 --center \
+        --buttons-layout=center --title="$TITLE" --text="$MAIN012" \
+        --no-selection  --image=preferences --radiolist --list \
+        --column="" --column="" "${PART_LIST[@]}")"
+
+     
+    unset MAIN_LIST
+    
+    MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "true" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
+        "false" "$MAIN005" "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
+        "false" "$MAIN009" "false" "$MAIN010" "false" "$MAIN011")
+
+    if [ "$(echo "$partition" | cut -d "|" -f2)" = "$PART000" ]
+    then
+        auto_part
+    elif [ "$(echo "$partition" | cut -d "|" -f2)" = "$PART001" ]
+    then
+        man_part
+    fi
+}
+
+
+install_summary() {
+
+    lan=$(echo $sys_lang | cut -d '|' -f1)
+    kbl=$(echo $kb_set | cut -d '|' -f1)
+    kbm=$(echo $kb_set | cut -d '|' -f2)
+    tzz=$(echo $tzzone_set | cut -d '|' -f1)
+    tzsz=$(echo $tzszone_set | cut -d '|' -f1)
+    tim=$(echo $clock | cut -d '|' -f1)
+    hsnm=$(echo $hsname | cut -d '|' -f1)
+    kern=$(echo $ker_sh_cup | cut -d '|' -f1)
+    shel_l=$(echo $ker_sh_cup | cut -d '|' -f2)
+    cup_s=$(echo $ker_sh_cup | cut -d '|' -f3)
+    grc=$(echo $grap | cut -d '|' -f1)
+    dm_set=$(echo $dm_des | cut -d '|' -f1)
+    de_set=$(echo $dm_des | cut -d '|' -f2)
+
+
+    boot_sel=$(echo $bootloader | cut -d '|' -f2)
+    grb_dev=$(echo $grb_set | cut -d '|' -f2)
+
+    unset MAIN_LIST
+    
+    
+
+    if [ "$boot_sel" = "grub" ]
+    then
+        # boot_sel=$(echo $bootloader | cut -d '|' -f2)
+        # grb_dev=$(echo $grb_set | cut -d '|' -f2)
+
+        boot_load="${BTL000}:  $boot_sel\n\t${BTL001}:  $grb_dev"
+    else
+        boot_load="${BTL000}:  $boot_sel"
+    fi
+
+
+    ins_sum="$(yad --width=400 --height=600 --center --title="$TITLE" --text="$MAIN015" \
+        --buttons-layout=center --image=input-gaming \
+        --form  --item-separator="," --scroll \
+        --field="$MAIN002\n\t${LAN}:  $lan\n\n\
+$MAIN003\n\t${KBL}:  $kbl\n\t${KBM}:  $kbm\n\n\
+$MAIN004\n\t${TZZ}:  $tzz\n\t${TZSZ}: $tzsz\n\t${TIM}:  $tim\n\n\
+$MAIN005\n\t${HSNM1}:  $hsnm\n\n\
+${URSET001}:  $user_name\n\n\
+$MAIN007\n\t${KSC001}:  $kern\n\t${KSC002}:  $shel_l\n\t${KSC003}:  $cup_s\n\n\
+$MAIN008\n\t${GRC001}:  $grc\n\n\
+$MAIN009\n\t${DMDE001}:  $dm_set\n\t${DMDE002}:  $de_set\n\n\
+$MAIN011\n\t$boot_load\n":LBL )"
+
+    install_run
+}
+
+install_run() {
+
+
+    (echo "# $INS000"
+    reflector --verbose -l 50 -p https --sort rate --save /etc/pacman.d/mirrorlist
+
+    echo "10"
+
+    # miro=$(curl -s "https://www.archlinux.org/mirrorlist/?country="${KEYBOARD_LAYOUT^^}"&protocol=https&use_mirror_status=on" | sed -e 's/^#Server/Server/' )
+    # echo "$miro" > miro.txt
+    # cp miro.txt /etc/pacman.d/mirrorlist
+
+    # pacman -Syy
+
+    echo "# $INS009"
+    if [ "$kern" = "linux" ]
+    then
+        pacstrap /mnt base base-devel linux linux-firmware bash bash-completion
+    elif [ "$kern" = "linux-lts" ]
+    then
+        pacstrap /mnt  base base-devel linux-lts linux-firmware bash bash-completion
+    fi
+
+    echo "30"
+
+    echo "# $INS001"
+    genfstab -p /mnt >> /mnt/etc/fstab
+    if grep -q "/mnt/swapfile" "/mnt/etc/fstab"; then
+    sed -i '/swapfile/d' /mnt/etc/fstab
+    echo "/swapfile     none    swap    defaults    0   0" >> /mnt/etc/fstab
+    fi
+
+    echo "" >> /mnt/etc/pacman.conf;echo "[multilib]" >> /mnt/etc/pacman.conf;echo "Include = /etc/pacman.d/mirrorlist" >> /mnt/etc/pacman.conf
+    arch_chroot "pacman -Syy"
+
+    echo "# $INS002"
+    touch .passwd
+    echo -e "$rootpass1\n$rootpass2" > .passwd
+    arch_chroot "passwd root" < .passwd >/dev/null
+    rm .passwd
+    
+    echo "# $INS003"
+    arch_chroot "useradd -m -g users -G adm,lp,wheel,power,audio,video -s /bin/bash $user_name"
+    touch .passwd
+    echo -e "$userpass1\n$userpass2" > .passwd
+    arch_chroot "passwd $user_name" < .passwd >/dev/null
+    rm .passwd
+
+    echo "# $INS003"
+    echo "LANG=\"${lan}\"" > /mnt/etc/locale.conf
+    echo "LC_ADDRESS=\"${lan}\"" >> /mnt/etc/locale.conf
+    echo "LC_IDENTIFICATION=\"${lan}\"" >> /mnt/etc/locale.conf
+    echo "LC_MEASUREMENT=\"${lan}\"" >> /mnt/etc/locale.conf
+    echo "LC_MONETARY=\"${lan}\"" >> /mnt/etc/locale.conf
+    echo "LC_NAME=\"${lan}\"" >> /mnt/etc/locale.conf
+    echo "LC_NUMERIC=\"${lan}\"" >> /mnt/etc/locale.conf
+    echo "LC_PAPER=\"${lan}\"" >> /mnt/etc/locale.conf
+    echo "LC_TELEPHONE=\"${lan}\"" >> /mnt/etc/locale.conf
+    echo "LC_TIME=\"${lan}\"" >> /mnt/etc/locale.conf
+    echo "${lan} UTF-8" >> /mnt/etc/locale.gen
+    echo "en_US.UTF-8 UTF-8" >> /mnt/etc/locale.gen
+    arch_chroot "locale-gen"
+    export LANG=${lan}
+
+    echo "50"
+
+    mkdir -p /mnt/etc/X11/xorg.conf.d/
+    echo -e 'Section "InputClass"\n\tIdentifier "system-keyboard"\n\tMatchIsKeyboard "on"\n\tOption "XkbLayout" "'$kbl'"\n\tOption "XkbModel" "'$kbm'"\n\tOption "XkbVariant" ",''"\n\tOption "XkbOptions" "grp:alt_shift_toggle"\nEndSection' > /mnt/etc/X11/xorg.conf.d/00-keyboard.conf
+    echo "KEYMAP=\"${kbl}\""  > /mnt/etc/vconsole.conf
+
+    echo "# $INS004"
+    # arch_chroot "rm /etc/localtime"
+    arch_chroot "ln -s /usr/share/zoneinfo/${tzz}/${tzsz} /etc/localtime"
+
+    arch_chroot "hwclock --systohc --${tim}"
+
+    arch_chroot "echo ${hsnm} > /etc/hostname"
+
+    echo "%wheel ALL=(ALL) ALL" >> /mnt/etc/sudoers
+
+    cp /etc/pacman.d/mirrorlist /mnt/etc/pacman.d/mirrorlist
+    arch_chroot "pacman -Syy"
+
+    echo "# $INS005"
+    arch_chroot "pacman -S --noconfirm --needed xorg-server xorg-apps xorg-xinit xorg-twm xterm alsa-utils pulseaudio pulseaudio-alsa xf86-input-synaptics xf86-input-libinput b43-fwcutter networkmanager nm-connection-editor network-manager-applet xdg-user-dirs gvfs gvfs-mtp git"
+
+    # aur_hlp="cd /home/${user_name} ; su ${user_name} -c 'git clone https://aur.archlinux.org/yay-bin' ; cd yay-bin ; su ${user_name} -c 'makepkg' ; pacman -U yay-bin*x86_64* --noconfirm ; cd .. ; rm -rf yay-bin" 
+
+    arch_chroot "cd /home/${user_name} ; su ${user_name} -c 'git clone https://aur.archlinux.org/yay-bin' ; cd yay-bin ; su ${user_name} -c 'makepkg' ; pacman -U yay-bin*x86_64* --noconfirm ; cd .. ; rm -rf yay-bin"
+
+    processor=$(lspci -n | awk -F " " '{print $2 $3}' | grep ^"06" | awk -F ":" '{print $2}' | sed -n  '1p')
+
+    if [ "$processor" = "8086" ]
+    then
+        pacstrap /mnt intel-ucode
+    elif [ "$processor" = "1002" ]
+    then
+        pacstrap /mnt amd-ucode
+    fi
+
+    echo "# $INS006"
+
+    if [ "$kern" = "linux" -a "$grc" = "virtualbox" ]
+    then
+        pacstrap /mnt virtualbox-guest-dkms virtualbox-guest-utils linux-headers 
+        echo -e "vboxguest\nvboxsf\nvboxvideo" > /mnt/etc/modules-load.d/virtualbox.conf
+    elif [ "$kern" = "linux-lts" -a "$grc" = "virtualbox" ]
+    then
+        pacstrap /mnt virtualbox-guest-dkms virtualbox-guest-utils linux-lts-headers
+        echo -e "vboxguest\nvboxsf\nvboxvideo" > /mnt/etc/modules-load.d/virtualbox.conf
+    elif [ "$grc" = "i915" ]
+    then
+        pacstrap /mnt xf86-video-intel libva-intel-driver lib32-mesa
+        echo "options i915 modeset=1\n" > /mnt/etc/modprobe.d/i915.conf
+
+    elif [ "$grc" = "amdgpu" ]
+    then
+        pacstrap /mnt xf86-video-amdgpu vulkan-radeon libva-mesa-driver lib32-mesa lib32-libva-mesa-driver
+
+    elif [ "$kern" = "linux" -a "$grc" = "nvidia" ]
+    then
+        pacstrap /mnt nvidia libvdpau lib32-nvidia-utils lib32-libvdpau
+
+    elif [ "$kern" = "linux-lts" -a "$grc" = "nvidia" ]
+    then
+        pacstrap /mnt nvidia-lts libvdpau lib32-nvidia-utils lib32-libvdpau
+
+    elif [ "$grc" = "nouveau" ]
+    then
+        pacstrap /mnt xf86-video-nouveau mesa lib32-mesa
+        echo "options nouveau modeset=1\n" > /mnt/etc/modprobe.d/blacklist-nvidia.conf
+
+    fi
+
+    echo "70"
+
+    if [ "$cup_s" = "$YES" ]
+    then
+        pacstrap /mnt ghostscript gsfonts system-config-printer gtk3-print-backends cups cups-pdf cups-filters
+        arch_chroot "systemctl enable org.cups.cupsd.service"
+    fi
+
+    arch_chroot "pacman -S --noconfirm --needed $de_set "
+
+
+    if [ "$dm_set"  = "$DEFAULT" ]
+    then
+        if [ "$de_set" = "gnome" ]
+        then
+            arch_chroot "systemctl enable gdm.service"
+        elif [ "$de_set" = "gnome gnome-extra" ]
+        then
+            arch_chroot "systemctl enable gdm.service"
+        elif [ "$de_set" = "budgie-desktop" ]
+        then
+            arch_chroot "pacman -S --noconfirm --needed lightdm lightdm-gtk-greeter-settings lightdm-gtk-greeter gnome-control-center gnome-backgrounds "
+            arch_chroot "systemctl enable lightdm.service"
+        elif [ "$de_set" = "lxde" ]
+        then
+            arch_chroot "pacman -S --noconfirm --needed lxdm-gtk3 "
+            arch_chroot "systemctl enable lxdm.service"
+        elif [ "$de_set" = "plasma" ]
+        then
+            arch_chroot "pacman -S --noconfirm --needed sddm "
+            arch_chroot "systemctl enable sddm.service"
+        elif [ "$de_set" = "plasma kde-applications" ]
+        then
+            arch_chroot "pacman -S --noconfirm --needed sddm "
+            arch_chroot "systemctl enable sddm.service"
+        # else 
+        #     arch_chroot "pacman -S --noconfirm --needed lightdm lightdm-gtk-greeter-settings lightdm-gtk-greeter "
+        #     arch_chroot "systemctl enable lightdm.service"
+        fi
+    
+    elif [ "$dm_set" = "lightdm" ]
+    then
+        arch_chroot "pacman -S --noconfirm --needed lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings "
+        arch_chroot "systemctl enable lightdm.service"
+    else
+        arch_chroot "pacman -S --noconfirm --needed $dm "
+        arch_chroot "systemctl enable ${dm_set}.service"
+    fi
+
+    arch_chroot "systemctl enable NetworkManager"
+
+    
+
+    if [ "$shel_l" = "zsh" ]
+    then
+        arch_chroot "sudo pacman -S --noconfirm zsh zsh-syntax-highlighting zsh-completions grml-zsh-config;chsh -s /usr/bin/zsh $user_name"
+    elif [ "$shel_l" = "fish" ]
+    then
+        arch_chroot "sudo pacman -S --noconfirm $shel_l;chsh -s /usr/bin/$shel_l"
+    else 
+        arch_chroot "pacman -S --noconfirm --needed $shel_l;chsh -s /usr/bin/$shel_l" 
+    fi
+
+    echo "# $INS008"
+
+    arch_chroot "pacman -S --noconfirm --needed $pack_int"
+    arch_chroot "pacman -S --noconfirm --needed $pack_sec"
+    arch_chroot "pacman -S --noconfirm --needed $pack_med"
+    arch_chroot "pacman -S --noconfirm --needed $pack_ofi"
+    arch_chroot "pacman -S --noconfirm --needed $pack_uti"
+    arch_chroot "pacman -S --noconfirm --needed $pack_ter"
+    
+    if [ "$de_set" = "bspwm" ]
+    then
+        arch_chroot "pacman -S --noconfirm --needed  sxhkd xdo rxvt-unicode dmenu scrot"
+        arch_chroot "su ${user_name} -c 'mkdir -p /home/$user_name/.config/{bspwm,sxhkd}'"
+        arch_chroot "su ${user_name} -c 'cp /usr/share/doc/bspwm/examples/bspwmrc /home/$user_name/.config/bspwm/'"
+        arch_chroot "su ${user_name} -c 'cp /usr/share/doc/bspwm/examples/sxhkdrc /home/$user_name/.config/sxhkd/'"
+    fi
+
+    echo "80"
+
+    if [ "$boot_sel" = "grub" ]
+    then
+        if [ "$SYSTEM" = 'BIOS' ]
+        then
+            echo "# $INS010"
+            pacstrap /mnt grub
+            #arch_chroot "os-prober"
+            arch_chroot "grub-install --target=i386-pc $grb_dev"
+            arch_chroot "grub-mkconfig -o /boot/grub/grub.cfg"
+        else
+            echo "# $INS010"
+
+            pacstrap /mnt grub efibootmgr
+            #arch_chroot "os-prober"
+            arch_chroot "grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=magyarcslinux1 --recheck"
+            arch_chroot "grub-mkconfig -o /boot/grub/grub.cfg"
+        fi
+
+    elif [ "$boot_sel" = "refind" ]
+    then
+        if [ "$SYSTEM" = 'UEFI' ]
+        then
+            echo "# $INS010"
+
+            pacstrap /mnt refind-efi efibootmgr
+            # arch_chroot "grub-mkconfig -o /boot/grub/grub.cfg"
+            rootuuid=$(lsblk -lno UUID ${root_part})
+            arch_chroot "refind-install"
+            echo "\"Arch Linux\" \"root=UUID=${rootuuid} rw add_efi_memmap\"" > /mnt/boot/refind_linux.conf
+            echo "\"Arch Linux Fallback\" \"root=UUID=${rootuuid} rw add_efi_memmap initrd=/initramfs-linux-fallback.img\"" >> /mnt/boot/refind_linux.conf
+            echo "\"Arch Linux Terminal\" \"root=UUID=${rootuuid} rw add_efi_memmap systemd.unit=multi-user.target\"" >> /mnt/boot/refind_linux.conf
+
+        fi
+    fi
+
+    echo "90"
+
+    arch_chroot "mkinitcpio -p $kern"
+
+    umount -R /mnt
+
+    echo "100"
+    echo "# $INS011"
+    ) | yad --title="$TITLE" --width=400 --height=250 --progress --auto-close --enable-log --log-expanded --no-buttons
+
+    yad --image=info --title="$TITLE" --buttons-layout=center --text="$INS011"
+    reboot
+}
+
+# Main
+main() {
+
+    main_diag="$(yad  --width=400 --height=480 --center \
+        --buttons-layout=center --title="$TITLE" --text="$MAIN000" \
+        --no-selection  --image=preferences --radiolist --list \
+        --column="" --column="" "${MAIN_LIST[@]}")"
+    if [ "$(echo "$main_diag" | cut -d "|" -f2)" = "$MAIN001" ]
+    then
+        installer_lang;main
+    elif [ "$(echo "$main_diag" | cut -d "|" -f2)" = "$MAIN012" ]
+    then
+        partition_set;main
+    elif [ "$(echo "$main_diag" | cut -d "|" -f2)" = "$MAIN002" ]
+    then
+        system_lang;main    
+    elif [ "$(echo "$main_diag" | cut -d "|" -f2)" = "$MAIN003" ]
+    then
+        keyboard_set;main
+    elif [ "$(echo "$main_diag" | cut -d "|" -f2)" = "$MAIN004" ]
+    then
+        timezone_set;main
+    elif [ "$(echo "$main_diag" | cut -d "|" -f2)" = "$MAIN005" ]
+    then
+        hname;main    
+    elif [ "$(echo "$main_diag" | cut -d "|" -f2)" = "$MAIN006" ]
+    then
+        user_root_set;main
+    elif [ "$(echo "$main_diag" | cut -d "|" -f2)" = "$MAIN007" ]
+    then
+        kernel_shell_cups_set;main
+    elif [ "$(echo "$main_diag" | cut -d "|" -f2)" = "$MAIN008" ]
+    then
+        graphics_set;main
+    elif [ "$(echo "$main_diag" | cut -d "|" -f2)" = "$MAIN009" ]
+    then
+        dm_desktop_set;main
+    elif [ "$(echo "$main_diag" | cut -d "|" -f2)" = "$MAIN010" ]
+    then
+        other_app_set;main
+    elif [ "$(echo "$main_diag" | cut -d "|" -f2)" = "$MAIN011" ]
+    then
+        bootloader_set;main
+    elif [ "$(echo "$main_diag" | cut -d "|" -f2)" = "$MAIN013" ]
+    then
+        install_summary
+    fi
+
+    
+
+}
+
+
+installer_lang
+main
+
+
+
+
+
+
+
+
+
+
+
