@@ -84,7 +84,7 @@ installer_lang() {
     MAIN015=$(GETTEXT "Summary")
 
     LAN=$(GETTEXT "Language")
-    KBL=$(GETTEXT "Keyboard layputs")
+    KBL=$(GETTEXT "Keyboard layouts")
     KBM=$(GETTEXT "Keyboard models")
     TZZ=$(GETTEXT "Zone")
     TZSZ=$(GETTEXT "Sub zone")
