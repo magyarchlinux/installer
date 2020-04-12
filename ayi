@@ -41,7 +41,7 @@ Parted() {
 installer_lang() {
 
     # Variables
-    TITLE=$(EGETTEXT "Arch Installer - \$SYSTEM mode")
+    TITLE=$(EGETTEXT "MagyArch Installer - \$SYSTEM mode")
     MAIN001=$(GETTEXT "Installer language")
     MAIN002=$(GETTEXT "Keyboard settings")
     LAN=$(GETTEXT "Language")
@@ -63,7 +63,7 @@ installer_lang() {
     
     # Variables
 
-    TITLE=$(EGETTEXT "Arch Installer - \$SYSTEM mode")
+    TITLE=$(EGETTEXT "MagyArch Installer - \$SYSTEM mode")
     YES=$(GETTEXT "Yes")
     NO=$(GETTEXT "No")
     MAIN000=$(GETTEXT "Reply from list:")
