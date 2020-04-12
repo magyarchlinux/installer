@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-12 07:48+0200\n"
-"PO-Revision-Date: 2020-04-12 08:06+0200\n"
+"POT-Creation-Date: 2020-04-12 08:51+0200\n"
+"PO-Revision-Date: 2020-04-12 08:52+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: hu\n"
@@ -20,6 +20,7 @@ msgstr ""
 
 # , sh-format
 #: ayi:44 ayi:66
+#, sh-format
 msgid "MagyArch Installer - $SYSTEM mode"
 msgstr "MagyArch telepítő - $SYSTEM mód"
 
@@ -100,7 +101,7 @@ msgid "Summary"
 msgstr "Összefoglalás"
 
 #: ayi:87
-msgid "Keyboard layputs"
+msgid "Keyboard layouts"
 msgstr "Billentyűzet kiosztás"
 
 #: ayi:88
