@@ -264,11 +264,12 @@ Partition and format your hard disk, as this is not done by the installer!")
     MNT009=$(GETTEXT "Mount point (/usr)")
     MNT010=$(GETTEXT "Mount point (/var)")
     NONE=$(GETTEXT "None")
+    
     ERROR000=$(GETTEXT "No root partition selected!")
     ERROR001=$(GETTEXT "No swap partition selected!")
     ERROR002=$(EGETTEXT "No boot / efi partition selected!\nA boot / efi partition is required for UEFI installation.")
     ERROR003=$(GETTEXT "You have chosen the same partition multiple times!")
-    # ERROR004=$(GETTEXT "")
+    ERROR004=$(EGETTEXT "Refind cannot be installed in \$SYSTEM mode.")
     
     BTL000=$(GETTEXT "Bootloader")
     BTL001=$(GETTEXT "Grub install")
@@ -665,6 +666,13 @@ bootloader_set() {
     if [ "$(echo "$bootloader" | cut -d "|" -f2)" = "grub" ]
     then
         grub_set
+    fi
+
+    if [ "$(echo "$bootloader" | cut -d "|" -f2)" = "refind" -a "$SYSTEM" = "BIOS" ]
+    then
+        yad --image=error --title="$TITLE" --buttons-layout=center --text="$ERROR004"
+        bootloader_set
+        return 1
     fi
     
 }
