@@ -82,7 +82,7 @@ msgstr "Egyéb alkalmazások"
 
 #: ayi:80
 msgid "Bootloader settings"
-msgstr "Bootloader beállítása"
+msgstr "Rendszerbetöltő beállítása"
 
 #: ayi:81
 msgid "Partition settings"
@@ -154,11 +154,11 @@ msgstr "Rendszergazdai (root) jelszo ismétlése"
 
 #: ayi:100
 msgid "User passwords do not match, please try again."
-msgstr "A felhasználói jalszavak nem egyeznek. Próbálja újra."
+msgstr "A felhasználói jelszavak nem egyeznek. Próbálja újra."
 
 #: ayi:101
 msgid "Root passwords do not match, please try again."
-msgstr "A rendszergazdai (root) jalszavak nem egyeznek. Próbálja újra."
+msgstr "A rendszergazdai (root) jelszavak nem egyeznek. Próbálja újra."
 
 #: ayi:102
 msgid "Kernel"
@@ -495,7 +495,7 @@ msgid ""
 "done by the installer!"
 msgstr ""
 "Szükség van partícionálásra?\\nHa az ${YES}-t válassza elindúl a GParted."
-"\\nFormázzs meg a kívánt tipúsra, mert a telepítő ezt nem végzi el!"
+"\\nFormázza meg a kívánt tipúsra, mert a telepítő ezt nem végzi el!"
 
 #: ayi:247
 msgid "Swap partition"
@@ -579,15 +579,15 @@ msgstr ""
 
 #: ayi:270
 msgid "You have chosen the same partition multiple times!"
-msgstr "Többször választotta ugyanazt a partícióz!"
+msgstr "Többször választotta ugyanazt a partíciót!"
 
 #: ayi:273
 msgid "Bootloader"
-msgstr "Bootloader"
+msgstr "Rendszerbetöltő"
 
 #: ayi:274
 msgid "Grub install"
-msgstr "Brub telepítése"
+msgstr "Grub telepítése"
 
 #: ayi:276
 msgid "Creating mirror list..."
@@ -635,7 +635,7 @@ msgstr "Telepítés base..."
 
 #: ayi:287
 msgid "Installing bootloader..."
-msgstr "Bootloader telepítése..."
+msgstr "Rendszerbetöltő telepítése..."
 
 #: ayi:288
 msgid "Installation is complete!"
