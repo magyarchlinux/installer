@@ -2,14 +2,14 @@
 
 // main colors used in theme
 // 1.0 < 1 will result in most cinnamon surfaces being transparent
-$button_bg_color: #2a0f89;
-$button_fg_color: #01bf9b;
-$selected_bg_color: #2a0f89;
+$button_bg_color: #2e8b57;
+$button_fg_color: #c3cdc8;
+$selected_bg_color: #2e8b57;
 $selected_fg_color: #ffff00;
 $tooltip_bg_color: #2f2b26;
-$tooltip_fg_color: #2e8b57;
+$tooltip_fg_color: #c3cdc8;
 $dark_bg_color: fade-out(#2f2b26, 1 - 1.0);
-$dark_fg_color: #2e8b57;
+$dark_fg_color: #c3cdc8;
 
 // an always transparent color used for expo & scale views and the lightbox effect when cinnamon is showing an OSD.
 $dark_bg_color_trans: fade-out(#2f2b26, 1 - (1.0 / 2));
@@ -68,12 +68,12 @@ $scrollbar_slider_hover_color: mix($dark_bg_color, $selected_bg_color, 20%);
 $primary_caret_color: #cac10f;
 
 // other colors used in the theme
-$link_color: #00657e;
-$success_color: #00c780;
-$warning_color: #c8c100;
-$error_color: #c36125;
-$info_fg_color: #d2f000;
-$info_bg_color: #0fbbb2;
+$link_color: #7e4546;
+$success_color: #a4d400;
+$warning_color: #d4a400;
+$error_color: #d4841d;
+$info_fg_color: #2f2b26;
+$info_bg_color: #908461;
 
 // used for border-radius throughout theme
 $roundness: 6px;
