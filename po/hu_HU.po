@@ -219,39 +219,39 @@ msgstr "Terminal alapú alkalmazások"
 
 #: ayi:122
 msgid "A web browser built for speed, simplicity, and security"
-msgstr ""
+msgstr "Gyorsaságra, egyszerűségre és biztonságra épülő böngésző"
 
 #: ayi:123
 msgid "Standalone web browser from mozilla.org"
-msgstr ""
+msgstr "Különálló böngésző a Mozzillától"
 
 #: ayi:124
 msgid "Lightweight and fast web browser"
-msgstr ""
+msgstr "Könnyűsúlyú és gyors böngésző"
 
 #: ayi:125
 msgid "Fast and reliable FTP, FTPS and SFTP client"
-msgstr ""
+msgstr "Gyors és megbízható FTP, FTPS és SFTP kliens"
 
 #: ayi:126
 msgid "Manage your email, contacts and schedule"
-msgstr ""
+msgstr "Email, névjegyek és naptár kezelése"
 
 #: ayi:127
 msgid "A lightweight email client for the GNOME desktop"
-msgstr ""
+msgstr "Könnyűsúlyú email kliens a GNOME asztalhoz"
 
 #: ayi:128
 msgid "Standalone mail and news reader from mozilla.org"
-msgstr ""
+msgstr "Különálló email és hírolvasó a Mozzillától"
 
 #: ayi:129
 msgid "Fast, easy, and free BitTorrent client (GTK+ GUI)"
-msgstr ""
+msgstr "Gyors, egyszerű és Ingyenes BitTorrent kliens (GTK+ felülettel)"
 
 #: ayi:130
 msgid "Fast, easy, and free BitTorrent client (Qt GUI)"
-msgstr ""
+msgstr "Gyors, egyszerű és Ingyenes BitTorrent kliens (QT felülettel)"
 
 #: ayi:131
 msgid ""
@@ -261,83 +261,83 @@ msgstr ""
 
 #: ayi:132
 msgid "Ncurses BitTorrent client based on libTorrent"
-msgstr ""
+msgstr "libTorrent alapú Ncurses BitTorrent kliens"
 
 #: ayi:133
 msgid "A popular and easy to use graphical IRC (chat) client"
-msgstr ""
+msgstr "Népszerű és könnyen használható grafikus IRC (chat) kliens"
 
 #: ayi:134
 msgid "All-in-one voice and text chat for gamers that's free and secure."
-msgstr ""
+msgstr "Minden-az-egyben hang és szöveges chat gamereknek, ami ingyenes és biztonságos"
 
 #: ayi:142
 msgid "Cross platform password manager"
-msgstr ""
+msgstr "Keresztplatformos jelszókezelő"
 
 #: ayi:143
 msgid "Disk encryption with strong security based on TrueCrypt"
-msgstr ""
+msgstr "TrueCrypt alapú lemez titkosítás erős biztonsággal"
 
 #: ayi:144
 msgid "Uncomplicated way to manage your Linux firewall"
-msgstr ""
+msgstr "Egyszerű módja a Linux tűzfal kezelésének"
 
 #: ayi:145
 msgid "Anti-virus toolkit for Unix"
-msgstr ""
+msgstr "Antivírus eszközkészlet Linuxra"
 
 #: ayi:146
 msgid "Easy to use, light-weight, on-demand virus scanner for Linux systems"
-msgstr ""
+msgstr "Könnyen használható, könnyűsúlyú víruskereső Linux rendeszerekre"
 
 #: ayi:151
 msgid "GNU Image Manipulation Program"
-msgstr ""
+msgstr "GNU Képmanipulációs Program"
 
 #: ayi:152
 msgid "Multi-platform MPEG, VCD/DVD, and DivX player"
-msgstr ""
+msgstr "Többplatformaos MPEG, VCD/DVD és DivX lejátszó"
 
 #: ayi:153
 msgid "Movie player for the GNOME desktop based on GStreamer"
-msgstr ""
+msgstr "GStreamer alapú film lejátszó a GNOME asztalhoz"
 
 #: ayi:154
 msgid "Modern media player based on the GStreamer framework"
-msgstr ""
+msgstr "GStreamer alapú modern media lejátszó"
 
 #: ayi:155
 msgid "Lightweight, advanced audio player focused on audio quality"
-msgstr ""
+msgstr "Hangminőségre fókuszált, könnyűsúlyú, haladó audio lejátszó"
 
 #: ayi:156
 msgid "A modern music player and library organizer"
-msgstr ""
+msgstr "Modern zenelejátszó és könyvtár rendező"
 
 #: ayi:157
 msgid "Image browser and viewer for the GNOME Desktop"
-msgstr ""
+msgstr "Kép böngésző és nézegető a GNOME asztalhoz"
 
 #: ayi:158
 msgid "A digital photo organizer designed for the GNOME desktop environment"
-msgstr ""
+msgstr "Digitális fénykép rendező a GNOME asztali felülethez"
 
 #: ayi:159
 msgid "Fast and lightweight picture-viewer for Xfce4"
-msgstr ""
+msgstr "Gyors és könnyűsúlyyú képnézegető az Xfce4-hez"
 
 #: ayi:160
 msgid "Lightweight image viewer"
-msgstr ""
+msgstr "Könnyűsúlyú képnézegető"
 
 #: ayi:161
 msgid "A program that lets you manipulate digital audio waveforms"
-msgstr ""
+msgstr "Digitális audió-szerkesztő program"
 
 #: ayi:162
 msgid "A feature-rich screen recorder that supports X11 and OpenGL."
-msgstr ""
+msgstr "Funkciógazdag képernyőfelvevő, ami támogatja az X11-et és az OpenGL-t"
 
 #: ayi:173
 msgid "A set of applications for productivity and creative usage"
@@ -345,123 +345,123 @@ msgstr ""
 
 #: ayi:174
 msgid "Fully-featured word processor"
-msgstr ""
+msgstr "Teljes-funkcionalitású szövegszerkesztő"
 
 #: ayi:175
 msgid "A GNOME Spreadsheet Program"
-msgstr ""
+msgstr "GNOME Táblázatkezelő Program"
 
 #: ayi:176
 msgid "Simple application for modifying PDF written in C Sharp"
-msgstr ""
+msgstr "Egy C#-ban íródott egyszerű alkalmazás a PDF-ek módosítására"
 
 #: ayi:177
 msgid ""
 "Document viewer (PDF, Postscript, djvu, tiff, dvi, XPS, SyncTex support with "
 "gedit"
-msgstr ""
+msgstr "Dokument nézegető (PDF, Postscript, djvu, tiff, dvi, XPS, SyncTex támogatás gedit-tel)"
 
 #: ayi:178
 msgid "Lightweight PDF document viewer"
-msgstr ""
+msgstr "Könnyűsúlyú PDF dokumentum nézegető"
 
 #: ayi:179
 msgid "An e-book reader for Linux"
-msgstr ""
+msgstr "Egy e-book olvasó Linuxra"
 
 #: ayi:180
 msgid "LibreOffice branch which contains new features and program enhancements"
-msgstr ""
+msgstr "LibreOffice új legújabb funckiókkal és javításokkal"
 
 #: ayi:181
 msgid "LibreOffice maintenance branch"
-msgstr ""
+msgstr "LibreOffice stabil verzió"
 
 #: ayi:187
 msgid "Interactive process viewer"
-msgstr ""
+msgstr "Interaktív folyamat figyelő"
 
 #: ayi:188
 msgid "Disk Management Utility for GNOME"
-msgstr ""
+msgstr "Lemezkezelő ezköz a GNOME-hoz"
 
 #: ayi:189
 msgid "A Partition Magic clone, frontend to GNU Parted"
-msgstr ""
+msgstr "Egy Partition Magic klón, grafikus felület a GNU Parted programhoz"
 
 #: ayi:190
 msgid ""
 "Adjusts the color temperature of your screen according to your surroundings."
-msgstr ""
+msgstr "A környezethez igazítja a képernyő színhőmérsékletét"
 
 #: ayi:191
 msgid "Fast and lightweight IDE"
-msgstr ""
+msgstr "Gyors és könnyűsúlyú IDE (fejlesztői környezet)"
 
 #: ayi:192
 msgid "Lightweight GTK+ clipboard manager"
-msgstr ""
+msgstr "Könnyűsúlyú GTK+ vágólap kezelő"
 
 #: ayi:193
 msgid "GTK+ GUI for rsync to synchronize folders, files and make backups"
-msgstr ""
+msgstr "GTK+ grafikus felület az rsync proramhoz a mappák és fájlok szikronizálására, biztonsági mentésére"
 
 #: ayi:194
 msgid "Drop-down terminal for GNOME"
-msgstr ""
+msgstr "Legördülő terminál a GNOME-hoz"
 
 #: ayi:195
 msgid "NTFS filesystem driver and utilities"
-msgstr ""
+msgid "NTFS filesystem driver and utilities"
 
 #: ayi:196
 msgid "Btrfs filesystem utilities"
-msgstr ""
+msgstr "Btrfs fájlrendszer eszközök"
 
 #: ayi:210
 msgid "Fast and light imlib2-based image viewer"
-msgstr ""
+msgstr "Gyors és könnyű imlib2-alapú képnézegető"
 
 #: ayi:211
 msgid ""
 "Vi Improved, a highly configurable, improved version of the vi text editor"
-msgstr ""
+msgstr "Vi Improved, egy testreszabjató, továbbfejlesztett verziója a vi szövegszerkeszőnek"
 
 #: ayi:212
 msgid "Pico editor clone with enhancements"
-msgstr ""
+msgstr "Pico szerkesztő klón javításokkal"
 
 #: ayi:213
 msgid "Wallpaper setting utility for X"
-msgstr ""
+msgstr "Háttérkép beállító eszköz az X környezethez"
 
 #: ayi:214
 msgid "Customizable and lightweight notification-daemon"
-msgstr ""
+msgstr "Testreszabható, könnyűsúlyú értesítési daemon"
 
 #: ayi:215
 msgid "A version of mutt with added features"
-msgstr ""
+msgstr "A mutt egy verziója további funkciókkal"
 
 #: ayi:216
 msgid "Minimalistic document viewer"
-msgstr ""
+msgstr "Minimalista dokumentum nézegető"
 
 #: ayi:217
 msgid "Simple, vim-like file manager"
-msgstr ""
+msgstr "Egyszerű, vim-szerű fájlkezelő"
 
 #: ayi:218
 msgid "A keyboard-driven, vim-like browser based on PyQt5"
-msgstr ""
+msgstr "Billenyűzet-centrikum, vim-szerű, PyQt5-alapú böngésző"
 
 #: ayi:219
 msgid "A simple web browser based on WebKit/GTK+."
-msgstr ""
+msgstr "Egyszerű WebKit/GTK+ alapú böngésző"
 
 #: ayi:220
 msgid "A cross-platform, GPU-accelerated terminal emulator"
-msgstr ""
+msgstr "Kereszplatformos terminál emulátor hardveres gyorsítással"
 
 #: ayi:232
 msgid "Automatic partitioning"
