@@ -1729,6 +1729,7 @@ install_run() {
             arch_chroot "pacman -S --noconfirm --needed lightdm lightdm-gtk-greeter-settings lightdm-gtk-greeter "
             arch_chroot "systemctl enable lightdm.service"
             git clone https://github.com/magyarchlinux/magyarch_xfce4.git 
+            mkdir -p /mnt/usr/share/backgrounds
             cp -rf magyarch_xfce4/usr/share/backgrounds/magyarch/ /mnt/usr/share/backgrounds/
             cp -rf magyarch_xfce4/usr/share/icons/braincolor-green /mnt/usr/share/icons/
             cp -rf magyarch_xfce4/usr/share/themes/MagyArch-dark /mnt/usr/share/themes/
@@ -1740,7 +1741,8 @@ install_run() {
     then
         arch_chroot "pacman -S --noconfirm --needed lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings "
         arch_chroot "systemctl enable lightdm.service"
-        git clone https://github.com/magyarchlinux/magyarch_xfce4.git 
+        git clone https://github.com/magyarchlinux/magyarch_xfce4.git
+        mkdir -p /mnt/usr/share/backgrounds
         cp -rf magyarch_xfce4/usr/share/backgrounds/magyarch/ /mnt/usr/share/backgrounds/
         cp -rf magyarch_xfce4/usr/share/icons/braincolor-green /mnt/usr/share/icons/
         cp -rf magyarch_xfce4/usr/share/themes/MagyArch-dark /mnt/usr/share/themes/
