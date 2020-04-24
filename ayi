@@ -490,8 +490,8 @@ dm_desktop_set() {
         --field="$DMDE001":CB \
         --field="$DMDE002":CB \
         "^lightdm,lxdm,sddm,gdm,${DEFAULT}" \
-        "gnome,gnome gnome-extra,plasma,plasma kde-applications,xfce4,xfce4 xfce4-goodies,lxde,lxqt, \
-mate,mate mate-extra,budgie-desktop,cinnamon,deepin,enlightenment,jwm,bspwm,qtile,i3,xmonad,openbox")"
+        "gnome,plasma,xfce4,xfce4 (MagyArch),lxde,lxqt, \
+mate,budgie-desktop,cinnamon,deepin,jwm,bspwm,bspwm (MagyArch),qtile,i3,xmonad,openbox")"
 
     unset MAIN_LIST
     
@@ -1566,10 +1566,24 @@ install_run() {
     echo "# $INS009"
     if [ "$kern" = "linux" ]
     then
-        pacstrap /mnt base base-devel linux linux-firmware bash bash-completion
+        pacstrap /mnt base base-devel linux linux-firmware git
     elif [ "$kern" = "linux-lts" ]
     then
-        pacstrap /mnt  base base-devel linux-lts linux-firmware bash bash-completion
+        pacstrap /mnt  base base-devel linux-lts linux-firmware git
+    fi
+
+    if [ "$de_set" = "bspwm (MagyArch)" ]
+    then
+        arch_chroot "mkdir -p /mnt/mnt/etc/skel"
+        arch_chroot "git clone https://github.com/bazeeel/baz-bspwm.git /mnt/mnt/etc/skel/"
+        arch_chroot "cp -rfT /mnt/mnt/etc/skel/ /etc/skel/"
+    fi
+
+    if [ "$de_set" = "xfce4 (MagyArch)" ]
+    then
+        # arch_chroot "mkdir -p /mnt/mnt/etc/skel"
+        git clone https://github.com/magyarchlinux/magyarch_xfce4.git 
+        cp -rf magyarch_xfce4/.config/ /mnt/etc/skel/
     fi
 
     echo "30"
@@ -1581,7 +1595,10 @@ install_run() {
     echo "/swapfile     none    swap    defaults    0   0" >> /mnt/etc/fstab
     fi
 
+    cp /etc/pacman.d/mirrorlist /mnt/etc/pacman.d/mirrorlist
     echo "" >> /mnt/etc/pacman.conf;echo "[multilib]" >> /mnt/etc/pacman.conf;echo "Include = /etc/pacman.d/mirrorlist" >> /mnt/etc/pacman.conf
+    echo "" >> /mnt/etc/pacman.conf;echo "[magyarch_repo]" >> /mnt/etc/pacman.conf;echo "SigLevel = Optional TrustedOnly" >> /mnt/etc/pacman.conf;echo 'Server = https://magyarchlinux.github.io/$repo/$arch' >> /mnt/etc/pacman.conf
+
     arch_chroot "pacman -Syy"
 
     echo "# $INS002"
@@ -1629,11 +1646,11 @@ install_run() {
 
     echo "%wheel ALL=(ALL) ALL" >> /mnt/etc/sudoers
 
-    cp /etc/pacman.d/mirrorlist /mnt/etc/pacman.d/mirrorlist
-    arch_chroot "pacman -Syy"
+    # cp /etc/pacman.d/mirrorlist /mnt/etc/pacman.d/mirrorlist
+    # arch_chroot "pacman -Syy"
 
     echo "# $INS005"
-    arch_chroot "pacman -S --noconfirm --needed xorg-server xorg-apps xorg-xinit xorg-twm xterm alsa-utils pulseaudio pulseaudio-alsa xf86-input-synaptics xf86-input-libinput b43-fwcutter networkmanager nm-connection-editor network-manager-applet xdg-user-dirs gvfs gvfs-mtp git"
+    arch_chroot "pacman -S --noconfirm --needed xorg-server xorg-apps xorg-xinit xorg-twm xterm alsa-utils pulseaudio pulseaudio-alsa xf86-input-synaptics xf86-input-libinput b43-fwcutter networkmanager nm-connection-editor network-manager-applet xdg-user-dirs gvfs gvfs-mtp man-db"
 
     # aur_hlp="cd /home/${user_name} ; su ${user_name} -c 'git clone https://aur.archlinux.org/yay-bin' ; cd yay-bin ; su ${user_name} -c 'makepkg' ; pacman -U yay-bin*x86_64* --noconfirm ; cd .. ; rm -rf yay-bin" 
 
@@ -1691,15 +1708,9 @@ install_run() {
         arch_chroot "systemctl enable org.cups.cupsd.service"
     fi
 
-    arch_chroot "pacman -S --noconfirm --needed $de_set "
-
-
     if [ "$dm_set"  = "$DEFAULT" ]
     then
         if [ "$de_set" = "gnome" ]
-        then
-            arch_chroot "systemctl enable gdm.service"
-        elif [ "$de_set" = "gnome gnome-extra" ]
         then
             arch_chroot "systemctl enable gdm.service"
         elif [ "$de_set" = "budgie-desktop" ]
@@ -1714,13 +1725,9 @@ install_run() {
         then
             arch_chroot "pacman -S --noconfirm --needed sddm "
             arch_chroot "systemctl enable sddm.service"
-        elif [ "$de_set" = "plasma kde-applications" ]
-        then
-            arch_chroot "pacman -S --noconfirm --needed sddm "
-            arch_chroot "systemctl enable sddm.service"
-        # else 
-        #     arch_chroot "pacman -S --noconfirm --needed lightdm lightdm-gtk-greeter-settings lightdm-gtk-greeter "
-        #     arch_chroot "systemctl enable lightdm.service"
+        else 
+            arch_chroot "pacman -S --noconfirm --needed lightdm lightdm-gtk-greeter-settings lightdm-gtk-greeter "
+            arch_chroot "systemctl enable lightdm.service"
         fi
     
     elif [ "$dm_set" = "lightdm" ]
@@ -1734,6 +1741,53 @@ install_run() {
 
     arch_chroot "systemctl enable NetworkManager"
 
+
+    
+    if [ "$de_set" = "gnome" ]
+    then
+        arch_chroot "pacman -S --noconfirm --needed gnome gnome-extra "
+    elif [ "$de_set" = "plasma" ]
+    then
+        arch_chroot "pacman -S --noconfirm --needed plasma kde-applications "
+    
+    elif [ "$de_set" = "xfce4" ]
+    then
+        arch_chroot "pacman -S --noconfirm --needed xfce4 xfce4-goodies "
+
+    elif [ "$de_set" = "xfce4 (MagyArch)" ]
+    then
+        arch_chroot "pacman -S --noconfirm --needed xfce4 xfce4-goodies "
+        cp -rf magyarch_xfce4/usr/share/backgrounds/magyarch/ /mnt/usr/share/backgrounds/
+        cp -rf magyarch_xfce4/usr/share/icons/braincolor-green /mnt/usr/share/icons/
+        cp -rf magyarch_xfce4/usr/share/themes/MagyArch-dark /mnt/usr/share/themes/
+        cp -rf magyarch_xfce4/etc/lightdm/lightdm-gtk-greeter.conf /mnt/etc/lightdm/
+        cp -rf magyarch_xfce4/usr/share/themes/MagyArch-braincolor /mnt/usr/share/themes/""
+
+        # arch_chroot "rm -rf /mnt/mnt"
+
+    elif [ "$de_set" = "mate" ]
+    then
+        arch_chroot "pacman -S --noconfirm --needed mate mate-extra "
+
+    elif [ "$de_set" = "bspwm" ]
+    then
+        #ch_chroot "pacman -S --noconfirm --needed  "
+        arch_chroot "pacman -S --noconfirm --needed  bspwm sxhkd xdo rxvt-unicode scrot"
+        arch_chroot "su ${user_name} -c 'mkdir -p /home/$user_name/.config/{bspwm,sxhkd}'"
+        arch_chroot "su ${user_name} -c 'cp /usr/share/doc/bspwm/examples/bspwmrc /home/$user_name/.config/bspwm/'"
+        arch_chroot "su ${user_name} -c 'cp /usr/share/doc/bspwm/examples/sxhkdrc /home/$user_name/.config/sxhkd/'"
+
+    elif [ "$de_set" = "bspwm (MagyArch)" ]
+    then
+        #ch_chroot "pacman -S --noconfirm --needed  "
+        arch_chroot "pacman -S --noconfirm --needed  bspwm sxhkd xdo rxvt-unicode scrot"
+        arch_chroot "pacman -S --noconfirm --needed  picom alsi ttf-jetbrains-mono xorg-server xorg-xwininfo xorg-xinit xorg-xsetroot sxhkd ttf-joypixels ttf-linux-libertine lxappearance xdo vifm feh sublime-text-dev ed tree arandr bc calcurse dmenu2 xorg-xprop dosfstools libnotify dunst exfat-utils sxiv xwallpaper ffmpeg gnome-keyring polkit-gnome neovim spotify discord mpd mpc mpv ncmpcpp networkmanager firefox ttf-font-awesome-4 ttf-bitstream-vera ttf-dejavu ntfs-3g pulseaudio pulseaudio-alsa pulsemixer pulseaudio-equalizer-ladspa imagemagick sutils-git htop-vim-git xtitle-git maim socat unclutter unrar unzip urlscan w3m xcape xclip xdotool xorg-xdpyinfo youtube-dl zathura zathura-pdf-mupdf poppler mediainfo atool fzf highlight rofi xorg-xbacklight task-spooler polybar docx2txt odt2txt urxvt-perls rxvt-unicode pcmanfm"
+        arch_chroot "rm -rf /mnt/mnt"
+        arch_chroot "cd /home/$user_name/; rm -rf -git/ LICENSE README.md git.sh setup-git.sh "
+    else
+        arch_chroot "pacman -S --noconfirm --needed $de_set "
+
+    fi
     
 
     if [ "$shel_l" = "zsh" ]
@@ -1755,13 +1809,13 @@ install_run() {
     arch_chroot "pacman -S --noconfirm --needed $pack_uti"
     arch_chroot "pacman -S --noconfirm --needed $pack_ter"
     
-    if [ "$de_set" = "bspwm" ]
-    then
-        arch_chroot "pacman -S --noconfirm --needed  sxhkd xdo rxvt-unicode dmenu scrot"
-        arch_chroot "su ${user_name} -c 'mkdir -p /home/$user_name/.config/{bspwm,sxhkd}'"
-        arch_chroot "su ${user_name} -c 'cp /usr/share/doc/bspwm/examples/bspwmrc /home/$user_name/.config/bspwm/'"
-        arch_chroot "su ${user_name} -c 'cp /usr/share/doc/bspwm/examples/sxhkdrc /home/$user_name/.config/sxhkd/'"
-    fi
+    # if [ "$de_set" = "bspwm" ]
+    # then
+    #     arch_chroot "pacman -S --noconfirm --needed  sxhkd xdo rxvt-unicode dmenu scrot"
+    #     arch_chroot "su ${user_name} -c 'mkdir -p /home/$user_name/.config/{bspwm,sxhkd}'"
+    #     arch_chroot "su ${user_name} -c 'cp /usr/share/doc/bspwm/examples/bspwmrc /home/$user_name/.config/bspwm/'"
+    #     arch_chroot "su ${user_name} -c 'cp /usr/share/doc/bspwm/examples/sxhkdrc /home/$user_name/.config/sxhkd/'"
+    # fi
 
     echo "80"
 
