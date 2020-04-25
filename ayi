@@ -1879,7 +1879,8 @@ install_run() {
     ) | yad --title="$TITLE" --width=400 --height=250 --progress --auto-close --enable-log --log-expanded --no-buttons
 
     yad --image=info --title="$TITLE" --buttons-layout=center --text="$INS011"
-    reboot
+    # reboot
+    shutdown -r now
 }
 
 # Main
