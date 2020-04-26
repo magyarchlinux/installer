@@ -1771,7 +1771,7 @@ install_run() {
 
     elif [ "$de_set" = "xfce4 (MagyArch)" ]
     then
-        arch_chroot "pacman -S --noconfirm --needed xfce4 xfce4-goodies "
+        arch_chroot "pacman -S --noconfirm --needed xfce4 xfce4-goodies nano discord sublime-text-dev"
         cp -rf magyarch_xfce4/usr/share/backgrounds/magyarch/ /mnt/usr/share/backgrounds/
         cp -rf magyarch_xfce4/usr/share/icons/braincolor-green /mnt/usr/share/icons/
         cp -rf magyarch_xfce4/usr/share/themes/MagyArch-dark /mnt/usr/share/themes/
