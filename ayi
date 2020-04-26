@@ -1679,7 +1679,7 @@ install_run() {
     elif [ "$grc" = "i915" ]
     then
         pacstrap /mnt xf86-video-intel libva-intel-driver lib32-mesa
-        echo "options i915 modeset=1\n" > /mnt/etc/modprobe.d/i915.conf
+        # echo "options i915 modeset=1\n" > /mnt/etc/modprobe.d/i915.conf
 
     elif [ "$grc" = "amdgpu" ]
     then
@@ -1696,7 +1696,7 @@ install_run() {
     elif [ "$grc" = "nouveau" ]
     then
         pacstrap /mnt xf86-video-nouveau mesa lib32-mesa
-        echo "options nouveau modeset=1\n" > /mnt/etc/modprobe.d/blacklist-nvidia.conf
+        # echo "options nouveau modeset=1\n" > /mnt/etc/modprobe.d/blacklist-nvidia.conf
 
     fi
 
