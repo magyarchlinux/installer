@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-12 08:51+0200\n"
+"POT-Creation-Date: 2020-04-26 12:13+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -557,80 +557,85 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: ayi:267
+#: ayi:268
 msgid "No root partition selected!"
 msgstr ""
 
-#: ayi:268
+#: ayi:269
 msgid "No swap partition selected!"
 msgstr ""
 
-#: ayi:269
+#: ayi:270
 msgid ""
 "No boot / efi partition selected!\\nA boot / efi partition is required for "
 "UEFI installation."
 msgstr ""
 
-#: ayi:270
+#: ayi:271
 msgid "You have chosen the same partition multiple times!"
 msgstr ""
 
-#: ayi:273
-msgid "Bootloader"
+#: ayi:272
+#, sh-format
+msgid "Refind cannot be installed in $SYSTEM mode."
 msgstr ""
 
 #: ayi:274
+msgid "Bootloader"
+msgstr ""
+
+#: ayi:275
 msgid "Grub install"
 msgstr ""
 
-#: ayi:276
+#: ayi:277
 msgid "Creating mirror list..."
 msgstr ""
 
-#: ayi:277
+#: ayi:278
 msgid "Making fstab..."
 msgstr ""
 
-#: ayi:278
+#: ayi:279
 msgid "Set the root password..."
 msgstr ""
 
-#: ayi:279
+#: ayi:280
 msgid "Set the user password..."
 msgstr ""
 
-#: ayi:280
+#: ayi:281
 msgid "Set Language..."
 msgstr ""
 
-#: ayi:281
+#: ayi:282
 msgid "Set timezone..."
 msgstr ""
 
-#: ayi:282
+#: ayi:283
 msgid "Install default applications..."
 msgstr ""
 
-#: ayi:283
+#: ayi:284
 msgid "Set video card..."
 msgstr ""
 
-#: ayi:284
+#: ayi:285
 msgid "Create a swap file..."
 msgstr ""
 
-#: ayi:285
+#: ayi:286
 msgid "Other install..."
 msgstr ""
 
-#: ayi:286
+#: ayi:287
 msgid "Install base..."
 msgstr ""
 
-#: ayi:287
+#: ayi:288
 msgid "Installing bootloader..."
 msgstr ""
 
-#: ayi:288
+#: ayi:289
 msgid "Installation is complete!"
 msgstr ""

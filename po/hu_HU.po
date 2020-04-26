@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-12 08:51+0200\n"
-"PO-Revision-Date: 2020-04-20 07:34+0200\n"
+"PO-Revision-Date: 2020-04-26 11:51+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: hu\n"
@@ -536,7 +536,7 @@ msgstr "Csatolási pont (/srv)"
 
 #: ayi:263
 msgid "Mount point (/tmp)"
-msgstr "Csatolási pont (/srv)"
+msgstr "Csatolási pont (/tmp)"
 
 #: ayi:264
 msgid "Mount point (/usr)"

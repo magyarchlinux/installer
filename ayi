@@ -785,7 +785,8 @@ kswp() {
     swap_que=$(echo $swap_query | cut -d "|" -f2)
 
 
-    if [ "$$swap_que" = "$KSWP000" ]
+
+    if [ "$swap_que" = "$KSWP000" ]
     then
         kswpnofile
     elif [ "$swap_que" = "$KSWP001" ]
@@ -992,7 +993,7 @@ kswpnofile() {
     las=$(sudo fdisk -l | grep "$dev" | grep -v Disk | awk '{print $1}' | tr "\n" ",")
     echo $las
 
-    check_kswpnofile $(yad --width=400 --center --title="$TITLE" --text="$KSWP005" \
+    check_kswpnofile $(yad --width=400 --center --title="$TITLE" --text="" \
         --buttons-layout=center --image=preferences \
         --form  --item-separator="," --separator=" " \
         --field="$MNT001":CB \
@@ -1245,7 +1246,7 @@ kswpf() {
     las=$(sudo fdisk -l | grep "$dev" | grep -v Disk | awk '{print $1}' | tr "\n" ",")
     echo $las
 
-    check_kswpf $(yad --width=400 --center --title="$TITLE" --text="$KSWP005" \
+    check_kswpf $(yad --width=400 --center --title="$TITLE" --text="" \
         --buttons-layout=center --image=preferences \
         --form  --item-separator="," --separator=" " \
         --field="$MNT001":CB \
@@ -1457,7 +1458,7 @@ kswpno() {
     las=$(sudo fdisk -l | grep "$dev" | grep -v Disk | awk '{print $1}' | tr "\n" ",")
     echo $las
 
-    check_kswpno $(yad --width=400 --center --title="$TITLE" --text="$KSWP005" \
+    check_kswpno $(yad --width=400 --center --title="$TITLE" --text="" \
         --buttons-layout=center --image=preferences \
         --form  --item-separator="," --separator=" " \
         --field="$MNT001":CB \
@@ -1938,6 +1939,7 @@ main() {
 
 installer_lang
 main
+
 
 
 
