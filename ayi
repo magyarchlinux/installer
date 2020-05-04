@@ -813,16 +813,16 @@ check_kswpnofile() {
     varszamlal=0
     nincsszamlal=0
 
-    root_part=$1
-    boot_part=$2
-    bootefi_part=$3
-    home_part=$4
-    opt_part=$5
-    swap_part=$6
-    srv_part=$7
-    tmp_part=$8
-    usr_part=$9
-    var_part=${10}
+    root_part=$(echo "$1" | cut -d " " -f1)
+    boot_part=$(echo "$2" | cut -d " " -f1)
+    bootefi_part=$(echo "$3" | cut -d " " -f1)
+    home_part=$(echo "$4" | cut -d " " -f1)
+    opt_part=$(echo "$5" | cut -d " " -f1)
+    swap_part=$(echo "$6" | cut -d " " -f1)
+    srv_part=$(echo "$7" | cut -d " " -f1)
+    tmp_part=$(echo "$8" | cut -d " " -f1)
+    usr_part=$(echo "$9" | cut -d " " -f1)
+    var_part=$(echo "${10}" | cut -d " " -f1)
 
     echo "$root_part $boot_part $bootefi_part $home_part $opt_part $swap_part $srv_part $tmp_part $usr_part $var_part"
 
@@ -981,17 +981,18 @@ check_kswpnofile() {
 
 kswpnofile() {
 
-    devices="$(lsblk -lno NAME,TYPE | grep 'disk' | awk '{print "/dev/" $1 " " $2}' | sort -u | sed "s/ disk//g" | awk '{print "false " $0}')"
+    # devices="$(lsblk -lno NAME,TYPE | grep 'disk' | awk '{print "/dev/" $1 " " $2}' | sort -u | sed "s/ disk//g" | awk '{print "false " $0}')"
 
-    device="$(yad  --width=400 --center \
-        --buttons-layout=center --title="$TITLE" --text="$MAIN012" \
-        --no-selection  --image=preferences --radiolist --list \
-        --column="" --column="" $devices)"
-    dev="$(echo "$device" | cut -d "|" -f2)"
-    echo $dev
+    # device="$(yad  --width=400 --center \
+    #     --buttons-layout=center --title="$TITLE" --text="$MAIN012" \
+    #     --no-selection  --image=preferences --radiolist --list \
+    #     --column="" --column="" $devices)"
+    # dev="$(echo "$device" | cut -d "|" -f2)"
+    # echo $dev
 
-    las=$(sudo fdisk -l | grep "$dev" | grep -v Disk | awk '{print $1}' | tr "\n" ",")
-    echo $las
+    # las=$(sudo fdisk -l | grep "$dev" | grep -v Disk | awk '{print $1}' | tr "\n" ",")
+    # echo $las
+    las=$(lsblk -lno NAME,SIZE,FSTYPE,TYPE | grep "part" | awk -F " " '{print "/dev/"$1 " " $2 " " $3}'| tr "\n" ",")
 
     check_kswpnofile $(yad --width=400 --center --title="$TITLE" --text="" \
         --buttons-layout=center --image=preferences \
