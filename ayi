@@ -263,6 +263,7 @@ Partition and format your hard disk, as this is not done by the installer!")
     MNT008=$(GETTEXT "Mount point (/tmp)")
     MNT009=$(GETTEXT "Mount point (/usr)")
     MNT010=$(GETTEXT "Mount point (/var)")
+    MNT011=$(GETTEXT "Mount point (/mnt)")
     NONE=$(GETTEXT "None")
     
     ERROR000=$(GETTEXT "No root partition selected!")
@@ -805,6 +806,7 @@ check_kswpnofile() {
     bootszamlal=0
     bootefiszamlal=0
     homeszamlal=0
+    mntszamlal=0
     optszamlal=0
     swapszamlal=0
     srvszamlal=0
@@ -817,12 +819,13 @@ check_kswpnofile() {
     boot_part=$(echo "$2" | cut -d " " -f1)
     bootefi_part=$(echo "$3" | cut -d " " -f1)
     home_part=$(echo "$4" | cut -d " " -f1)
-    opt_part=$(echo "$5" | cut -d " " -f1)
-    swap_part=$(echo "$6" | cut -d " " -f1)
-    srv_part=$(echo "$7" | cut -d " " -f1)
-    tmp_part=$(echo "$8" | cut -d " " -f1)
-    usr_part=$(echo "$9" | cut -d " " -f1)
-    var_part=$(echo "${10}" | cut -d " " -f1)
+    mnt_part=$(echo "$5" | cut -d " " -f1)
+    opt_part=$(echo "$6" | cut -d " " -f1)
+    swap_part=$(echo "$7" | cut -d " " -f1)
+    srv_part=$(echo "$8" | cut -d " " -f1)
+    tmp_part=$(echo "$9" | cut -d " " -f1)
+    usr_part=$(echo "${10}" | cut -d " " -f1)
+    var_part=$(echo "${11}" | cut -d " " -f1)
 
     echo "$root_part $boot_part $bootefi_part $home_part $opt_part $swap_part $srv_part $tmp_part $usr_part $var_part"
 
@@ -847,7 +850,7 @@ check_kswpnofile() {
     
     # Hányszor szerepel a partíció
     #sas=($root_part $boot_part $bootefi_part $home_part  $opt_part $swap_part $srv_part $tmp_part $usr_part $var_part)
-    for i in { $root_part $boot_part $bootefi_part $home_part  $opt_part $swap_part $srv_part $tmp_part $usr_part $var_part }
+    for i in { $root_part $boot_part $bootefi_part $home_part $mnt_part $opt_part $swap_part $srv_part $tmp_part $usr_part $var_part }
     do
         if [ "$i" = "$root_part" ]
         then
@@ -867,6 +870,11 @@ check_kswpnofile() {
         if [ "$i" = "$home_part" -a "$i" != "${NONE}" ]
         then
             ((homeszamlal++))
+        fi
+
+        if [ "$i" = "$mnt_part" -a "$i" != "${NONE}" ]
+        then
+            ((mntszamlal++))
         fi
 
         if [ "$i" = "$opt_part" -a "$i" != "${NONE}" ]
@@ -910,7 +918,7 @@ check_kswpnofile() {
 
     # Check double selection
     if [ "$rootszamlal" -gt "1" -o "$bootszamlal" -gt "1" -o \
-        "$bootefiszamlal" -gt "1" -o "$homeszamlal" -gt "1" -o \
+        "$bootefiszamlal" -gt "1" -o "$homeszamlal" -gt "1"  -o "$mntszamlal" -gt "1" -o \
         "$optszamlal" -gt "1" -o "$swapszamlal" -gt "1" -o \
         "$srvszamlal" -gt "1" -o "$tmpszamlal" -gt "1" -o \
         "$usrszamlal" -gt "1" -o "$varszamlal" -gt "1" ]
@@ -945,6 +953,12 @@ check_kswpnofile() {
     then
         mkdir /mnt/home
         mount "$home_part" /mnt/home
+    fi
+
+    if [ "$mnt_part" != "$NONE" ]
+    then
+        mkdir -p /mnt/mnt/disk
+        mount "$mnt_part" /mnt/mnt/disk
     fi
 
     if [ "$opt_part" != "$NONE" ]
@@ -1001,6 +1015,7 @@ kswpnofile() {
         --field="$MNT002":CB \
         --field="$MNT003":CB \
         --field="$MNT004":CB \
+        --field="$MNT011":CB \
         --field="$MNT005":CB \
         --field="$MNT006":CB \
         --field="$MNT007":CB \
@@ -1010,7 +1025,7 @@ kswpnofile() {
         "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" \
         "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" \
         "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" \
-        "^${NONE},${las:0:-1}")
+        "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}")
 }
 
 
@@ -1021,6 +1036,7 @@ check_kswpf() {
     bootszamlal=0
     bootefiszamlal=0
     homeszamlal=0
+    mntszamlal=0
     optszamlal=0
     # swapszamlal=0
     srvszamlal=0
@@ -1033,12 +1049,13 @@ check_kswpf() {
     boot_part=$(echo "$2" | cut -d " " -f1)
     bootefi_part=$(echo "$3" | cut -d " " -f1)
     home_part=$(echo "$4" | cut -d " " -f1)
-    opt_part=$(echo "$5" | cut -d " " -f1)
+    mnt_part=$(echo "$5" | cut -d " " -f1)
+    opt_part=$(echo "$6" | cut -d " " -f1)
     # swap_part=$(echo "$6" | cut -d " " -f1)
-    srv_part=$(echo "$6" | cut -d " " -f1)
-    tmp_part=$(echo "$7" | cut -d " " -f1)
-    usr_part=$(echo "$8" | cut -d " " -f1)
-    var_part=$(echo "$9" | cut -d " " -f1)
+    srv_part=$(echo "$7" | cut -d " " -f1)
+    tmp_part=$(echo "$8" | cut -d " " -f1)
+    usr_part=$(echo "$9" | cut -d " " -f1)
+    var_part=$(echo "${10}" | cut -d " " -f1)
 
     echo "$root_part $boot_part $bootefi_part $home_part $opt_part $srv_part $tmp_part $usr_part $var_part"
 
@@ -1063,7 +1080,7 @@ check_kswpf() {
     
     # Hányszor szerepel a partíció
     #sas=($root_part $boot_part $bootefi_part $home_part  $opt_part $swap_part $srv_part $tmp_part $usr_part $var_part)
-    for i in { $root_part $boot_part $bootefi_part $home_part  $opt_part $srv_part $tmp_part $usr_part $var_part }
+    for i in { $root_part $boot_part $bootefi_part $home_part $mnt_part $opt_part $srv_part $tmp_part $usr_part $var_part }
     do
         if [ "$i" = "$root_part" ]
         then
@@ -1083,6 +1100,11 @@ check_kswpf() {
         if [ "$i" = "$home_part" -a "$i" != "${NONE}" ]
         then
             ((homeszamlal++))
+        fi
+
+        if [ "$i" = "$mnt_part" -a "$i" != "${NONE}" ]
+        then
+            ((mntszamlal++))
         fi
 
         if [ "$i" = "$opt_part" -a "$i" != "${NONE}" ]
@@ -1127,7 +1149,7 @@ check_kswpf() {
     # Check double selection
     if [ "$rootszamlal" -gt "1" -o "$bootszamlal" -gt "1" -o \
         "$bootefiszamlal" -gt "1" -o "$homeszamlal" -gt "1" -o \
-        "$optszamlal" -gt "1" -o \
+        "$mntszamlal" -gt "1" -o "$optszamlal" -gt "1" -o \
         "$srvszamlal" -gt "1" -o "$tmpszamlal" -gt "1" -o \
         "$usrszamlal" -gt "1" -o "$varszamlal" -gt "1" ]
         then 
@@ -1170,6 +1192,12 @@ check_kswpf() {
     then
         mkdir /mnt/home
         mount "$home_part" /mnt/home
+    fi
+
+    if [ "$mnt_part" != "$NONE" ]
+    then
+        mkdir -p /mnt/mnt/disk
+        mount "$home_part" /mnt/mnt/disk
     fi
 
     if [ "$opt_part" != "$NONE" ]
@@ -1255,6 +1283,7 @@ kswpf() {
         --field="$MNT002":CB \
         --field="$MNT003":CB \
         --field="$MNT004":CB \
+        --field="$MNT011":CB \
         --field="$MNT005":CB \
         --field="$MNT007":CB \
         --field="$MNT008":CB \
@@ -1262,7 +1291,8 @@ kswpf() {
         --field="$MNT010":CB \
         "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" \
         "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" \
-        "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}")
+        "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" \
+        "^${NONE},${las:0:-1}")
 }
 
 
@@ -1273,6 +1303,7 @@ check_kswpno() {
     bootszamlal=0
     bootefiszamlal=0
     homeszamlal=0
+    mntszamlal=0
     optszamlal=0
     # swapszamlal=0
     srvszamlal=0
@@ -1285,12 +1316,13 @@ check_kswpno() {
     boot_part=$(echo "$2" | cut -d " " -f1)
     bootefi_part=$(echo "$3" | cut -d " " -f1)
     home_part=$(echo "$4" | cut -d " " -f1)
-    opt_part=$(echo "$5" | cut -d " " -f1)
+    mnt_part=$(echo "$5" | cut -d " " -f1)
+    opt_part=$(echo "$6" | cut -d " " -f1)
     # swap_part=$(echo "$6" | cut -d " " -f1)
-    srv_part=$(echo "$6" | cut -d " " -f1)
-    tmp_part=$(echo "$7" | cut -d " " -f1)
-    usr_part=$(echo "$8" | cut -d " " -f1)
-    var_part=$(echo "$9" | cut -d " " -f1)
+    srv_part=$(echo "$7" | cut -d " " -f1)
+    tmp_part=$(echo "$8" | cut -d " " -f1)
+    usr_part=$(echo "$9" | cut -d " " -f1)
+    var_part=$(echo "${10}" | cut -d " " -f1)
 
     echo "$root_part $boot_part $bootefi_part $home_part $opt_part $srv_part $tmp_part $usr_part $var_part"
 
@@ -1315,7 +1347,7 @@ check_kswpno() {
     
     # Hányszor szerepel a partíció
     #sas=($root_part $boot_part $bootefi_part $home_part  $opt_part $swap_part $srv_part $tmp_part $usr_part $var_part)
-    for i in { $root_part $boot_part $bootefi_part $home_part  $opt_part $srv_part $tmp_part $usr_part $var_part }
+    for i in { $root_part $boot_part $bootefi_part $home_part $mnt_part $opt_part $srv_part $tmp_part $usr_part $var_part }
     do
         if [ "$i" = "$root_part" ]
         then
@@ -1335,6 +1367,11 @@ check_kswpno() {
         if [ "$i" = "$home_part" -a "$i" != "${NONE}" ]
         then
             ((homeszamlal++))
+        fi
+
+        if [ "$i" = "$mnt_part" -a "$i" != "${NONE}" ]
+        then
+            ((mntszamlal++))
         fi
 
         if [ "$i" = "$opt_part" -a "$i" != "${NONE}" ]
@@ -1379,7 +1416,7 @@ check_kswpno() {
     # Check double selection
     if [ "$rootszamlal" -gt "1" -o "$bootszamlal" -gt "1" -o \
         "$bootefiszamlal" -gt "1" -o "$homeszamlal" -gt "1" -o \
-        "$optszamlal" -gt "1" -o \
+        "$mntszamlal" -gt "1" -o "$optszamlal" -gt "1" -o \
         "$srvszamlal" -gt "1" -o "$tmpszamlal" -gt "1" -o \
         "$usrszamlal" -gt "1" -o "$varszamlal" -gt "1" ]
         then 
@@ -1413,6 +1450,12 @@ check_kswpno() {
     then
         mkdir /mnt/home
         mount "$home_part" /mnt/home
+    fi
+
+    if [ "$mnt_part" != "$NONE" ]
+    then
+        mkdir -p /mnt/mnt/disk
+        mount "$home_part" /mnt/mnt/disk
     fi
 
     if [ "$opt_part" != "$NONE" ]
@@ -1468,6 +1511,7 @@ kswpno() {
         --field="$MNT002":CB \
         --field="$MNT003":CB \
         --field="$MNT004":CB \
+        --field="$MNT011":CB \
         --field="$MNT005":CB \
         --field="$MNT007":CB \
         --field="$MNT008":CB \
@@ -1475,7 +1519,8 @@ kswpno() {
         --field="$MNT010":CB \
         "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" \
         "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" \
-        "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}")
+        "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" \
+        "^${NONE},${las:0:-1}")
 }
 
 partition_set() {
@@ -1851,7 +1896,7 @@ install_run() {
 
             pacstrap /mnt grub efibootmgr
             #arch_chroot "os-prober"
-            arch_chroot "grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=magyarcslinux1 --recheck"
+            arch_chroot "grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=magyarchlinux1 --recheck"
             arch_chroot "grub-mkconfig -o /boot/grub/grub.cfg"
         fi
 
@@ -1865,9 +1910,9 @@ install_run() {
             # arch_chroot "grub-mkconfig -o /boot/grub/grub.cfg"
             rootuuid=$(lsblk -lno UUID ${root_part})
             arch_chroot "refind-install"
-            echo "\"Arch Linux\" \"root=UUID=${rootuuid} rw add_efi_memmap\"" > /mnt/boot/refind_linux.conf
-            echo "\"Arch Linux Fallback\" \"root=UUID=${rootuuid} rw add_efi_memmap initrd=/initramfs-linux-fallback.img\"" >> /mnt/boot/refind_linux.conf
-            echo "\"Arch Linux Terminal\" \"root=UUID=${rootuuid} rw add_efi_memmap systemd.unit=multi-user.target\"" >> /mnt/boot/refind_linux.conf
+            echo "\"MagyArch Linux\" \"root=UUID=${rootuuid} rw add_efi_memmap\"" > /mnt/boot/refind_linux.conf
+            echo "\"MagyArch Linux Fallback\" \"root=UUID=${rootuuid} rw add_efi_memmap initrd=/initramfs-linux-fallback.img\"" >> /mnt/boot/refind_linux.conf
+            echo "\"MagyArch Linux Terminal\" \"root=UUID=${rootuuid} rw add_efi_memmap systemd.unit=multi-user.target\"" >> /mnt/boot/refind_linux.conf
 
         fi
     fi
