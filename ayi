@@ -1240,7 +1240,7 @@ kswpfsize() {
     swapsize=$(yad --width=400 --center --title="$TITLE" --text="$KSWP004" \
         --buttons-layout=center --image=preferences \
         --form  --item-separator="," --separator=" " \
-        --field="$MNT001":CB \
+        --field="$KSWP001":CB \
         "1024,2046,3072,4096")
     swaps=$(echo $swapsize | cut -d "|" -f2)
         
