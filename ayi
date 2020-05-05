@@ -491,8 +491,8 @@ dm_desktop_set() {
         --field="$DMDE001":CB \
         --field="$DMDE002":CB \
         "^lightdm,lxdm,sddm,gdm,${DEFAULT}" \
-        "gnome,plasma,xfce4,xfce4 (MagyArch),lxde,lxqt, \
-mate,budgie-desktop,cinnamon,deepin,jwm,bspwm,bspwm (MagyArch),qtile,i3,xmonad,openbox")"
+        "bspwm (MagyArch),i3 (MagyArch),xfce4,xfce4 (MagyArch),gnome,plasma,lxde,lxqt, \
+mate,budgie-desktop,cinnamon,deepin,jwm,bspwm,qtile,i3,xmonad,openbox")"
 
     unset MAIN_LIST
     
@@ -1628,6 +1628,13 @@ install_run() {
         arch_chroot "cp -rfT /mnt/mnt/etc/skel/ /etc/skel/"
     fi
 
+    if [ "$de_set" = "i3 (MagyArch)" ]
+    then
+        arch_chroot "mkdir -p /mnt/mnt/etc/skel"
+        arch_chroot "git clone https://github.com/bazeeel/magyarch-i3.git /mnt/mnt/etc/skel/"
+        arch_chroot "cp -rfT /mnt/mnt/etc/skel/ /etc/skel/"
+    fi
+
     if [ "$de_set" = "xfce4 (MagyArch)" ]
     then
         # arch_chroot "mkdir -p /mnt/mnt/etc/skel"
@@ -1699,7 +1706,7 @@ install_run() {
     # arch_chroot "pacman -Syy"
 
     echo "# $INS005"
-    arch_chroot "pacman -S --noconfirm --needed xorg-server xorg-apps xorg-xinit xorg-twm xterm alsa-utils pulseaudio pulseaudio-alsa xf86-input-synaptics xf86-input-libinput b43-fwcutter networkmanager nm-connection-editor network-manager-applet xdg-user-dirs xdg-utils ddrescue gvfs gvfs-mtp man-db"
+    arch_chroot "pacman -S --noconfirm --needed xorg-server xorg-apps xorg-xinit xorg-twm xterm alsa-utils pulseaudio pulseaudio-alsa xf86-input-synaptics xf86-input-libinput b43-fwcutter networkmanager nm-connection-editor network-manager-applet xdg-user-dirs xdg-utils ddrescue gvfs gvfs-mtp man-db neofetch"
 
     # aur_hlp="cd /home/${user_name} ; su ${user_name} -c 'git clone https://aur.archlinux.org/yay-bin' ; cd yay-bin ; su ${user_name} -c 'makepkg' ; pacman -U yay-bin*x86_64* --noconfirm ; cd .. ; rm -rf yay-bin" 
 
@@ -1846,7 +1853,14 @@ install_run() {
         arch_chroot "pacman -S --noconfirm --needed  bspwm sxhkd xdo rxvt-unicode scrot"
         arch_chroot "pacman -S --noconfirm --needed  picom neofetch ttf-jetbrains-mono xorg-server xorg-xwininfo xorg-xinit xorg-xsetroot sxhkd ttf-joypixels ttf-linux-libertine lxappearance xdo vifm feh sublime-text-dev ed tree arandr bc calcurse dmenu2 xorg-xprop dosfstools libnotify dunst exfat-utils sxiv xwallpaper ffmpeg gnome-keyring polkit-gnome neovim spotify discord mpd mpc mpv ncmpcpp networkmanager firefox ttf-font-awesome-4 ttf-bitstream-vera ttf-dejavu ntfs-3g pavucontrol pulseaudio pulseaudio-alsa pulsemixer pulseaudio-equalizer-ladspa imagemagick sutils-git htop-vim-git xtitle-git maim socat unclutter unrar unzip urlscan w3m xcape xclip xdotool xorg-xdpyinfo youtube-dl zathura zathura-pdf-mupdf poppler mediainfo atool fzf highlight rofi xorg-xbacklight task-spooler polybar docx2txt odt2txt urxvt-perls rxvt-unicode pcmanfm"
         arch_chroot "rm -rf /mnt/mnt"
-        arch_chroot "cd /home/$user_name/; rm -rf -git/ LICENSE README.md git.sh setup-git.sh "
+        arch_chroot "cd /home/$user_name/; rm -rf .git/ LICENSE README.md git.sh setup-git.sh "
+
+    elif [ "$de_set" = "i3 (MagyArch)" ]
+    then
+        #ch_chroot "pacman -S --noconfirm --needed  "
+        arch_chroot "pacman -S --noconfirm --needed  i3-gaps i3blocks pavucontrol picom neofetch ttf-jetbrains-mono xorg-server xorg-xwininfo xorg-xinit xorg-xsetroot ttf-joypixels ttf-linux-libertine lxappearance xdo vifm feh sublime-text-dev ed tree calcurse dmenu xorg-xprop dosfstools libnotify dunst exfat-utils xwallpaper ffmpeg gnome-keyring polkit-gnome neovim spotify discord mpd mpc mpv ncmpcpp networkmanager firefox ttf-font-awesome-4 ttf-bitstream-vera ttf-dejavu ntfs-3g pulseaudio pulseaudio-alsa pulsemixer pulseaudio-equalizer-ladspa imagemagick htop-vim-git maim socat unclutter unrar unzip urlscan w3m xcape xclip xdotool xorg-xdpyinfo youtube-dl zathura zathura-pdf-mupdf poppler mediainfo fzf highlight rofi xorg-xbacklight "
+        arch_chroot "rm -rf /mnt/mnt"
+        arch_chroot "cd /home/$user_name/; rm -rf .git/ LICENSE README.md git.sh setup-git.sh "
     else
         arch_chroot "pacman -S --noconfirm --needed $de_set "
 
@@ -1860,7 +1874,7 @@ install_run() {
     then
         arch_chroot "sudo pacman -S --noconfirm $shel_l;chsh -s /usr/bin/$shel_l"
     else 
-        arch_chroot "pacman -S --noconfirm --needed $shel_l;chsh -s /usr/bin/$shel_l" 
+        arch_chroot "pacman -S --noconfirm --needed $shel_l bash-completion;chsh -s /usr/bin/$shel_l" 
     fi
 
     echo "# $INS008"
