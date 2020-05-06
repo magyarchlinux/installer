@@ -1829,9 +1829,10 @@ install_run() {
         arch_chroot "pacman -S --noconfirm --needed xfce4 xfce4-goodies nano discord sublime-text-dev"
         cp -rf magyarch_xfce4/usr/share/backgrounds/magyarch/ /mnt/usr/share/backgrounds/
         cp -rf magyarch_xfce4/usr/share/icons/braincolor-green /mnt/usr/share/icons/
+        cp -rf magyarch_xfce4/usr/share/icons/magyarchfinal_32_pix.png /mnt/usr/share/icons/
         cp -rf magyarch_xfce4/usr/share/themes/MagyArch-dark /mnt/usr/share/themes/
         cp -rf magyarch_xfce4/etc/lightdm/lightdm-gtk-greeter.conf /mnt/etc/lightdm/
-        cp -rf magyarch_xfce4/usr/share/themes/MagyArch-braincolor /mnt/usr/share/themes/""
+        # cp -rf magyarch_xfce4/usr/share/themes/MagyArch-braincolor /mnt/usr/share/themes/""
 
         # arch_chroot "rm -rf /mnt/mnt"
 
