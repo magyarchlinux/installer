@@ -1864,7 +1864,7 @@ install_run() {
         arch_chroot "cd /home/$user_name/; rm -rf .git/ LICENSE README.md git.sh setup-git.sh "
     elif [ "$de_set" = "spectrwm" ]
     then
-        arch_chroot "pacman -S --noconfirm --needed spectrwm scrot xlockmore"
+        arch_chroot "pacman -S --noconfirm --needed spectrwm scrot xlockmore terminus-font"
         echo "bar_font = Terminus:pixelsize=14:antialias=true" >> /mnt/etc/spectrwm.conf
     
     else
