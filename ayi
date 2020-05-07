@@ -492,7 +492,7 @@ dm_desktop_set() {
         --field="$DMDE002":CB \
         "^lightdm,lxdm,sddm,gdm,${DEFAULT}" \
         "bspwm (MagyArch),i3 (MagyArch),xfce4 (MagyArch),xfce4,gnome,plasma,lxde,lxqt, \
-mate,budgie-desktop,cinnamon,deepin,jwm,bspwm,qtile,i3,xmonad,openbox")"
+mate,budgie-desktop,cinnamon,deepin,jwm,bspwm,qtile,i3,spectrwm,xmonad,openbox")"
 
     unset MAIN_LIST
     
