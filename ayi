@@ -1862,6 +1862,11 @@ install_run() {
         arch_chroot "pacman -S --noconfirm --needed  i3-gaps i3blocks pavucontrol picom neofetch ttf-jetbrains-mono xorg-server xorg-xwininfo xorg-xinit xorg-xsetroot ttf-joypixels ttf-linux-libertine lxappearance xdo vifm feh sublime-text-dev ed tree calcurse dmenu xorg-xprop dosfstools libnotify dunst exfat-utils xwallpaper ffmpeg gnome-keyring polkit-gnome neovim spotify discord mpd mpc mpv ncmpcpp networkmanager firefox ttf-font-awesome-4 ttf-bitstream-vera ttf-dejavu ntfs-3g pulseaudio pulseaudio-alsa pulsemixer pulseaudio-equalizer-ladspa imagemagick htop-vim-git maim socat unclutter unrar unzip urlscan w3m xcape xclip xdotool xorg-xdpyinfo youtube-dl zathura zathura-pdf-mupdf poppler mediainfo fzf highlight rofi xorg-xbacklight rxvt-unicode urxvt-perls scrot pcmanfm"
         arch_chroot "rm -rf /mnt/mnt"
         arch_chroot "cd /home/$user_name/; rm -rf .git/ LICENSE README.md git.sh setup-git.sh "
+    elif [ "$de_set" = "spectrwm" ]
+    then
+        arch_chroot "pacman -S --noconfirm --needed spectrwm scrot xlockmore"
+        echo "bar_font = Terminus:pixelsize=14:antialias=true" >> /mnt/etc/spectrwm.conf
+    
     else
         arch_chroot "pacman -S --noconfirm --needed $de_set "
 
