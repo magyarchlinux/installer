@@ -1891,6 +1891,9 @@ install_run() {
     arch_chroot "pacman -S --noconfirm --needed $pack_ofi"
     arch_chroot "pacman -S --noconfirm --needed $pack_uti"
     arch_chroot "pacman -S --noconfirm --needed $pack_ter"
+
+    # Set makepkg.conf
+    sed -i 's/#MAKEFLAGS="-j[0-9]"/MAKEFLAGS="-j'$(nproc)'"/;s/COMPRESSXZ=(xz -c -z -)/COMPRESSXZ=(xz -c -T '$(nproc)' -z -)/' /mnt/etc/makepkg.conf
     
     # if [ "$de_set" = "bspwm" ]
     # then
