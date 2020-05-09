@@ -14,6 +14,8 @@ alias EGETTEXT='eval_gettext'
 [ -d "/sys/firmware/efi/" ] && SYSTEM="UEFI" || SYSTEM="BIOS"
 DETECT_CARD="$(lspci -nn | grep "$(lspci -n | awk -F " " '{print $2 $3}' | grep ^"03" | awk -F ":" '{print $2":"$3}')" | awk -F ": " '{print $2}' | cut -d "[" -f1)"
 
+OLDIFS=$IFS
+
 declare -a MAIN_LIST
 declare -a OTHER_LIST
 declare -a KSWP_LIST
@@ -800,6 +802,9 @@ kswp() {
 
 
 check_kswpnofile() {
+
+    IFS=";"
+
     echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10}
 
     rootszamlal=0
@@ -989,7 +994,9 @@ check_kswpnofile() {
     then
         mkdir /mnt/var
         mount "$var_part" /mnt/var
-    fi    
+    fi
+    IFS=$OLDIFS
+
 }
 
 
@@ -1006,11 +1013,11 @@ kswpnofile() {
 
     # las=$(sudo fdisk -l | grep "$dev" | grep -v Disk | awk '{print $1}' | tr "\n" ",")
     # echo $las
-    las=$(lsblk -lno NAME,SIZE,FSTYPE,TYPE | grep "part" | awk -F " " '{print "/dev/"$1 " " $2 " " $3}'| tr "\n" ",")
+    las=$(lsblk -lno NAME,SIZE,FSTYPE,TYPE | grep "part" | awk -F " " '{print "/dev/"$1 " " $2 " " $3}'| tr "\n" ";")
 
-    check_kswpnofile $(yad --width=400 --center --title="$TITLE" --text="" \
+    selpart2=$(yad --width=400 --center --title="$TITLE" --text="" \
         --buttons-layout=center --image=preferences \
-        --form  --item-separator="," --separator=" " \
+        --form  --item-separator=";" --separator=";" \
         --field="$MNT001":CB \
         --field="$MNT002":CB \
         --field="$MNT003":CB \
@@ -1022,15 +1029,23 @@ kswpnofile() {
         --field="$MNT008":CB \
         --field="$MNT009":CB \
         --field="$MNT010":CB \
-        "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" \
-        "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" \
-        "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" \
-        "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}")
+        "^${NONE};${las:0:-1}" "^${NONE};${las:0:-1}" "^${NONE};${las:0:-1}" \
+        "^${NONE};${las:0:-1}" "^${NONE};${las:0:-1}" "^${NONE};${las:0:-1}" \
+        "^${NONE};${las:0:-1}" "^${NONE};${las:0:-1}" "^${NONE};${las:0:-1}" \
+        "^${NONE};${las:0:-1}" "^${NONE};${las:0:-1}")
+
+    IFS=";"
+    check_kswpnofile $selpart2
 }
 
 
 check_kswpf() {
-    echo $1 $2 $3 $4 $5 $6 $7 $8 $9
+
+    IFS=";"
+    echo "ebyes"
+    echo $1
+    echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10}
+    echo $1
 
     rootszamlal=0
     bootszamlal=0
@@ -1045,19 +1060,23 @@ check_kswpf() {
     varszamlal=0
     nincsszamlal=0
 
-    root_part=$(echo "$1" | cut -d " " -f1)
-    boot_part=$(echo "$2" | cut -d " " -f1)
-    bootefi_part=$(echo "$3" | cut -d " " -f1)
-    home_part=$(echo "$4" | cut -d " " -f1)
-    mnt_part=$(echo "$5" | cut -d " " -f1)
-    opt_part=$(echo "$6" | cut -d " " -f1)
+    root_part=$(echo $1 | cut -d " " -f1)
+    boot_part=$(echo $2 | cut -d " " -f1)
+    bootefi_part=$(echo $3 | cut -d " " -f1)
+    home_part=$(echo $4 | cut -d " " -f1)
+    mnt_part=$(echo $5 | cut -d " " -f1)
+    opt_part=$(echo $6 | cut -d " " -f1)
     # swap_part=$(echo "$6" | cut -d " " -f1)
-    srv_part=$(echo "$7" | cut -d " " -f1)
-    tmp_part=$(echo "$8" | cut -d " " -f1)
-    usr_part=$(echo "$9" | cut -d " " -f1)
-    var_part=$(echo "${10}" | cut -d " " -f1)
+    srv_part=$(echo $7 | cut -d " " -f1)
+    tmp_part=$(echo $8 | cut -d " " -f1)
+    usr_part=$(echo $9 | cut -d " " -f1)
+    var_part=$(echo ${10} | cut -d " " -f1)
 
-    echo "$root_part $boot_part $bootefi_part $home_part $opt_part $srv_part $tmp_part $usr_part $var_part"
+    echo "ez a 2"
+    echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10}
+    echo $root_part 
+    echo $boot_part 
+    echo -e "$bootefi_part $home_part $mnt_part $opt_part $srv_part $tmp_part $usr_part $var_part"
 
     # Root csatolás nem lehet üres...
     if [ "$root_part" = "${NONE}" ]
@@ -1230,6 +1249,8 @@ check_kswpf() {
         mount "$var_part" /mnt/var
     fi
 
+    IFS=$OLDIFS
+
     kswpfsize
 }
 
@@ -1274,11 +1295,12 @@ kswpf() {
 
     # las=$(sudo fdisk -l | grep "$dev" | grep -v Disk | awk '{print $1}' | tr "\n" ",")
     # echo $las
-    las=$(lsblk -lno NAME,SIZE,FSTYPE,TYPE | grep "part" | awk -F " " '{print "/dev/"$1 " " $2 " " $3}'| tr "\n" ",")
+    las=$(lsblk -lno NAME,SIZE,FSTYPE,TYPE | grep "part" | awk -F " " '{print "/dev/"$1 " " $2 " " $3}'| tr "\n" ";")
 
-    check_kswpf $(yad --width=400 --center --title="$TITLE" --text="" \
+    # IFS=";"
+    selpart=$(yad --width=400 --center --title="$TITLE" --text="" \
         --buttons-layout=center --image=preferences \
-        --form  --item-separator="," --separator=" " \
+        --form  --item-separator=";" --separator=";" \
         --field="$MNT001":CB \
         --field="$MNT002":CB \
         --field="$MNT003":CB \
@@ -1289,14 +1311,21 @@ kswpf() {
         --field="$MNT008":CB \
         --field="$MNT009":CB \
         --field="$MNT010":CB \
-        "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" \
-        "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" \
-        "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" \
-        "^${NONE},${las:0:-1}")
+        "^${NONE};${las:0:-1}" "^${NONE};${las:0:-1}" "^${NONE};${las:0:-1}" \
+        "^${NONE};${las:0:-1}" "^${NONE};${las:0:-1}" "^${NONE};${las:0:-1}" \
+        "^${NONE};${las:0:-1}" "^${NONE};${las:0:-1}" "^${NONE};${las:0:-1}" \
+        "^${NONE};${las:0:-1}")
+
+    IFS=";"
+    check_kswpf $selpart
+
+     
 }
 
 
 check_kswpno() {
+
+    IFS=";"
     echo $1 $2 $3 $4 $5 $6 $7 $8 $9
 
     rootszamlal=0
@@ -1487,6 +1516,8 @@ check_kswpno() {
         mkdir /mnt/var
         mount "$var_part" /mnt/var
     fi
+
+    IFS=$OLDIFS
 }
 
 kswpno() {
@@ -1502,11 +1533,11 @@ kswpno() {
 
     # las=$(sudo fdisk -l | grep "$dev" | grep -v Disk | awk '{print $1}' | tr "\n" ",")
     # echo $las
-    las=$(lsblk -lno NAME,SIZE,FSTYPE,TYPE | grep "part" | awk -F " " '{print "/dev/"$1 " " $2 " " $3}'| tr "\n" ",")
+    las=$(lsblk -lno NAME,SIZE,FSTYPE,TYPE | grep "part" | awk -F " " '{print "/dev/"$1 " " $2 " " $3}'| tr "\n" ";")
 
-    check_kswpno $(yad --width=400 --center --title="$TITLE" --text="" \
+    selpart1=$(yad --width=400 --center --title="$TITLE" --text="" \
         --buttons-layout=center --image=preferences \
-        --form  --item-separator="," --separator=" " \
+        --form  --item-separator=";" --separator=";" \
         --field="$MNT001":CB \
         --field="$MNT002":CB \
         --field="$MNT003":CB \
@@ -1517,10 +1548,14 @@ kswpno() {
         --field="$MNT008":CB \
         --field="$MNT009":CB \
         --field="$MNT010":CB \
-        "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" \
-        "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" \
-        "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" "^${NONE},${las:0:-1}" \
-        "^${NONE},${las:0:-1}")
+        "^${NONE};${las:0:-1}" "^${NONE};${las:0:-1}" "^${NONE};${las:0:-1}" \
+        "^${NONE};${las:0:-1}" "^${NONE};${las:0:-1}" "^${NONE};${las:0:-1}" \
+        "^${NONE};${las:0:-1}" "^${NONE};${las:0:-1}" "^${NONE};${las:0:-1}" \
+        "^${NONE};${las:0:-1}")
+
+    IFS=";"
+    check_kswpno $selpart1
+
 }
 
 partition_set() {
@@ -2017,7 +2052,8 @@ main() {
 
 
 installer_lang
-main
+
+ main
 
 
 
