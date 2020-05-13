@@ -30,7 +30,7 @@ msgstr "Telepítő nyelve"
 
 #: ayi:46 ayi:72
 msgid "Keyboard settings"
-msgstr "Billentyűzet beállítás"
+msgstr "Billentyűzet beállítása"
 
 #: ayi:47 ayi:86
 msgid "Language"
@@ -62,7 +62,7 @@ msgstr "Gépnév beállítása"
 
 #: ayi:75
 msgid "Username, password and root password settings"
-msgstr "Felhasználónév jelszó, és root jelszó beállítás"
+msgstr "Felhasználónév jelszó, és root jelszó beállítása"
 
 #: ayi:76
 msgid "Kernel, shell and printer settings"
@@ -86,7 +86,7 @@ msgstr "Rendszerbetöltő beállítása"
 
 #: ayi:81
 msgid "Partition settings"
-msgstr "Partíciók beállítás"
+msgstr "Partíciók beállítása"
 
 #: ayi:82
 msgid "Install"
