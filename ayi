@@ -10,6 +10,7 @@ export TEXTDOMAIN=ayi
 alias GETTEXT='gettext'
 alias EGETTEXT='eval_gettext'
 
+echo "START LOG"
 # System check.
 [ -d "/sys/firmware/efi/" ] && SYSTEM="UEFI" || SYSTEM="BIOS"
 DETECT_CARD="$(lspci -nn | grep "$(lspci -n | awk -F " " '{print $2 $3}' | grep ^"03" | awk -F ":" '{print $2":"$3}')" | awk -F ": " '{print $2}' | cut -d "[" -f1)"
@@ -39,8 +40,11 @@ Parted() {
     parted --script "$dev" "$1"
 }
 
+# Set installer language
 
 installer_lang() {
+
+    echo "RUN INSTALLER LANGUAGE FUNCTION"
 
     # Variables
     TITLE=$(EGETTEXT "MagyArch Installer - \$SYSTEM mode")
@@ -53,14 +57,17 @@ installer_lang() {
         --form --item-separator="," \
         --field="$LAN":CB \
         "^English,Magyar")"
+    echo "$?"
     
     
 
     if [ "$(echo "$lang" | cut -d '|' -f1)" = "Magyar" ]
     then
         export LANGUAGE=hu_HU
+        echo "Installer language: $(echo "$lang" | cut -d '|' -f1)"
     else
         export LANGUAGE=en_GB
+        echo "Installer language: $(echo "$lang" | cut -d '|' -f1)"
     fi
     
     # Variables
@@ -301,8 +308,11 @@ Partition and format your hard disk, as this is not done by the installer!")
 
 }
 
+# Set system language
 
 system_lang() {
+
+    echo "RUN SYSTEM LANGUAGE FUNCTION"
 
     lang_list="$(grep -v "#  " /etc/locale.gen | sed 's/#//g' | sed 's/ UTF-8//g' | \
         grep .UTF-8  | tr ' ' '\n' | sort | uniq | tr "\n" "," | sed "s/${LANGUAGE}/^${LANGUAGE}/")"
@@ -312,12 +322,12 @@ system_lang() {
         --form --item-separator="," \
         --field="$LAN":CB \
         "${lang_list:0:-1}")"
+    echo ""$?
 
-    echo $sys_lang
+    echo "System language: $(echo $sys_lang | cut -d '|' -f1)"
+
     KEYBOARD_LAYOUT=$(echo "${sys_lang,,}" | sed "s/.utf-8|//" | cut -d '_' -f2)
-    echo ${KEYBOARD_LAYOUT}
-    echo ${KEYBOARD_LAYOUT^^}
-
+    
     unset MAIN_LIST
 
     MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "true" "$MAIN003" "false" "$MAIN004" \
@@ -325,8 +335,11 @@ system_lang() {
         "false" "$MAIN009" "false" "$MAIN010" "false" "$MAIN011")
 }
 
+# Set keyboard layout
 
 keyboard_set() {
+
+    echo "RUN KEYBOARD SETTINGS FUNCTION"
 
     kb_set="$(yad --width=400 --center --title="$TITLE" --text="$MAIN003" \
         --buttons-layout=center --image=input-keyboard \
@@ -335,8 +348,11 @@ keyboard_set() {
         --field="$KBM":CBE \
         "$(localectl list-x11-keymap-layouts | awk '{ printf ""$0"," }' | sed "s/${KEYBOARD_LAYOUT}/^$KEYBOARD_LAYOUT/")" \
         "$(localectl list-x11-keymap-models | awk '{ printf ""$0"," }' | sed "s/pc105/^pc105/")")"
+    echo "$?"
 
-    echo $kb_set | cut -d '|' -f1
+    echo "Keyboard layout: $(echo $kb_set | cut -d '|' -f1)"
+    echo "Keyboard modell: $(echo $kb_set | cut -d '|' -f2)"
+
     setxkbmap $(echo $kb_set | cut -d '|' -f1)
 
     unset MAIN_LIST
@@ -346,8 +362,11 @@ keyboard_set() {
         "false" "$MAIN009" "false" "$MAIN010" "false" "$MAIN011")
 }
 
+# Set timezone
 
 timezone_set() {
+
+    echo "RUN TIMEZONE FUNCTION"
 
     DEFAULT_ZONE="$(awk '{print $1 "," $3 }' /usr/share/zoneinfo/zone.tab | \
         grep "${KEYBOARD_LAYOUT^^}" | sort | awk -F ',' '{print $2}' | cut -d "/" -f1 | sed -n "1p")"
@@ -361,9 +380,10 @@ timezone_set() {
         --field="$TZZ":CB \
         "$(awk '{print $3}' /usr/share/zoneinfo/zone.tab | grep "/" | cut -d "/" -f1 | sort -ud | tr "\n" "," | \
             sed "s/${DEFAULT_ZONE}/^${DEFAULT_ZONE}/")")"
+    echo "$?"
 
     TZONE=$(echo $tzzone_set | cut -d "|" -f1)
-    echo $TZONE
+    echo "Select timezone: $TZONE"
     
     if [ "$DEFAULT_ZONE" = "$(echo "$tzzone_set" | cut -d "|" -f1)" ]
     then
@@ -373,12 +393,16 @@ timezone_set() {
             --field="$TZSZ":CB \
             "$(awk '{print $3}' /usr/share/zoneinfo/zone.tab | grep "${DEFAULT_ZONE}" | cut -d "/" -f2 | sort | tr "\n" "," |\
                 sed "s/${DEFAULT_SUBZONE}/^${DEFAULT_SUBZONE}/")")
+        echo "$?"
+        echo "Select subzone0: $(echo tzszone_set | cut -d '|' -f1)"
     else
         tzszone_set=$(yad --width=400 --center --title="$TITLE" --text="$MAIN004" \
             --buttons-layout=center --image=globe \
             --form --item-separator="," \
             --field="$TZSZ":CB \
             "$(awk '{print $3}' /usr/share/zoneinfo/zone.tab | grep "$(echo "$tzzone_set" | cut -d "|" -f1)" | cut -d "/" -f2 | sort | tr "\n" "," )")
+        echo "$?"
+        echo "Select subzone1: $(echo tzszone_set | cut -d '|' -f1)"
     fi
 
     clock="$(yad --width=400 --center --title="$TITLE" --text="$CLCK" \
@@ -386,6 +410,8 @@ timezone_set() {
         --form --item-separator="," \
         --field="$TIM":CB \
         "^utc,localtime")"
+    echo "$?"
+    echo "Select clock set: $(echo $clock | cut -d '|' -f1)"
 
     unset MAIN_LIST
     
@@ -511,7 +537,7 @@ other_apps_int() {
         --no-selection  --image=preferences --checklist --list \
         --column="" --column="" --column="" "${OTHER_LIST_INT[@]}")"
 
-    pack_int=$(echo $oth_int  echo $a | sed "s/ TRUE/;TRUE/g" | tr ";" "\n" | cut -d '|' -f2 | tr '\n' " ")
+    pack_int=$(echo $oth_int | sed "s/ TRUE/;TRUE/g" | tr ";" "\n" | cut -d '|' -f2 | tr '\n' " ")
 
 
     unset OTHER_LIST
@@ -528,7 +554,7 @@ other_apps_sec() {
         --no-selection  --image=preferences --checklist --list \
         --column="" --column="" --column="" "${OTHER_LIST_SEC[@]}")"
 
-    pack_sec=$(echo $oth_sec  echo $a | sed "s/ TRUE/;TRUE/g" | tr ";" "\n" | cut -d '|' -f2 | tr '\n' " ")
+    pack_sec=$(echo $oth_sec | sed "s/ TRUE/;TRUE/g" | tr ";" "\n" | cut -d '|' -f2 | tr '\n' " ")
 
     
     unset OTHER_LIST
@@ -545,7 +571,7 @@ other_apps_med() {
         --no-selection  --image=preferences --checklist --list \
         --column="" --column="" --column="" "${OTHER_LIST_MED[@]}")"
 
-    pack_med=$(echo $oth_med  echo $a | sed "s/ TRUE/;TRUE/g" | tr ";" "\n" | cut -d '|' -f2 | tr '\n' " ")
+    pack_med=$(echo $oth_med | sed "s/ TRUE/;TRUE/g" | tr ";" "\n" | cut -d '|' -f2 | tr '\n' " ")
 
    
    unset OTHER_LIST
@@ -562,7 +588,7 @@ other_apps_ofi() {
         --no-selection  --image=preferences --checklist --list \
         --column="" --column="" --column="" "${OTHER_LIST_OFI[@]}")"
 
-    pack_ofi=$(echo $oth_ofi  echo $a | sed "s/ TRUE/;TRUE/g" | tr ";" "\n" | cut -d '|' -f2 | tr '\n' " ")
+    pack_ofi=$(echo $oth_ofi | sed "s/ TRUE/;TRUE/g" | tr ";" "\n" | cut -d '|' -f2 | tr '\n' " ")
 
 
     unset OTHER_LIST
@@ -579,7 +605,7 @@ other_apps_uti() {
         --no-selection  --image=preferences --checklist --list \
         --column="" --column="" --column="" "${OTHER_LIST_UTI[@]}")"
 
-    pack_uti=$(echo $oth_uti  echo $a | sed "s/ TRUE/;TRUE/g" | tr ";" "\n" | cut -d '|' -f2 | tr '\n' " ")
+    pack_uti=$(echo $oth_uti | sed "s/ TRUE/;TRUE/g" | tr ";" "\n" | cut -d '|' -f2 | tr '\n' " ")
 
      unset OTHER_LIST
 
@@ -597,8 +623,9 @@ other_apps_ter() {
         --buttons-layout=center --title="$TITLE" --text="$OTHER005"\
         --no-selection  --image=preferences --checklist --list \
         --column="" --column="" --column="" "${OTHER_LIST_TER[@]}")"
+    echo $oth_ter
 
-    pack_ter=$(echo $oth_ter  echo $a | sed "s/ TRUE/;TRUE/g" | tr ";" "\n" | cut -d '|' -f2 | tr '\n' " ")
+    pack_ter=$(echo $oth_ter | sed "s/ TRUE/;TRUE/g" | tr ";" "\n" | cut -d '|' -f2 | tr '\n' " ")
 }
 
 other_app_set() {
@@ -1015,7 +1042,7 @@ kswpnofile() {
     # echo $las
     las=$(lsblk -lno NAME,SIZE,FSTYPE,TYPE | grep "part" | awk -F " " '{print "/dev/"$1 " " $2 " " $3}'| tr "\n" ";")
 
-    selpart2=$(yad --width=400 --center --title="$TITLE" --text="" \
+    refindselpart2=$(yad --width=400 --center --title="$TITLE" --text="" \
         --buttons-layout=center --image=preferences \
         --form  --item-separator=";" --separator=";" \
         --field="$MNT001":CB \
