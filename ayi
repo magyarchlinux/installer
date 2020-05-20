@@ -1944,7 +1944,8 @@ install_run() {
     elif [ "$de_set" = "spectrwm (MagyArch)" ]
     then
         #ch_chroot "pacman -S --noconfirm --needed  "
-        arch_chroot "pacman -S --noconfirm --needed spectrwm unclutter dunst picom polkit-gnome rxvt-unicode urxvt-perls dmenu rofi firefox scrot vifm pcmanfm discord pavucontrol mpv lxappearance zathura zathura-djvu zathura-pdf-poppler ttf-joypixels ttf-jetbrains-mono terminus-font neofetch feh htop neovim figlet lolcat"
+        arch_chroot "pacman -R libxft --noconfirm"
+        arch_chroot "pacman -S --noconfirm --needed spectrwm unclutter dunst picom polkit-gnome rxvt-unicode urxvt-perls dmenu rofi firefox scrot vifm pcmanfm discord pavucontrol mpv lxappearance zathura zathura-djvu zathura-pdf-poppler ttf-joypixels ttf-jetbrains-mono terminus-font neofetch feh htop neovim figlet lolcat sublime-text-dev "
         arch_chroot "rm -rf /mnt/mnt"
         arch_chroot "cd /home/$user_name/; rm -rf .git/ LICENSE README.md git.sh setup-git.sh "
 
