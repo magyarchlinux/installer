@@ -420,13 +420,19 @@ timezone_set() {
         "false" "$MAIN009" "false" "$MAIN010" "false" "$MAIN011")
 }
 
+# Set hostname
 
 hname() {
+
+    echo "RUN HOSTNAME FUNCTION"
 
     hsname="$(yad --width=400 --center --title="$TITLE" --text="$HSNM" \
         --buttons-layout=center --image=network \
         --form --field="$HSNM1" \
         "magyarch" )"
+
+    echo "$?"
+    # echo "Select hostname set: $(echo $hsname | cut -d '|' -f1)"
 
     unset MAIN_LIST 
     MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
@@ -437,6 +443,8 @@ hname() {
 
 user_root_set() {
 
+    echo "RUN USER ROOT SET FUNCTION"
+
     pass_check $(yad --width=400 --center --title="$TITLE" --text="$MAIN006" \
         --buttons-layout=center --image=password \
         --form  --separator="\t" \
@@ -445,6 +453,7 @@ user_root_set() {
         --field="$URSET003":H \
         --field="$URSET004":H \
         --field="$URSET005":H)
+
 
     unset MAIN_LIST
 
@@ -457,6 +466,8 @@ user_root_set() {
 # Check password
 pass_check() {
 
+    echo "RUN PASS CHECK FUNCTION"
+
     user_name=$1
     userpass1=$2
     userpass2=$3
@@ -466,10 +477,12 @@ pass_check() {
     if [ "$userpass1" != "$userpass2" ]
     then
         yad --image=error --title="$TITLE"  --buttons-layout=center --text="$ERR_USER_PASS"
+        echo "Not same user password"
         user_root_set
     elif [ "$rootpass1" != "$rootpass2" ]
     then
         yad --image=error --title="$TITLE" --buttons-layout=center --text="$ERR_ROOT_PASS"
+        echo "Not same root password"
         user_root_set
     fi
 }
@@ -519,7 +532,7 @@ dm_desktop_set() {
         --field="$DMDE001":CB \
         --field="$DMDE002":CB \
         "^lightdm,lxdm,sddm,gdm,${DEFAULT}" \
-        "bspwm (MagyArch),i3 (MagyArch),xfce4 (MagyArch),xfce4,gnome,plasma,lxde,lxqt, \
+        "bspwm (MagyArch),i3 (MagyArch),spectrwm (MagyArch),xfce4 (MagyArch),xfce4,gnome,plasma,lxde,lxqt, \
 mate,budgie-desktop,cinnamon,deepin,jwm,bspwm,qtile,i3,spectrwm,xmonad,openbox")"
 
     unset MAIN_LIST
@@ -626,6 +639,7 @@ other_apps_ter() {
     echo $oth_ter
 
     pack_ter=$(echo $oth_ter | sed "s/ TRUE/;TRUE/g" | tr ";" "\n" | cut -d '|' -f2 | tr '\n' " ")
+    echo "$pack_ter"
 }
 
 other_app_set() {
@@ -1697,12 +1711,21 @@ install_run() {
         arch_chroot "cp -rfT /mnt/mnt/etc/skel/ /etc/skel/"
     fi
 
+    if [ "$de_set" = "spectrwm (MagyArch)" ]
+    then
+        arch_chroot "mkdir -p /mnt/mnt/etc/skel"
+        arch_chroot "git clone https://github.com/bazeeel/magyarch-spectrwm.git /mnt/mnt/etc/skel/"
+        arch_chroot "cp -rfT /mnt/mnt/etc/skel/ /etc/skel/"
+       
+    fi
+
     if [ "$de_set" = "xfce4 (MagyArch)" ]
     then
         # arch_chroot "mkdir -p /mnt/mnt/etc/skel"
         git clone https://github.com/magyarchlinux/magyarch_xfce4.git 
         cp -rf magyarch_xfce4/.config/ /mnt/etc/skel/
     fi
+
 
     echo "30"
 
@@ -1915,6 +1938,13 @@ install_run() {
         #ch_chroot "pacman -S --noconfirm --needed  "
         arch_chroot "pacman -S --noconfirm --needed  bspwm sxhkd xdo rxvt-unicode scrot"
         arch_chroot "pacman -S --noconfirm --needed  picom neofetch ttf-jetbrains-mono xorg-server xorg-xwininfo xorg-xinit xorg-xsetroot sxhkd ttf-joypixels ttf-linux-libertine lxappearance xdo vifm feh sublime-text-dev ed tree arandr calcurse dmenu2 xorg-xprop dosfstools libnotify dunst exfat-utils sxiv xwallpaper ffmpeg gnome-keyring polkit-gnome neovim spotify discord mpd mpc mpv ncmpcpp networkmanager firefox ttf-font-awesome-4 ttf-bitstream-vera ttf-dejavu ntfs-3g pavucontrol pulseaudio pulseaudio-alsa pulsemixer pulseaudio-equalizer-ladspa imagemagick sutils-git htop-vim-git xtitle-git maim socat unclutter unrar unzip urlscan w3m xcape xclip xdotool xorg-xdpyinfo youtube-dl zathura zathura-pdf-poppler zathura-ps zathura-djvu mediainfo atool fzf highlight rofi xorg-xbacklight bc task-spooler polybar docx2txt odt2txt urxvt-perls rxvt-unicode pcmanfm"
+        arch_chroot "rm -rf /mnt/mnt"
+        arch_chroot "cd /home/$user_name/; rm -rf .git/ LICENSE README.md git.sh setup-git.sh "
+
+    elif [ "$de_set" = "spectrwm (MagyArch)" ]
+    then
+        #ch_chroot "pacman -S --noconfirm --needed  "
+        arch_chroot "pacman -S --noconfirm --needed spectrwm unclutter dunst picom polkit-gnome rxvt-unicode urxvt-perls dmenu rofi firefox scrot vifm pcmanfm discord pavucontrol mpv lxappearance zathura zathura-djvu zathura-pdf-poppler ttf-joypixels ttf-jetbrains-mono terminus-font neofetch feh htop neovim figlet lolcat"
         arch_chroot "rm -rf /mnt/mnt"
         arch_chroot "cd /home/$user_name/; rm -rf .git/ LICENSE README.md git.sh setup-git.sh "
 
