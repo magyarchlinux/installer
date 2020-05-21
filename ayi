@@ -1938,7 +1938,6 @@ install_run() {
         #ch_chroot "pacman -S --noconfirm --needed  "
         arch_chroot "pacman -S --noconfirm --needed  bspwm sxhkd xdo rxvt-unicode scrot"
         arch_chroot "pacman -S --noconfirm --needed  picom neofetch ttf-jetbrains-mono xorg-server xorg-xwininfo xorg-xinit xorg-xsetroot sxhkd ttf-joypixels ttf-linux-libertine lxappearance xdo vifm feh sublime-text-dev ed tree arandr calcurse dmenu2 xorg-xprop dosfstools libnotify dunst exfat-utils sxiv xwallpaper ffmpeg gnome-keyring polkit-gnome neovim spotify discord mpd mpc mpv ncmpcpp networkmanager firefox ttf-font-awesome-4 ttf-bitstream-vera ttf-dejavu ntfs-3g pavucontrol pulseaudio pulseaudio-alsa pulsemixer pulseaudio-equalizer-ladspa imagemagick sutils-git htop-vim-git xtitle-git maim socat unclutter unrar unzip urlscan w3m xcape xclip xdotool xorg-xdpyinfo youtube-dl zathura zathura-pdf-poppler zathura-ps zathura-djvu mediainfo atool fzf highlight rofi xorg-xbacklight bc task-spooler polybar docx2txt odt2txt urxvt-perls rxvt-unicode pcmanfm"
-        arch_chroot "git clone https://github.com/bazeeel/st.git /mnt/mnt/st; cd /mnt/mnt/st; make clean install"
         arch_chroot "rm -rf /mnt/mnt"
         arch_chroot "cd /home/$user_name/; rm -rf .git/ LICENSE README.md git.sh setup-git.sh "
 
@@ -1948,6 +1947,7 @@ install_run() {
         
         arch_chroot "pacman -S --noconfirm --needed spectrwm unclutter dunst picom polkit-gnome rxvt-unicode urxvt-perls dmenu rofi firefox scrot vifm pcmanfm discord pavucontrol mpv lxappearance zathura zathura-djvu zathura-pdf-poppler ttf-joypixels ttf-jetbrains-mono terminus-font neofetch feh htop neovim figlet lolcat sublime-text-dev "
         arch_chroot "LANG=C ; yes | pacman -S libxft-bgra "
+        arch_chroot "git clone https://github.com/bazeeel/st.git /mnt/mnt/st; cd /mnt/mnt/st; make clean install"
         arch_chroot "rm -rf /mnt/mnt"
         arch_chroot "cd /home/$user_name/; rm -rf .git/ LICENSE README.md git.sh setup-git.sh "
 
