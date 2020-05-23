@@ -5,6 +5,7 @@
 
 ---
 
+* **BSPWM** Htop-vim-git change htop
 * Add lsb-release settings "MagyArch"
 * Add spectrwm (MagyArch)
 * Other apps problem solved
