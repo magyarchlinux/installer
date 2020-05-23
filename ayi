@@ -551,6 +551,7 @@ other_apps_int() {
         --column="" --column="" --column="" "${OTHER_LIST_INT[@]}")"
 
     pack_int=$(echo $oth_int | sed "s/ TRUE/;TRUE/g" | tr ";" "\n" | cut -d '|' -f2 | tr '\n' " ")
+    echo $pack_int
 
 
     unset OTHER_LIST
@@ -568,6 +569,7 @@ other_apps_sec() {
         --column="" --column="" --column="" "${OTHER_LIST_SEC[@]}")"
 
     pack_sec=$(echo $oth_sec | sed "s/ TRUE/;TRUE/g" | tr ";" "\n" | cut -d '|' -f2 | tr '\n' " ")
+    echo $pack_sec
 
     
     unset OTHER_LIST
@@ -585,6 +587,7 @@ other_apps_med() {
         --column="" --column="" --column="" "${OTHER_LIST_MED[@]}")"
 
     pack_med=$(echo $oth_med | sed "s/ TRUE/;TRUE/g" | tr ";" "\n" | cut -d '|' -f2 | tr '\n' " ")
+    echo $pack_med
 
    
    unset OTHER_LIST
@@ -602,6 +605,7 @@ other_apps_ofi() {
         --column="" --column="" --column="" "${OTHER_LIST_OFI[@]}")"
 
     pack_ofi=$(echo $oth_ofi | sed "s/ TRUE/;TRUE/g" | tr ";" "\n" | cut -d '|' -f2 | tr '\n' " ")
+    echo $pack_ofi
 
 
     unset OTHER_LIST
@@ -619,8 +623,9 @@ other_apps_uti() {
         --column="" --column="" --column="" "${OTHER_LIST_UTI[@]}")"
 
     pack_uti=$(echo $oth_uti | sed "s/ TRUE/;TRUE/g" | tr ";" "\n" | cut -d '|' -f2 | tr '\n' " ")
+    echo $pack_uti
 
-     unset OTHER_LIST
+    unset OTHER_LIST
 
     OTHER_LIST=("false" "$OTHER000"  "false" "$OTHER001" "false" "$OTHER002" \
         "false" "$OTHER003" "false" "$OTHER004" "true" "$OTHER005")
@@ -636,7 +641,7 @@ other_apps_ter() {
         --buttons-layout=center --title="$TITLE" --text="$OTHER005"\
         --no-selection  --image=preferences --checklist --list \
         --column="" --column="" --column="" "${OTHER_LIST_TER[@]}")"
-    echo $oth_ter
+    # echo $oth_ter
 
     pack_ter=$(echo $oth_ter | sed "s/ TRUE/;TRUE/g" | tr ";" "\n" | cut -d '|' -f2 | tr '\n' " ")
     echo "$pack_ter"
@@ -1938,7 +1943,7 @@ install_run() {
     then
         #ch_chroot "pacman -S --noconfirm --needed  "
         arch_chroot "pacman -S --noconfirm --needed  bspwm sxhkd xdo rxvt-unicode scrot"
-        arch_chroot "pacman -S --noconfirm --needed  picom neofetch ttf-jetbrains-mono xorg-server xorg-xwininfo xorg-xinit xorg-xsetroot sxhkd ttf-joypixels ttf-linux-libertine lxappearance xdo vifm feh sublime-text-dev ed tree arandr calcurse dmenu2 xorg-xprop dosfstools libnotify dunst exfat-utils sxiv xwallpaper ffmpeg gnome-keyring polkit-gnome neovim spotify discord mpd mpc mpv ncmpcpp networkmanager firefox ttf-font-awesome-4 ttf-bitstream-vera ttf-dejavu ntfs-3g pavucontrol pulseaudio pulseaudio-alsa pulsemixer pulseaudio-equalizer-ladspa imagemagick sutils-git htop-vim-git xtitle-git maim socat unclutter unrar unzip urlscan w3m xcape xclip xdotool xorg-xdpyinfo youtube-dl zathura zathura-pdf-poppler zathura-ps zathura-djvu mediainfo atool fzf highlight rofi xorg-xbacklight bc task-spooler polybar docx2txt odt2txt urxvt-perls rxvt-unicode pcmanfm"
+        arch_chroot "pacman -S --noconfirm --needed  picom neofetch ttf-jetbrains-mono xorg-server xorg-xwininfo xorg-xinit xorg-xsetroot sxhkd ttf-joypixels ttf-linux-libertine lxappearance xdo vifm feh sublime-text-dev ed tree arandr calcurse dmenu2 xorg-xprop dosfstools libnotify dunst exfat-utils sxiv xwallpaper ffmpeg gnome-keyring polkit-gnome neovim spotify discord mpd mpc mpv ncmpcpp networkmanager firefox ttf-font-awesome-4 ttf-bitstream-vera ttf-dejavu ntfs-3g pavucontrol pulseaudio pulseaudio-alsa pulsemixer pulseaudio-equalizer-ladspa imagemagick sutils-git htop xtitle-git maim socat unclutter unrar unzip urlscan w3m xcape xclip xdotool xorg-xdpyinfo youtube-dl zathura zathura-pdf-poppler zathura-ps zathura-djvu mediainfo atool fzf highlight rofi xorg-xbacklight bc task-spooler polybar docx2txt odt2txt urxvt-perls rxvt-unicode pcmanfm"
         arch_chroot "rm -rf /mnt/mnt"
         arch_chroot "cd /home/$user_name/; rm -rf .git/ LICENSE README.md git.sh setup-git.sh "
 
