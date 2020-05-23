@@ -1056,7 +1056,7 @@ kswpnofile() {
     # echo $las
     las=$(lsblk -lno NAME,SIZE,FSTYPE,TYPE | grep "part" | awk -F " " '{print "/dev/"$1 " " $2 " " $3}'| tr "\n" ";")
 
-    refindselpart2=$(yad --width=400 --center --title="$TITLE" --text="" \
+    selpart2=$(yad --width=400 --center --title="$TITLE" --text="" \
         --buttons-layout=center --image=preferences \
         --form  --item-separator=";" --separator=";" \
         --field="$MNT001":CB \
