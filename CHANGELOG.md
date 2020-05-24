@@ -5,6 +5,7 @@
 
 ---
 
+* **i3** Htop-vim-git change htop
 * **BSPWM** Htop-vim-git change htop
 * Add lsb-release settings "MagyArch"
 * Add spectrwm (MagyArch)
