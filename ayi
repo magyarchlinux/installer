@@ -2253,32 +2253,32 @@ install_run() {
 
     echo "# $INS008"
 
-    if [ "$pack_int" != "" ]
+    if [ "$(echo $pack_int)" != "" ]
     then
         arch_chroot "pacman -S --noconfirm --needed $pack_int"
     fi
 
-    if [ "$pack_sec" != "" ]
+    if [ "$(echo $pack_sec)" != "" ]
     then
         arch_chroot "pacman -S --noconfirm --needed $pack_sec"
     fi
 
-    if [ "$pack_med" != "" ]
+    if [ "$(echo $pack_med)" != "" ]
     then
         arch_chroot "pacman -S --noconfirm --needed $pack_med"
     fi
 
-    if [ "$pack_ofi" != "" ]
+    if [ "$(echo $pack_ofi)" != "" ]
     then
         arch_chroot "pacman -S --noconfirm --needed $pack_ofi"
     fi
 
-    if [ "$pack_uti" != "" ]
+    if [ "$(echo $pack_uti)" != "" ]
     then
         arch_chroot "pacman -S --noconfirm --needed $pack_uti"
     fi
 
-    if [ "$pack_ter" != "" ]
+    if [ "$(echo $pack_ter)" != "" ]
     then
         arch_chroot "pacman -S --noconfirm --needed $pack_ter"
     fi
