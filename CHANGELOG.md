@@ -5,6 +5,9 @@
 
 ---
 
+* Move auto and manual partitioning.
+* Installer summery cancel back main window.
+* **Spectrwm** added sxiv package.
 * acpi package add iso.
 * **i3** Htop-vim-git change htop
 * **BSPWM** Htop-vim-git change htop

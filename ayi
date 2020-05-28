@@ -297,14 +297,14 @@ Partition and format your hard disk, as this is not done by the installer!")
     INS009=$(GETTEXT "Install base...")
     INS010=$(GETTEXT "Installing bootloader...")
     INS011=$(GETTEXT "Installation is complete!")
-    # INS00=$(GETTEXT "")
+    # INS012=$(GETTEXT "")
     # INS00=$(GETTEXT "")
 
 
             
     MAIN_LIST=("false" "$MAIN001" "true" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
         "false" "$MAIN005" "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
-        "false" "$MAIN009" "false" "$MAIN010" "false" "$MAIN011")
+        "false" "$MAIN009" "false" "$MAIN010" "false" "$MAIN011" "false" "$MAIN013")
 
 }
 
@@ -332,7 +332,7 @@ system_lang() {
 
     MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "true" "$MAIN003" "false" "$MAIN004" \
         "false" "$MAIN005" "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
-        "false" "$MAIN009" "false" "$MAIN010" "false" "$MAIN011")
+        "false" "$MAIN009" "false" "$MAIN010" "false" "$MAIN011" "false" "$MAIN013")
 }
 
 # Set keyboard layout
@@ -359,7 +359,7 @@ keyboard_set() {
     
     MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "true" "$MAIN004" \
         "false" "$MAIN005" "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
-        "false" "$MAIN009" "false" "$MAIN010" "false" "$MAIN011")
+        "false" "$MAIN009" "false" "$MAIN010" "false" "$MAIN011" "false" "$MAIN013")
 }
 
 # Set timezone
@@ -417,7 +417,7 @@ timezone_set() {
     
     MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
         "true" "$MAIN005" "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
-        "false" "$MAIN009" "false" "$MAIN010" "false" "$MAIN011")
+        "false" "$MAIN009" "false" "$MAIN010" "false" "$MAIN011" "false" "$MAIN013")
 }
 
 # Set hostname
@@ -437,7 +437,7 @@ hname() {
     unset MAIN_LIST 
     MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
         "false" "$MAIN005" "true" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
-        "false" "$MAIN009" "false" "$MAIN010" "false" "$MAIN011")
+        "false" "$MAIN009" "false" "$MAIN010" "false" "$MAIN011" "false" "$MAIN013")
 }
 
 
@@ -459,7 +459,7 @@ user_root_set() {
 
     MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
         "false" "$MAIN005" "false" "$MAIN006" "true" "$MAIN007" "false" "$MAIN008" \
-        "false" "$MAIN009" "false" "$MAIN010" "false" "$MAIN011")
+        "false" "$MAIN009" "false" "$MAIN010" "false" "$MAIN011" "false" "$MAIN013")
 }
 
 
@@ -520,7 +520,7 @@ graphics_set() {
     
     MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
         "false" "$MAIN005" "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
-        "true" "$MAIN009" "false" "$MAIN010" "false" "$MAIN011")
+        "true" "$MAIN009" "false" "$MAIN010" "false" "$MAIN011" "false" "$MAIN013")
 }
 
 
@@ -539,7 +539,7 @@ mate,budgie-desktop,cinnamon,deepin,jwm,bspwm,qtile,i3,spectrwm,xmonad,openbox")
     
     MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
         "false" "$MAIN005" "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
-        "false" "$MAIN009" "true" "$MAIN010" "false" "$MAIN011")
+        "false" "$MAIN009" "true" "$MAIN010" "false" "$MAIN011" "false" "$MAIN013")
 }
 
 
@@ -683,7 +683,7 @@ other_app_set() {
     
     MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
         "false" "$MAIN005" "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
-        "false" "$MAIN009" "false" "$MAIN010" "true" "$MAIN011")
+        "false" "$MAIN009" "false" "$MAIN010" "true" "$MAIN011" "false" "$MAIN013")
 }
 
 grub_set() {
@@ -706,7 +706,7 @@ bootloader_set() {
         --no-selection  --image=preferences --radiolist --list \
         --column="" --column="" false grub false refind false ${NONE})"
 
-    
+    unset MAIN_LIST
     # boot_sel=$(echo $bootloader | cut -d '|' -f2)
     MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
         "false" "$MAIN005" "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
@@ -769,37 +769,43 @@ auto_part() {
 
         if [ "$SYSTEM" = "BIOS" ]
         then
-            (echo "# $CRBIOS"
-            dd if=/dev/zero of="$dev" bs=512 count=1
-            Parted "mklabel msdos"
-            Parted "mkpart primary ext4 1MiB 100%"
-            Parted "set 1 boot on"
-            mkfs.ext4 -F "$root_part"
-            mount "$root_part" /mnt
-            touch /mnt/swapfile
-            dd if=/dev/zero of=/mnt/swapfile bs=1M count="${swap_space}"
-            chmod 600 /mnt/swapfile
-            mkswap /mnt/swapfile
-            swapon /mnt/swapfile
-            swapfile="yes") | yad --progress --title="$TITLE" --width=450 --pulsate --auto-close --no-buttons
+
+            partition_type="auto_bios"
+
+            # (echo "# $CRBIOS"
+            # dd if=/dev/zero of="$dev" bs=512 count=1
+            # Parted "mklabel msdos"
+            # Parted "mkpart primary ext4 1MiB 100%"
+            # Parted "set 1 boot on"
+            # mkfs.ext4 -F "$root_part"
+            # mount "$root_part" /mnt
+            # touch /mnt/swapfile
+            # dd if=/dev/zero of=/mnt/swapfile bs=1M count="${swap_space}"
+            # chmod 600 /mnt/swapfile
+            # mkswap /mnt/swapfile
+            # swapon /mnt/swapfile
+            # swapfile="yes") | yad --progress --title="$TITLE" --width=450 --pulsate --auto-close --no-buttons
         else
-            (echo "# $CRUEFI"
-            dd if=/dev/zero of="$dev" bs=512 count=1
-            Parted "mklabel gpt"
-            Parted "mkpart primary fat32 1MiB 513MiB"
-            Parted "mkpart primary ext4 513MiB 100%"
-            Parted "set 1 boot on"
-            mkfs.fat -F32 "$gpt_part"
-            mkfs.ext4 -F "$root_part"
-            mount "$root_part" /mnt
-            mkdir -p /mnt/boot/efi
-            mount "$gpt_part" /mnt/boot/efi
-            touch /mnt/swapfile
-            dd if=/dev/zero of=/mnt/swapfile bs=1M count="${swap_space}"
-            chmod 600 /mnt/swapfile
-            mkswap /mnt/swapfile
-            swapon /mnt/swapfile
-            swapfile="yes" ) | yad --progress --title="$TITLE" --width=450 --pulsate --auto-close --no-buttons
+
+            partition_type="auto_uefi"
+
+            # (echo "# $CRUEFI"
+            # dd if=/dev/zero of="$dev" bs=512 count=1
+            # Parted "mklabel gpt"
+            # Parted "mkpart primary fat32 1MiB 513MiB"
+            # Parted "mkpart primary ext4 513MiB 100%"
+            # Parted "set 1 boot on"
+            # mkfs.fat -F32 "$gpt_part"
+            # mkfs.ext4 -F "$root_part"
+            # mount "$root_part" /mnt
+            # mkdir -p /mnt/boot/efi
+            # mount "$gpt_part" /mnt/boot/efi
+            # touch /mnt/swapfile
+            # dd if=/dev/zero of=/mnt/swapfile bs=1M count="${swap_space}"
+            # chmod 600 /mnt/swapfile
+            # mkswap /mnt/swapfile
+            # swapon /mnt/swapfile
+            # swapfile="yes" ) | yad --progress --title="$TITLE" --width=450 --pulsate --auto-close --no-buttons
         fi
     else
         partition_set
@@ -979,68 +985,70 @@ check_kswpnofile() {
             return 1
     fi
 
-    # Mount
-    mount "$root_part" /mnt
+    partition_type="man_swap_part"
+
+    # # Mount
+    # mount "$root_part" /mnt
     
-    # mkdir -p /mnt/boot/efi
-    # mount "$bootefi_part" /mnt/boot/efi
+    # # mkdir -p /mnt/boot/efi
+    # # mount "$bootefi_part" /mnt/boot/efi
 
-    mkswap "$swap_part"
-    swapon "$swap_part"
+    # mkswap "$swap_part"
+    # swapon "$swap_part"
 
-    if [ "$boot_part" != "$NONE" ]
-    then
-        mkdir /mnt/boot/
-        mount "$boot_part" /mnt/boot
-    fi
+    # if [ "$boot_part" != "$NONE" ]
+    # then
+    #     mkdir /mnt/boot/
+    #     mount "$boot_part" /mnt/boot
+    # fi
 
-    if [ "$bootefi_part" != "$NONE" ]
-    then
-        mkdir -p /mnt/boot/efi
-        mount "$bootefi_part" /mnt/boot/efi
-    fi
+    # if [ "$bootefi_part" != "$NONE" ]
+    # then
+    #     mkdir -p /mnt/boot/efi
+    #     mount "$bootefi_part" /mnt/boot/efi
+    # fi
 
-    if [ "$home_part" != "$NONE" ]
-    then
-        mkdir /mnt/home
-        mount "$home_part" /mnt/home
-    fi
+    # if [ "$home_part" != "$NONE" ]
+    # then
+    #     mkdir /mnt/home
+    #     mount "$home_part" /mnt/home
+    # fi
 
-    if [ "$mnt_part" != "$NONE" ]
-    then
-        mkdir -p /mnt/mnt/disk
-        mount "$mnt_part" /mnt/mnt/disk
-    fi
+    # if [ "$mnt_part" != "$NONE" ]
+    # then
+    #     mkdir -p /mnt/mnt/disk
+    #     mount "$mnt_part" /mnt/mnt/disk
+    # fi
 
-    if [ "$opt_part" != "$NONE" ]
-    then
-        mkdir /mnt/opt
-        mount "$opt_part" /mnt/opt
-    fi
+    # if [ "$opt_part" != "$NONE" ]
+    # then
+    #     mkdir /mnt/opt
+    #     mount "$opt_part" /mnt/opt
+    # fi
 
-    if [ "$srv_part" != "$NONE" ]
-    then
-        mkdir /mnt/srv
-        mount "$srv_part" /mnt/srv
-    fi
+    # if [ "$srv_part" != "$NONE" ]
+    # then
+    #     mkdir /mnt/srv
+    #     mount "$srv_part" /mnt/srv
+    # fi
 
-    if [ "$tmp_part" != "$NONE" ]
-    then
-        mkdir /mnt/tmp
-        mount "$tmp_part" /mnt/tmp
-    fi
+    # if [ "$tmp_part" != "$NONE" ]
+    # then
+    #     mkdir /mnt/tmp
+    #     mount "$tmp_part" /mnt/tmp
+    # fi
 
-    if [ "$usr_part" != "$NONE" ]
-    then
-        mkdir /mnt/usr
-        mount "$usr_part" /mnt/usr
-    fi
+    # if [ "$usr_part" != "$NONE" ]
+    # then
+    #     mkdir /mnt/usr
+    #     mount "$usr_part" /mnt/usr
+    # fi
 
-    if [ "$var_part" != "$NONE" ]
-    then
-        mkdir /mnt/var
-        mount "$var_part" /mnt/var
-    fi
+    # if [ "$var_part" != "$NONE" ]
+    # then
+    #     mkdir /mnt/var
+    #     mount "$var_part" /mnt/var
+    # fi
     IFS=$OLDIFS
 
 }
@@ -1233,67 +1241,68 @@ check_kswpf() {
     # swapon "$swap_part"
 
     echo $root_part
+    partition_type="man_swap_file"
 
-    if [ "$root_part" != "$NONE" ]
-    then
-        # mkdir -p /mnt/boot
-        mount "$root_part" /mnt
-        echo $root_part
-    fi
+    # if [ "$root_part" != "$NONE" ]
+    # then
+    #     # mkdir -p /mnt/boot
+    #     mount "$root_part" /mnt
+    #     echo $root_part
+    # fi
 
-    if [ "$boot_part" != "$NONE" ]
-    then
-        mkdir -p /mnt/boot
-        mount "$boot_part" /mnt/boot
-    fi
+    # if [ "$boot_part" != "$NONE" ]
+    # then
+    #     mkdir -p /mnt/boot
+    #     mount "$boot_part" /mnt/boot
+    # fi
 
-    if [ "$bootefi_part" != "$NONE" ]
-    then
-        mkdir -p /mnt/boot/efi
-        mount "$bootefi_part" /mnt/boot/efi
-    fi
+    # if [ "$bootefi_part" != "$NONE" ]
+    # then
+    #     mkdir -p /mnt/boot/efi
+    #     mount "$bootefi_part" /mnt/boot/efi
+    # fi
 
-    if [ "$home_part" != "$NONE" ]
-    then
-        mkdir /mnt/home
-        mount "$home_part" /mnt/home
-    fi
+    # if [ "$home_part" != "$NONE" ]
+    # then
+    #     mkdir /mnt/home
+    #     mount "$home_part" /mnt/home
+    # fi
 
-    if [ "$mnt_part" != "$NONE" ]
-    then
-        mkdir -p /mnt/mnt/disk
-        mount "$home_part" /mnt/mnt/disk
-    fi
+    # if [ "$mnt_part" != "$NONE" ]
+    # then
+    #     mkdir -p /mnt/mnt/disk
+    #     mount "$home_part" /mnt/mnt/disk
+    # fi
 
-    if [ "$opt_part" != "$NONE" ]
-    then
-        mkdir /mnt/opt
-        mount "$opt_part" /mnt/opt
-    fi
+    # if [ "$opt_part" != "$NONE" ]
+    # then
+    #     mkdir /mnt/opt
+    #     mount "$opt_part" /mnt/opt
+    # fi
 
-    if [ "$srv_part" != "$NONE" ]
-    then
-        mkdir /mnt/srv
-        mount "$srv_part" /mnt/srv
-    fi
+    # if [ "$srv_part" != "$NONE" ]
+    # then
+    #     mkdir /mnt/srv
+    #     mount "$srv_part" /mnt/srv
+    # fi
 
-    if [ "$tmp_part" != "$NONE" ]
-    then
-        mkdir /mnt/tmp
-        mount "$tmp_part" /mnt/tmp
-    fi
+    # if [ "$tmp_part" != "$NONE" ]
+    # then
+    #     mkdir /mnt/tmp
+    #     mount "$tmp_part" /mnt/tmp
+    # fi
 
-    if [ "$usr_part" != "$NONE" ]
-    then
-        mkdir /mnt/usr
-        mount "$usr_part" /mnt/usr
-    fi
+    # if [ "$usr_part" != "$NONE" ]
+    # then
+    #     mkdir /mnt/usr
+    #     mount "$usr_part" /mnt/usr
+    # fi
 
-    if [ "$var_part" != "$NONE" ]
-    then
-        mkdir /mnt/var
-        mount "$var_part" /mnt/var
-    fi
+    # if [ "$var_part" != "$NONE" ]
+    # then
+    #     mkdir /mnt/var
+    #     mount "$var_part" /mnt/var
+    # fi
 
     IFS=$OLDIFS
 
@@ -1314,12 +1323,12 @@ kswpfsize() {
     if [ "$?" = "0" ]
     then
         swapfile="yes"
-        (echo "# $INS007"
-        touch /mnt/swapfile
-        dd if=/dev/zero of=/mnt/swapfile bs=1M count=${swaps}
-        chmod 600 /mnt/swapfile
-        mkswap /mnt/swapfile
-        swapon /mnt/swapfile) | yad --progress --title="$TITLE" --width=450 --pulsate --auto-close --no-buttons
+        # (echo "# $INS007"
+        # touch /mnt/swapfile
+        # dd if=/dev/zero of=/mnt/swapfile bs=1M count=${swaps}
+        # chmod 600 /mnt/swapfile
+        # mkswap /mnt/swapfile
+        # swapon /mnt/swapfile) | yad --progress --title="$TITLE" --width=450 --pulsate --auto-close --no-buttons
         #echo "swap készítés"
         # egyeb_csatolas
     else
@@ -1500,68 +1509,70 @@ check_kswpno() {
             return 1
     fi
 
-    # Mount
-    mount "$root_part" /mnt
+    partition_type="man_no_swap"
+
+    # # Mount
+    # mount "$root_part" /mnt
     
-    # mkdir -p /mnt/boot/efi
-    # mount "$bootefi_part" /mnt/boot/efi
+    # # mkdir -p /mnt/boot/efi
+    # # mount "$bootefi_part" /mnt/boot/efi
 
-    # mkswap "$swap_part"
-    # swapon "$swap_part"
+    # # mkswap "$swap_part"
+    # # swapon "$swap_part"
 
-    if [ "$boot_part" != "$NONE" ]
-    then
-        mkdir -p /mnt/boot
-        mount "$boot_part" /mnt/boot
-    fi
+    # if [ "$boot_part" != "$NONE" ]
+    # then
+    #     mkdir -p /mnt/boot
+    #     mount "$boot_part" /mnt/boot
+    # fi
 
-    if [ "$bootefi_part" != "$NONE" ]
-    then
-        mkdir -p /mnt/boot/efi
-        mount "$bootefi_part" /mnt/boot/efi
-    fi
+    # if [ "$bootefi_part" != "$NONE" ]
+    # then
+    #     mkdir -p /mnt/boot/efi
+    #     mount "$bootefi_part" /mnt/boot/efi
+    # fi
 
-    if [ "$home_part" != "$NONE" ]
-    then
-        mkdir /mnt/home
-        mount "$home_part" /mnt/home
-    fi
+    # if [ "$home_part" != "$NONE" ]
+    # then
+    #     mkdir /mnt/home
+    #     mount "$home_part" /mnt/home
+    # fi
 
-    if [ "$mnt_part" != "$NONE" ]
-    then
-        mkdir -p /mnt/mnt/disk
-        mount "$home_part" /mnt/mnt/disk
-    fi
+    # if [ "$mnt_part" != "$NONE" ]
+    # then
+    #     mkdir -p /mnt/mnt/disk
+    #     mount "$home_part" /mnt/mnt/disk
+    # fi
 
-    if [ "$opt_part" != "$NONE" ]
-    then
-        mkdir /mnt/opt
-        mount "$opt_part" /mnt/opt
-    fi
+    # if [ "$opt_part" != "$NONE" ]
+    # then
+    #     mkdir /mnt/opt
+    #     mount "$opt_part" /mnt/opt
+    # fi
 
-    if [ "$srv_part" != "$NONE" ]
-    then
-        mkdir /mnt/srv
-        mount "$srv_part" /mnt/srv
-    fi
+    # if [ "$srv_part" != "$NONE" ]
+    # then
+    #     mkdir /mnt/srv
+    #     mount "$srv_part" /mnt/srv
+    # fi
 
-    if [ "$tmp_part" != "$NONE" ]
-    then
-        mkdir /mnt/tmp
-        mount "$tmp_part" /mnt/tmp
-    fi
+    # if [ "$tmp_part" != "$NONE" ]
+    # then
+    #     mkdir /mnt/tmp
+    #     mount "$tmp_part" /mnt/tmp
+    # fi
 
-    if [ "$usr_part" != "$NONE" ]
-    then
-        mkdir /mnt/usr
-        mount "$usr_part" /mnt/usr
-    fi
+    # if [ "$usr_part" != "$NONE" ]
+    # then
+    #     mkdir /mnt/usr
+    #     mount "$usr_part" /mnt/usr
+    # fi
 
-    if [ "$var_part" != "$NONE" ]
-    then
-        mkdir /mnt/var
-        mount "$var_part" /mnt/var
-    fi
+    # if [ "$var_part" != "$NONE" ]
+    # then
+    #     mkdir /mnt/var
+    #     mount "$var_part" /mnt/var
+    # fi
 
     IFS=$OLDIFS
 }
@@ -1616,7 +1627,7 @@ partition_set() {
     
     MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "true" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
         "false" "$MAIN005" "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
-        "false" "$MAIN009" "false" "$MAIN010" "false" "$MAIN011")
+        "false" "$MAIN009" "false" "$MAIN010" "false" "$MAIN011" "false" "$MAIN013")
 
     if [ "$(echo "$partition" | cut -d "|" -f2)" = "$PART000" ]
     then
@@ -1675,14 +1686,269 @@ $MAIN007\n\t${KSC001}:  $kern\n\t${KSC002}:  $shel_l\n\t${KSC003}:  $cup_s\n\n\
 $MAIN008\n\t${GRC001}:  $grc\n\n\
 $MAIN009\n\t${DMDE001}:  $dm_set\n\t${DMDE002}:  $de_set\n\n\
 $MAIN011\n\t$boot_load\n":LBL )"
-
-    install_run
+    ans_sum="$?"
+    echo $ans_sum
+    
+    if [ "$ans_sum" = "1" ]
+    then
+        unset MAIN_LIST
+        # boot_sel=$(echo $bootloader | cut -d '|' -f2)
+        MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
+            "false" "$MAIN005" "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
+            "false" "$MAIN009" "false" "$MAIN010" "False" "$MAIN011" "false" "$MAIN013")
+        main
+    else
+        install_run
+    fi
 }
 
 install_run() {
 
+    # Start partitions and mount
 
-    (echo "# $INS000"
+    (
+    if [ "$partition_type" = "auto_bios" ]
+    then
+        echo "# $CRBIOS"
+        dd if=/dev/zero of="$dev" bs=512 count=1
+        Parted "mklabel msdos"
+        Parted "mkpart primary ext4 1MiB 100%"
+        Parted "set 1 boot on"
+        mkfs.ext4 -F "$root_part"
+        mount "$root_part" /mnt
+        touch /mnt/swapfile
+        dd if=/dev/zero of=/mnt/swapfile bs=1M count="${swap_space}"
+        chmod 600 /mnt/swapfile
+        mkswap /mnt/swapfile
+        swapon /mnt/swapfile
+        swapfile="yes"
+    fi
+
+    if [ "$partition_type" = "auto_uefi" ]
+    then
+        echo "# $CRUEFI"
+        dd if=/dev/zero of="$dev" bs=512 count=1
+        Parted "mklabel gpt"
+        Parted "mkpart primary fat32 1MiB 513MiB"
+        Parted "mkpart primary ext4 513MiB 100%"
+        Parted "set 1 boot on"
+        mkfs.fat -F32 "$gpt_part"
+        mkfs.ext4 -F "$root_part"
+        mount "$root_part" /mnt
+        mkdir -p /mnt/boot/efi
+        mount "$gpt_part" /mnt/boot/efi
+        touch /mnt/swapfile
+        dd if=/dev/zero of=/mnt/swapfile bs=1M count="${swap_space}"
+        chmod 600 /mnt/swapfile
+        mkswap /mnt/swapfile
+        swapon /mnt/swapfile
+        swapfile="yes"
+    fi
+
+    if [ "$partition_type" = "man_swap_part" ]
+    then
+
+        echo "# $MAIN012"
+        # Mount
+        mount "$root_part" /mnt
+        
+        mkswap "$swap_part"
+        swapon "$swap_part"
+    
+        if [ "$boot_part" != "$NONE" ]
+        then
+            mkdir /mnt/boot/
+            mount "$boot_part" /mnt/boot
+        fi
+    
+        if [ "$bootefi_part" != "$NONE" ]
+        then
+            mkdir -p /mnt/boot/efi
+            mount "$bootefi_part" /mnt/boot/efi
+        fi
+    
+        if [ "$home_part" != "$NONE" ]
+        then
+            mkdir /mnt/home
+            mount "$home_part" /mnt/home
+        fi
+    
+        if [ "$mnt_part" != "$NONE" ]
+        then
+            mkdir -p /mnt/mnt/disk
+            mount "$mnt_part" /mnt/mnt/disk
+        fi
+    
+        if [ "$opt_part" != "$NONE" ]
+        then
+            mkdir /mnt/opt
+            mount "$opt_part" /mnt/opt
+        fi
+    
+        if [ "$srv_part" != "$NONE" ]
+        then
+            mkdir /mnt/srv
+            mount "$srv_part" /mnt/srv
+        fi
+    
+        if [ "$tmp_part" != "$NONE" ]
+        then
+            mkdir /mnt/tmp
+            mount "$tmp_part" /mnt/tmp
+        fi
+    
+        if [ "$usr_part" != "$NONE" ]
+        then
+            mkdir /mnt/usr
+            mount "$usr_part" /mnt/usr
+        fi
+    
+        if [ "$var_part" != "$NONE" ]
+        then
+            mkdir /mnt/var
+            mount "$var_part" /mnt/var
+        fi
+    fi
+
+    if [ "$partition_type" = "man_swap_file" ]
+    then
+
+        echo "# $MAIN012"
+
+        if [ "$root_part" != "$NONE" ]
+        then
+            # mkdir -p /mnt/boot
+            mount "$root_part" /mnt
+            echo $root_part
+        fi
+    
+        if [ "$boot_part" != "$NONE" ]
+        then
+            mkdir -p /mnt/boot
+            mount "$boot_part" /mnt/boot
+        fi
+    
+        if [ "$bootefi_part" != "$NONE" ]
+        then
+            mkdir -p /mnt/boot/efi
+            mount "$bootefi_part" /mnt/boot/efi
+        fi
+    
+        if [ "$home_part" != "$NONE" ]
+        then
+            mkdir /mnt/home
+            mount "$home_part" /mnt/home
+        fi
+    
+        if [ "$mnt_part" != "$NONE" ]
+        then
+            mkdir -p /mnt/mnt/disk
+            mount "$home_part" /mnt/mnt/disk
+        fi
+    
+        if [ "$opt_part" != "$NONE" ]
+        then
+            mkdir /mnt/opt
+            mount "$opt_part" /mnt/opt
+        fi
+    
+        if [ "$srv_part" != "$NONE" ]
+        then
+            mkdir /mnt/srv
+            mount "$srv_part" /mnt/srv
+        fi
+    
+        if [ "$tmp_part" != "$NONE" ]
+        then
+            mkdir /mnt/tmp
+            mount "$tmp_part" /mnt/tmp
+        fi
+    
+        if [ "$usr_part" != "$NONE" ]
+        then
+            mkdir /mnt/usr
+            mount "$usr_part" /mnt/usr
+        fi
+    
+        if [ "$var_part" != "$NONE" ]
+        then
+            mkdir /mnt/var
+            mount "$var_part" /mnt/var
+        fi
+
+        # echo "# $INS007"
+        touch /mnt/swapfile
+        dd if=/dev/zero of=/mnt/swapfile bs=1M count=${swaps}
+        chmod 600 /mnt/swapfile
+        mkswap /mnt/swapfile
+        swapon /mnt/swapfile
+    fi
+
+    if [ "$partition_type" = "man_no_swap" ]
+    then
+
+        echo "# $MAIN012"
+
+        # Mount
+        mount "$root_part" /mnt
+    
+        if [ "$boot_part" != "$NONE" ]
+        then
+            mkdir -p /mnt/boot
+            mount "$boot_part" /mnt/boot
+        fi
+    
+        if [ "$bootefi_part" != "$NONE" ]
+        then
+            mkdir -p /mnt/boot/efi
+            mount "$bootefi_part" /mnt/boot/efi
+        fi
+    
+        if [ "$home_part" != "$NONE" ]
+        then
+            mkdir /mnt/home
+            mount "$home_part" /mnt/home
+        fi
+    
+        if [ "$mnt_part" != "$NONE" ]
+        then
+            mkdir -p /mnt/mnt/disk
+            mount "$home_part" /mnt/mnt/disk
+        fi
+    
+        if [ "$opt_part" != "$NONE" ]
+        then
+            mkdir /mnt/opt
+            mount "$opt_part" /mnt/opt
+        fi
+    
+        if [ "$srv_part" != "$NONE" ]
+        then
+            mkdir /mnt/srv
+            mount "$srv_part" /mnt/srv
+        fi
+    
+        if [ "$tmp_part" != "$NONE" ]
+        then
+            mkdir /mnt/tmp
+            mount "$tmp_part" /mnt/tmp
+        fi
+    
+        if [ "$usr_part" != "$NONE" ]
+        then
+            mkdir /mnt/usr
+            mount "$usr_part" /mnt/usr
+        fi
+    
+        if [ "$var_part" != "$NONE" ]
+        then
+            mkdir /mnt/var
+            mount "$var_part" /mnt/var
+        fi
+    fi
+
+
+    echo "# $INS000"
     reflector --verbose -l 50 -p https --sort rate --save /etc/pacman.d/mirrorlist
 
     echo "10"
@@ -1951,7 +2217,7 @@ install_run() {
     then
         #ch_chroot "pacman -S --noconfirm --needed  "
         
-        arch_chroot "pacman -S --noconfirm --needed spectrwm unclutter dunst picom polkit-gnome rxvt-unicode urxvt-perls dmenu rofi firefox scrot vifm pcmanfm discord pavucontrol mpv lxappearance zathura zathura-djvu zathura-pdf-poppler ttf-joypixels ttf-jetbrains-mono terminus-font neofetch feh htop neovim figlet lolcat sublime-text-dev "
+        arch_chroot "pacman -S --noconfirm --needed spectrwm unclutter dunst picom polkit-gnome rxvt-unicode urxvt-perls dmenu rofi firefox scrot vifm pcmanfm discord pavucontrol mpv lxappearance zathura zathura-djvu zathura-pdf-poppler ttf-joypixels ttf-jetbrains-mono terminus-font neofetch feh htop neovim figlet lolcat sublime-text-dev sxiv "
         arch_chroot "LANG=C ; yes | pacman -S libxft-bgra "
         arch_chroot "git clone https://github.com/bazeeel/st.git /mnt/mnt/st; cd /mnt/mnt/st; make clean install"
         arch_chroot "rm -rf /mnt/mnt"
@@ -1987,23 +2253,39 @@ install_run() {
 
     echo "# $INS008"
 
-    arch_chroot "pacman -S --noconfirm --needed $pack_int"
-    arch_chroot "pacman -S --noconfirm --needed $pack_sec"
-    arch_chroot "pacman -S --noconfirm --needed $pack_med"
-    arch_chroot "pacman -S --noconfirm --needed $pack_ofi"
-    arch_chroot "pacman -S --noconfirm --needed $pack_uti"
-    arch_chroot "pacman -S --noconfirm --needed $pack_ter"
+    if [ "$pack_int" != "" ]
+    then
+        arch_chroot "pacman -S --noconfirm --needed $pack_int"
+    fi
+
+    if [ "$pack_sec" != "" ]
+    then
+        arch_chroot "pacman -S --noconfirm --needed $pack_sec"
+    fi
+
+    if [ "$pack_med" != "" ]
+    then
+        arch_chroot "pacman -S --noconfirm --needed $pack_med"
+    fi
+
+    if [ "$pack_ofi" != "" ]
+    then
+        arch_chroot "pacman -S --noconfirm --needed $pack_ofi"
+    fi
+
+    if [ "$pack_uti" != "" ]
+    then
+        arch_chroot "pacman -S --noconfirm --needed $pack_uti"
+    fi
+
+    if [ "$pack_ter" != "" ]
+    then
+        arch_chroot "pacman -S --noconfirm --needed $pack_ter"
+    fi
 
     # Set makepkg.conf
     sed -i 's/#MAKEFLAGS="-j[0-9]"/MAKEFLAGS="-j'$(nproc)'"/;s/COMPRESSXZ=(xz -c -z -)/COMPRESSXZ=(xz -c -T '$(nproc)' -z -)/' /mnt/etc/makepkg.conf
     
-    # if [ "$de_set" = "bspwm" ]
-    # then
-    #     arch_chroot "pacman -S --noconfirm --needed  sxhkd xdo rxvt-unicode dmenu scrot"
-    #     arch_chroot "su ${user_name} -c 'mkdir -p /home/$user_name/.config/{bspwm,sxhkd}'"
-    #     arch_chroot "su ${user_name} -c 'cp /usr/share/doc/bspwm/examples/bspwmrc /home/$user_name/.config/bspwm/'"
-    #     arch_chroot "su ${user_name} -c 'cp /usr/share/doc/bspwm/examples/sxhkdrc /home/$user_name/.config/sxhkd/'"
-    # fi
 
     echo "80"
 
