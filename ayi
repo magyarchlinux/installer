@@ -735,6 +735,12 @@ auto_part() {
         --column="" --column="" $devices)"
     dev="$(echo "$device" | cut -d "|" -f2)"
     echo "$dev"
+    if [ "$dev" = "" ]
+    then
+        echo "no"
+        auto_part
+        return 1
+    fi
 
     yad --image=help --title="$TITLE" --buttons-layout=center --text="$QUEPART000 $dev $QUEPART001" --button="${NO}!gtk-no:1" --button="${YES}!gtk-yes:0"
     ans="$?"
@@ -2162,7 +2168,7 @@ install_run() {
         cp -rf magyarch_xfce4/etc/lightdm/lightdm-gtk-greeter.conf /mnt/etc/lightdm/
         cp -rf magyarch_xfce4/usr/share/themes/MagyArch-braincolor /mnt/usr/share/themes/""
     else
-        arch_chroot "pacman -S --noconfirm --needed $dm "
+        arch_chroot "pacman -S --noconfirm --needed $dm_set "
         arch_chroot "systemctl enable ${dm_set}.service"
     fi
 
