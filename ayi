@@ -2223,7 +2223,7 @@ install_run() {
     then
         #ch_chroot "pacman -S --noconfirm --needed  "
         
-        arch_chroot "pacman -S --noconfirm --needed spectrwm unclutter dunst picom polkit-gnome rxvt-unicode urxvt-perls dmenu rofi firefox scrot vifm pcmanfm discord pavucontrol mpv lxappearance zathura zathura-djvu zathura-pdf-poppler ttf-joypixels ttf-jetbrains-mono terminus-font neofetch feh htop neovim figlet lolcat sublime-text-dev sxiv "
+        arch_chroot "pacman -S --noconfirm --needed spectrwm unclutter dunst picom polkit-gnome rxvt-unicode urxvt-perls dmenu rofi firefox scrot vifm pcmanfm discord pavucontrol mpv lxappearance zathura zathura-djvu zathura-pdf-poppler ttf-joypixels ttf-jetbrains-mono terminus-font neofetch feh htop neovim figlet lolcat sublime-text-dev sxiv brave-bin"
         arch_chroot "LANG=C ; yes | pacman -S libxft-bgra "
         arch_chroot "git clone https://github.com/bazeeel/st.git /mnt/mnt/st; cd /mnt/mnt/st; make clean install"
         arch_chroot "rm -rf /mnt/mnt"
