@@ -36,7 +36,7 @@ fi
 #https://www.atlassian.com/git/tutorials/setting-up-a-repository/git-config
 
 git init
-git config --global user.name "Magyarchlinux"
+git config --global user.name "magyarchlinux"
 git config --global user.email "magyarchlinux@gmail.com"
 sudo git config --system core.editor nano
 git config --global credential.helper cache
