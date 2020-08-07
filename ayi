@@ -2420,7 +2420,7 @@ install_run() {
     elif [ "$grc" = "i915" ]
     then
         # pacstrap /mnt xf86-video-intel libva-intel-driver lib32-mesa
-        arch_chroot "pacman -S xf86-video-intel libva-intel-driver lib32-mesa"
+        arch_chroot "pacman -S --noconfirm --needed xf86-video-intel libva-intel-driver lib32-mesa"
         # echo "options i915 modeset=1\n" > /mnt/etc/modprobe.d/i915.conf
 
     elif [ "$grc" = "amdgpu" ]
