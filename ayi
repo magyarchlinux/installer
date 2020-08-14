@@ -2431,7 +2431,8 @@ install_run() {
 
     elif [ "$grc" = "amdgpu" ]
     then
-        pacstrap /mnt xf86-video-amdgpu vulkan-radeon libva-mesa-driver lib32-mesa lib32-libva-mesa-driver
+        # pacstrap /mnt xf86-video-amdgpu vulkan-radeon libva-mesa-driver lib32-mesa lib32-libva-mesa-driver
+        arch_chroot "pacman -S --noconfirm --needed xf86-video-amdgpu vulkan-radeon libva-mesa-driver lib32-mesa lib32-libva-mesa-driver mesa-vdpau"
 
     elif [ "$kern" = "linux" -a "$grc" = "nvidia" ]
     then
@@ -2573,7 +2574,7 @@ install_run() {
     elif [ "$de_set" = "qtile (MagyArch)" ]
     then
         #ch_chroot "pacman -S --noconfirm --needed  "
-        arch_chroot "pacman -S --noconfirm --needed  qtile python-psutil expac python-requests python-mpd2 alacritty rxvt-unicode scrot discord maim cava newsboat gtop network-manager-applet dmenu xcb-util-cursor"
+        arch_chroot "pacman -S --noconfirm --needed  qtile python-psutil python-xlib expac python-requests python-mpd2 alacritty rxvt-unicode scrot discord maim cava newsboat gtop network-manager-applet dmenu xcb-util-cursor"
         arch_chroot "pacman -S --noconfirm --needed  picom neofetch ttf-jetbrains-mono xorg-server xorg-xwininfo xorg-xinit xorg-xsetroot ttf-joypixels ttf-linux-libertine lxappearance vifm feh sublime-text-dev tree calcurse xorg-xprop dosfstools libnotify dunst exfat-utils sxiv ffmpeg gnome-keyring polkit-gnome neovim mpd mpc mpv ncmpcpp networkmanager ttf-font-awesome-4 ttf-bitstream-vera ttf-dejavu pavucontrol pulseaudio pulseaudio-alsa pulsemixer imagemagick htop maim unrar unzip w3m xcape xclip xorg-xdpyinfo zathura zathura-pdf-poppler zathura-ps zathura-djvu mediainfo atool fzf highlight rofi xorg-xbacklight docx2txt odt2txt urxvt-perls rxvt-unicode pcmanfm neovim vifm brave-bin"
         arch_chroot "rm -rf /mnt/mnt"
         arch_chroot "cd /home/$user_name/; rm -rf .git/ LICENSE README.md git.sh setup-git.sh "
