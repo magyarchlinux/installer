@@ -2687,8 +2687,15 @@ install_run() {
     ) | yad --title="$TITLE" --width=400 --height=250 --progress --auto-close --enable-log --log-expanded --no-buttons
 
     yad --image=info --title="$TITLE" --buttons-layout=center --text="$INS011"
+    cev="$?"
     # reboot
-    shutdown -r now
+    if [ "$cev" == 0 ]
+    then
+        shutdown -r now
+    else
+        exit 1
+    fi
+
 }
 
 # Main
@@ -2746,16 +2753,4 @@ main() {
 
 installer_lang
 
- main
-
-
-
-
-
-
-
-
-
-
-
-
+main
