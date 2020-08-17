@@ -2301,7 +2301,7 @@ install_run() {
     if [ "$de_set" = "bspwm (MagyArch)" ]
     then
         arch_chroot "mkdir -p /mnt/mnt/etc/skel"
-        if [ "$VERSION" = "Test"]
+        if [ "$VERSION" = "Test" ]
         then
             arch_chroot "git clone https://github.com/bazeeel/baz-bspwm.git /mnt/mnt/etc/skel/"
         else
@@ -2313,7 +2313,7 @@ install_run() {
     if [ "$de_set" = "i3 (MagyArch)" ]
     then
         arch_chroot "mkdir -p /mnt/mnt/etc/skel"
-        if [ "$VERSION" = "Test"]
+        if [ "$VERSION" = "Test" ]
         then
             arch_chroot "git clone https://github.com/bazeeel/magyarch-i3.git /mnt/mnt/etc/skel/"
         else
@@ -2325,7 +2325,7 @@ install_run() {
     if [ "$de_set" = "spectrwm (MagyArch)" ]
     then
         arch_chroot "mkdir -p /mnt/mnt/etc/skel"
-        if [ "$VERSION" = "Test"]
+        if [ "$VERSION" = "Test" ]
         then
             arch_chroot "git clone https://github.com/bazeeel/magyarch-spectrwm.git /mnt/mnt/etc/skel/"
         else
@@ -2345,7 +2345,7 @@ install_run() {
     if [ "$de_set" = "qtile (MagyArch)" ]
     then
         # arch_chroot "mkdir -p /mnt/mnt/etc/skel"
-        if [ "$VERSION" = "Test"]
+        if [ "$VERSION" = "Test" ]
         then
             git clone https://github.com/magyarchlinux/magyarch-qtile.git 
         else
