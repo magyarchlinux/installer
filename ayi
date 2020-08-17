@@ -2,7 +2,7 @@
 
 . gettext.sh
 
-VERSION=` cat /version.txt `
+VERSION=$(cat /version.txt)
 
 
 export TEXTDOMAINDIR=$PWD/lang
@@ -2293,6 +2293,7 @@ install_run() {
     if [ "$kern" = "linux" ]
     then
         pacstrap /mnt base base-devel linux linux-firmware git
+        echo "end base"
     elif [ "$kern" = "linux-lts" ]
     then
         pacstrap /mnt  base base-devel linux-lts linux-firmware git
@@ -2345,6 +2346,7 @@ install_run() {
     if [ "$de_set" = "qtile (MagyArch)" ]
     then
         # arch_chroot "mkdir -p /mnt/mnt/etc/skel"
+        echo "qtile"
         if [ "$VERSION" = "Test" ]
         then
             git clone https://github.com/magyarchlinux/magyarch-qtile.git 
