@@ -2,6 +2,8 @@
 
 . gettext.sh
 
+VERSION=` cat /version.txt `
+
 
 export TEXTDOMAINDIR=$PWD/lang
 export TEXTDOMAIN=ayi
@@ -2299,21 +2301,33 @@ install_run() {
     if [ "$de_set" = "bspwm (MagyArch)" ]
     then
         arch_chroot "mkdir -p /mnt/mnt/etc/skel"
-        arch_chroot "git clone https://github.com/bazeeel/baz-bspwm.git /mnt/mnt/etc/skel/"
+        if [ "$VERSION" = "Test"]
+        then
+            arch_chroot "git clone https://github.com/bazeeel/baz-bspwm.git /mnt/mnt/etc/skel/"
+        else
+            arch_chroot "git clone -b $VERSION https://github.com/bazeeel/baz-bspwm.git /mnt/mnt/etc/skel/"
         arch_chroot "cp -rfT /mnt/mnt/etc/skel/ /etc/skel/"
     fi
 
     if [ "$de_set" = "i3 (MagyArch)" ]
     then
         arch_chroot "mkdir -p /mnt/mnt/etc/skel"
-        arch_chroot "git clone https://github.com/bazeeel/magyarch-i3.git /mnt/mnt/etc/skel/"
+        if [ "$VERSION" = "Test"]
+        then
+            arch_chroot "git clone https://github.com/bazeeel/magyarch-i3.git /mnt/mnt/etc/skel/"
+        else
+            arch_chroot "git clone -b $VERSION https://github.com/bazeeel/magyarch-i3.git /mnt/mnt/etc/skel/"
         arch_chroot "cp -rfT /mnt/mnt/etc/skel/ /etc/skel/"
     fi
 
     if [ "$de_set" = "spectrwm (MagyArch)" ]
     then
         arch_chroot "mkdir -p /mnt/mnt/etc/skel"
-        arch_chroot "git clone https://github.com/bazeeel/magyarch-spectrwm.git /mnt/mnt/etc/skel/"
+        if [ "$VERSION" = "Test"]
+        then
+            arch_chroot "git clone https://github.com/bazeeel/magyarch-spectrwm.git /mnt/mnt/etc/skel/"
+        else
+            arch_chroot "git clone -b $VERSION https://github.com/bazeeel/magyarch-spectrwm.git /mnt/mnt/etc/skel/"
         arch_chroot "cp -rfT /mnt/mnt/etc/skel/ /etc/skel/"
        
     fi
@@ -2328,7 +2342,11 @@ install_run() {
     if [ "$de_set" = "qtile (MagyArch)" ]
     then
         # arch_chroot "mkdir -p /mnt/mnt/etc/skel"
-        git clone https://github.com/magyarchlinux/magyarch-qtile.git 
+        if [ "$VERSION" = "Test"]
+        then
+            git clone https://github.com/magyarchlinux/magyarch-qtile.git 
+        else
+            git clone -b $VERSION https://github.com/magyarchlinux/magyarch-qtile.git 
         cp -rfT magyarch-qtile/ /mnt/etc/skel/
     fi
 
@@ -2554,7 +2572,7 @@ install_run() {
         #ch_chroot "pacman -S --noconfirm --needed  "
         
         arch_chroot "pacman -S --noconfirm --needed spectrwm unclutter dunst picom expac polkit-gnome rxvt-unicode urxvt-perls dmenu rofi firefox scrot vifm pcmanfm discord pavucontrol mpv lxappearance zathura zathura-djvu zathura-pdf-poppler ttf-joypixels ttf-jetbrains-mono terminus-font neofetch feh htop neovim figlet lolcat sublime-text-dev sxiv brave-bin xwallpaper"
-        arch_chroot "LANG=C ; yes | pacman -S libxft-bgra "
+        arch_chroot "LANG=C ; yes | pacman -S libxft-bgra sxhkd alacritty expac sxiv"
         arch_chroot "git clone https://github.com/bazeeel/st.git /mnt/mnt/st; cd /mnt/mnt/st; make clean install"
         arch_chroot "rm -rf /mnt/mnt"
         arch_chroot "cd /home/$user_name/; rm -rf .git/ LICENSE README.md git.sh setup-git.sh "
