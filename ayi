@@ -2702,6 +2702,15 @@ install_run() {
 
     echo "90"
 
+    # Check Laptop
+    if [ -z "$(ls -A /sys/class/power_supply/)" ]
+    then
+        echo "No Laptop"
+    else
+        echo "Laptop"
+        cp /installer/40-libinput.conf /mnt/etc/X11/xorg.conf.d/
+    fi
+
     arch_chroot "mkinitcpio -p $kern"
 
     umount -R /mnt
