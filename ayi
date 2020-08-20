@@ -2703,7 +2703,7 @@ install_run() {
     echo "90"
 
     # Check Laptop
-    if [ -z "$(ls -A /sys/class/power_supply/)" ]
+    if [ -z "$(ls -A /sys/class/power_supply/)" -o "$(ls -A /sys/class/power_supply)" = "AC" ]
     then
         echo "No Laptop"
     else
