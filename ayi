@@ -200,7 +200,7 @@ installer_lang() {
 
     data_int1=(SECSEL001 SECSEL002 SECSEL003 SECSEL004 SECSEL005)
 
-    OTHER_LIST_SEC=("${SECSEL001[@]}" "${SECSEL003[@]}" "${SECSEL003[@]}" "${SECSEL004[@]}" "${SECSEL005[@]}")
+    OTHER_LIST_SEC=("${SECSEL001[@]}" "${SECSEL002[@]}" "${SECSEL003[@]}" "${SECSEL004[@]}" "${SECSEL005[@]}")
 
     # Media apps
 
