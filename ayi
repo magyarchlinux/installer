@@ -2411,6 +2411,8 @@ install_run() {
     arch_chroot "ln -s /usr/share/zoneinfo/${tzz}/${tzsz} /etc/localtime"
 
     arch_chroot "hwclock --systohc --${tim}"
+    
+    arch_chroot "timedatectl set-ntp true"
 
     arch_chroot "echo ${hsnm} > /etc/hostname"
 
