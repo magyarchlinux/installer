@@ -680,7 +680,7 @@ dm_desktop_set() {
         --field="$DMDE001":CB \
         --field="$DMDE002":CB \
         "^lightdm,lxdm,sddm,gdm,${DEFAULT}" \
-        "bspwm (MagyArch),i3 (MagyArch),qtile (MagyArch),spectrwm (MagyArch),xfce4 (MagyArch), \
+        "bspwm (MagyArch),herbstluftwm (MagyArch),i3 (MagyArch),qtile (MagyArch),spectrwm (MagyArch),xfce4 (MagyArch), \
 bspwm,budgie-desktop,cinnamon,deepin,gnome,herbstluftwm,i3,jwm,lxde,lxqt,mate,openbox,plasma,qtile,spectrwm,xfce4,xmonad")"
 
 
@@ -2312,6 +2312,18 @@ install_run() {
         arch_chroot "cp -rfT /mnt/mnt/etc/skel/ /etc/skel/"
     fi
 
+    if [ "$de_set" = "herbstluftwm (MagyArch)" ]
+    then
+        arch_chroot "mkdir -p /mnt/mnt/etc/skel"
+        if [ "$VERSION" = "Test" ]
+        then
+            arch_chroot "git clone https://github.com/bazeeel/magyarch-hlwm.git /mnt/mnt/etc/skel/"
+        else
+            arch_chroot "git clone -b $VERSION https://github.com/bazeeel/magyarch-hlwm.git /mnt/mnt/etc/skel/"
+        fi
+        arch_chroot "cp -rfT /mnt/mnt/etc/skel/ /etc/skel/"
+    fi
+
     if [ "$de_set" = "i3 (MagyArch)" ]
     then
         arch_chroot "mkdir -p /mnt/mnt/etc/skel"
@@ -2606,9 +2618,14 @@ install_run() {
         arch_chroot "rm -rf /mnt/mnt"
         arch_chroot "cd /home/$user_name/; rm -rf .git/ LICENSE README.md git.sh setup-git.sh "
 
-    elif [ "$de_set" = "qtile (MagyArch)" ]
+    elif [ "$de_set" = "herbstluftwm" ]
     then
         arch_chroot "pacman -S --noconfirm --needed herbstluftwm, xorg-xsetroot, dzen2, dmenu"
+
+    elif [ "$de_set" = "herbstluftwm (MagyArch)" ]
+    then
+        arch_chroot "pacman -S --noconfirm --needed herbstluftwm, xorg-xsetroot, dzen2, dmenu"
+        arch_chroot "pacman -S --noconfirm --needed xwallpaper xclip xcape xdo wmctrl vifm vim neovim unzip unrar urxvt-perls rxvt-unicode sxiv ttf-font-awesome-4 ttf-jetbrains-mono ttf-joypixels sxhkd sublime-tex-dev rofi polkit-gnome polybar dmenu2 picom pavucontrol neofetch mpc mpd ncmpcpp mpv maim lf-bin expac discord brave-bin atool alacritty"
     
     else
         arch_chroot "pacman -S --noconfirm --needed $de_set "
