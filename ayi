@@ -2620,7 +2620,7 @@ install_run() {
 
     elif [ "$de_set" = "herbstluftwm" ]
     then
-        arch_chroot "pacman -S --noconfirm --needed herbstluftwm, xorg-xsetroot, dzen2, dmenu"
+        arch_chroot "pacman -S --noconfirm --needed herbstluftwm xorg-xsetroot dzen2 dmenu"
 
     elif [ "$de_set" = "herbstluftwm (MagyArch)" ]
     then
