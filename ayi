@@ -2641,9 +2641,9 @@ install_run() {
         arch_chroot "sudo pacman -S --noconfirm zsh zsh-syntax-highlighting zsh-completions grml-zsh-config;chsh -s /usr/bin/zsh $user_name"
     elif [ "$shel_l" = "fish" ]
     then
-        arch_chroot "sudo pacman -S --noconfirm $shel_l;chsh -s /usr/bin/$shel_l"
+        arch_chroot "pacman -S --noconfirm fish;chsh -s /usr/bin/fish $user_name"
     else 
-        arch_chroot "pacman -S --noconfirm --needed $shel_l bash-completion;chsh -s /usr/bin/$shel_l" 
+        arch_chroot "pacman -S --noconfirm --needed bash bash-completion;chsh -s /bin/bash $user_name" 
     fi
 
     echo "# $INS008"
