@@ -2628,6 +2628,7 @@ install_run() {
         arch_chroot "pacman -S --noconfirm --needed xwallpaper xclip xcape xdo wmctrl vifm vim neovim unzip unrar urxvt-perls rxvt-unicode sxiv ttf-font-awesome-4 ttf-jetbrains-mono ttf-joypixels sxhkd sublime-text-dev rofi polkit-gnome polybar picom pavucontrol neofetch mpc mpd ncmpcpp mpv maim lf-bin expac discord brave-bin atool alacritty"
         arch_chroot "rm -rf /mnt/mnt"
         arch_chroot "cd /home/$user_name/; rm -rf .git/ LICENSE README.md git.sh setup-git.sh "
+        arch_chroot "sed -i 's/Exec=herbstluftwm/Exec=herbstluftwm --locked/' /usr/share/xsessions/herbstluftwm.desktop"
 
     else
         arch_chroot "pacman -S --noconfirm --needed $de_set "
