@@ -2372,7 +2372,7 @@ install_run() {
     echo "30"
 
     echo "# $INS001"
-    genfstab -p /mnt >> /mnt/etc/fstab
+    genfstab -U /mnt >> /mnt/etc/fstab
     if grep -q "/mnt/swapfile" "/mnt/etc/fstab"; then
     sed -i '/swapfile/d' /mnt/etc/fstab
     echo "/swapfile     none    swap    defaults    0   0" >> /mnt/etc/fstab
