@@ -771,7 +771,7 @@ other_apps_sec() {
 
     oth_sec="$(yad  --width=400 --height=400 --center \
         --buttons-layout=center --title="$TITLE" --text="$OTHER001"\
-        --no-selection  --image=preferences --checklist --list \
+        --no-selection  --image=preferences --checklist --list --no-headers \
         --column="" --column="" --column="" "${OTHER_LIST_SEC[@]}")"
 
     pack_sec=$(echo $oth_sec | sed "s/ TRUE/;TRUE/g" | tr ";" "\n" | cut -d '|' -f2 | tr '\n' " ")
@@ -819,7 +819,7 @@ other_apps_med() {
 
     oth_med="$(yad  --width=400 --height=400 --center \
         --buttons-layout=center --title="$TITLE" --text="$OTHER002"\
-        --no-selection  --image=preferences --checklist --list \
+        --no-selection  --image=preferences --checklist --list --no-headers \
         --column="" --column="" --column="" "${OTHER_LIST_MED[@]}")"
 
     pack_med=$(echo $oth_med | sed "s/ TRUE/;TRUE/g" | tr ";" "\n" | cut -d '|' -f2 | tr '\n' " ")
@@ -866,7 +866,7 @@ other_apps_ofi() {
 
     oth_ofi="$(yad  --width=400 --height=400 --center \
         --buttons-layout=center --title="$TITLE" --text="$OTHER003"\
-        --no-selection  --image=preferences --checklist --list \
+        --no-selection  --image=preferences --checklist --list --no-headers \
         --column="" --column="" --column="" "${OTHER_LIST_OFI[@]}")"
 
     pack_ofi=$(echo $oth_ofi | sed "s/ TRUE/;TRUE/g" | tr ";" "\n" | cut -d '|' -f2 | tr '\n' " ")
@@ -913,7 +913,7 @@ other_apps_uti() {
 
     oth_uti="$(yad  --width=400 --height=400 --center \
         --buttons-layout=center --title="$TITLE" --text="$OTHER004"\
-        --no-selection  --image=preferences --checklist --list \
+        --no-selection  --image=preferences --checklist --list --no-headers \
         --column="" --column="" --column="" "${OTHER_LIST_UTI[@]}")"
 
     pack_uti=$(echo $oth_uti | sed "s/ TRUE/;TRUE/g" | tr ";" "\n" | cut -d '|' -f2 | tr '\n' " ")
@@ -962,7 +962,7 @@ other_apps_ter() {
 
     oth_ter="$(yad  --width=400 --height=400 --center \
         --buttons-layout=center --title="$TITLE" --text="$OTHER005"\
-        --no-selection  --image=preferences --checklist --list \
+        --no-selection  --image=preferences --checklist --list --no-headers \
         --column="" --column="" --column="" "${OTHER_LIST_TER[@]}")"
     # echo $oth_ter
 
@@ -1018,7 +1018,7 @@ grub_set() {
     # grub_dev=
     grb_set="$(yad  --width=400 --center \
         --buttons-layout=center --title="$TITLE" --text="$BTL001" \
-        --no-selection  --image=preferences --radiolist --list \
+        --no-selection  --image=preferences --radiolist --list --no-headers \
         --column="" --column="" $devices)"
 
     # grb_dev=$(echo $grb_set | cut -d '|' -f2)
@@ -1028,7 +1028,7 @@ grub_set() {
 bootloader_set() {
     bootloader="$(yad  --width=400 --height=250 --center \
         --buttons-layout=center --title="$TITLE" --text="$BTL000" \
-        --no-selection  --image=preferences --radiolist --list \
+        --no-selection  --image=preferences --radiolist --list --no-headers \
         --column="" --column="" false grub false refind false ${NONE})"
 
     unset MAIN_LIST
@@ -1056,7 +1056,7 @@ auto_part() {
     devices="$(lsblk -lno NAME,TYPE | grep 'disk' | awk '{print "/dev/" $1 " " $2}' | sort -u | sed "s/ disk//g" | awk '{print "false " $0}')"
     device="$(yad  --width=400 --center \
         --buttons-layout=center --title="$TITLE" --text="$MAIN012" \
-        --no-selection  --image=preferences --radiolist --list \
+        --no-selection  --image=preferences --radiolist --list --no-headers \
         --column="" --column="" $devices)"
     dev="$(echo "$device" | cut -d "|" -f2)"
     echo "$dev"
@@ -1093,7 +1093,7 @@ auto_part() {
 
         if [ "$ram" -gt "$num" ]
         then
-            swap_space=4096
+            swap_space=4098
         else
             swap_space="$ram"
         fi
@@ -1163,7 +1163,7 @@ kswp() {
 
     
 
-    swap_query="$(yad  --width=400 --center \
+    swap_query="$(yad  --width=400 --height=200 --center --no-headers \
         --buttons-layout=center --title="$TITLE" --text="$KSWP003" \
         --no-selection  --image=help --radiolist --list \
         --column="" --column="" "${KSWP_LIST[@]}")"
@@ -1643,12 +1643,12 @@ check_kswpf() {
 
 kswpfsize() {
 
-    # FALSE "3072" FALSE "4096" 
+    # FALSE "3072" FALSE "4098" 
     swapsize=$(yad --width=400 --center --title="$TITLE" --text="$KSWP004" \
         --buttons-layout=center --image=preferences \
         --form  --item-separator="," --separator=" " \
         --field="$KSWP001":CB \
-        "1024,2046,3072,4096")
+        "1024,2046,3072,4098")
     swaps=$(echo $swapsize | cut -d "|" -f2)
         
     if [ "$?" = "0" ]
@@ -1950,7 +1950,7 @@ partition_set() {
 
     partition="$(yad  --width=400 --center \
         --buttons-layout=center --title="$TITLE" --text="$MAIN012" \
-        --no-selection  --image=preferences --radiolist --list \
+        --no-selection  --image=preferences --radiolist --list --no-headers \
         --column="" --column="" "${PART_LIST[@]}")"
 
      
@@ -2007,8 +2007,8 @@ install_summary() {
 
     ins_sum="$(yad --width=400 --height=600 --center --title="$TITLE" --text="$MAIN015" \
         --buttons-layout=center --image=input-gaming \
-        --form  --item-separator="," --scroll \
-        --field="$MAIN002\n\t${LAN}:  $lan\n\n\
+        --form  --scroll \
+        --field "$MAIN002\n\t${LAN}:  $lan\n\n\
 $MAIN003\n\t${KBL}:  $kbl\n\t${KBM}:  $kbm\n\n\
 $MAIN004\n\t${TZZ}:  $tzz\n\t${TZSZ}: $tzsz\n\t${TIM}:  $tim\n\n\
 $MAIN005\n\t${HSNM1}:  $hsnm\n\n\
@@ -2799,7 +2799,7 @@ main() {
 
     main_diag="$(yad  --width=400 --height=480 --center \
         --buttons-layout=center --title="$TITLE" --text="$MAIN000" \
-        --no-selection  --image=preferences --radiolist --list \
+        --no-selection  --image=preferences --radiolist --list --no-headers \
         --column="" --column="" "${MAIN_LIST[@]}")"
     if [ "$(echo "$main_diag" | cut -d "|" -f2)" = "$MAIN001" ]
     then
