@@ -680,7 +680,7 @@ dm_desktop_set() {
         --field="$DMDE001":CB \
         --field="$DMDE002":CB \
         "^lightdm,lxdm,sddm,gdm,${DEFAULT}" \
-        "bspwm (MagyArch),dwm (MagyArch),herbstluftwm (MagyArch),i3 (MagyArch),qtile (MagyArch),spectrwm (MagyArch),xfce4 (MagyArch), \
+        "awesome (MagyArch),bspwm (MagyArch),dwm (MagyArch),herbstluftwm (MagyArch),i3 (MagyArch),qtile (MagyArch),spectrwm (MagyArch),xfce4 (MagyArch), \
 awesome,bspwm,budgie-desktop,cinnamon,deepin,dwm,gnome,herbstluftwm,i3,jwm,lxde,lxqt,mate,openbox,plasma,qtile,spectrwm,xfce4,xmonad")"
 
 
@@ -2300,6 +2300,18 @@ install_run() {
         pacstrap /mnt  base base-devel linux-lts linux-firmware git
     fi
 
+    if [ "$de_set" = "awesome (MagyArch)" ]
+    then
+        arch_chroot "mkdir -p /mnt/mnt/etc/skel"
+        if [ "$VERSION" = "Test" ]
+        then
+            arch_chroot "git clone https://github.com/bazeeel/magyarch-awesome.git /mnt/mnt/etc/skel/"
+        else
+            arch_chroot "git clone -b $VERSION https://github.com/bazeeel/magyarch-awesome.git /mnt/mnt/etc/skel/"
+        fi
+        arch_chroot "cp -rfT /mnt/mnt/etc/skel/ /etc/skel/"
+    fi
+
     if [ "$de_set" = "bspwm (MagyArch)" ]
     then
         arch_chroot "mkdir -p /mnt/mnt/etc/skel"
@@ -2573,6 +2585,13 @@ install_run() {
     elif [ "$de_set" = "awesome" ]
     then
         arch_chroot "pacman -S --noconfirm --needed awesome"
+
+    elif [ "$de_set" = "awesome (MagyArch)" ]
+    then
+        arch_chroot "pacman -S --noconfirm --needed awesome vicious sxhkd xdo rxvt-unicode scrot alacritty expac brave-bin newsboat"
+        arch_chroot "pacman -S --noconfirm --needed  picom neofetch ttf-jetbrains-mono xorg-server xorg-xwininfo xorg-xinit xorg-xsetroot sxhkd ttf-joypixels ttf-linux-libertine lxappearance xdo vifm feh sublime-text-dev ed tree arandr calcurse dmenu2 xorg-xprop dosfstools libnotify dunst exfat-utils sxiv xwallpaper ffmpeg gnome-keyring polkit-gnome neovim spotify discord mpd mpc mpv ncmpcpp networkmanager firefox ttf-font-awesome-4 ttf-bitstream-vera ttf-dejavu ntfs-3g pavucontrol pulseaudio pulseaudio-alsa pulsemixer pulseaudio-equalizer-ladspa imagemagick sutils-git htop xtitle-git maim socat unclutter unrar unzip urlscan w3m xcape xclip xdotool xorg-xdpyinfo youtube-dl zathura zathura-pdf-poppler zathura-ps zathura-djvu mediainfo atool fzf highlight rofi xorg-xbacklight bc task-spooler polybar docx2txt odt2txt urxvt-perls rxvt-unicode pcmanfm"
+        arch_chroot "rm -rf /mnt/mnt"
+        arch_chroot "cd /home/$user_name/; rm -rf .git/ LICENSE README.md git.sh setup-git.sh "
 
     elif [ "$de_set" = "xfce4 (MagyArch)" ]
     then
