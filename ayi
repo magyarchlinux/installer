@@ -1093,7 +1093,7 @@ auto_part() {
 
         if [ "$ram" -gt "$num" ]
         then
-            swap_space=4098
+            swap_space=4096
         else
             swap_space="$ram"
         fi
@@ -1643,12 +1643,12 @@ check_kswpf() {
 
 kswpfsize() {
 
-    # FALSE "3072" FALSE "4098" 
+    # FALSE "3072" FALSE "4096" 
     swapsize=$(yad --width=400 --center --title="$TITLE" --text="$KSWP004" \
         --buttons-layout=center --image=preferences \
         --form  --item-separator="," --separator=" " \
         --field="$KSWP001":CB \
-        "1024,2046,3072,4098")
+        "1024,2046,3072,4096")
     swaps=$(echo $swapsize | cut -d "|" -f2)
         
     if [ "$?" = "0" ]
