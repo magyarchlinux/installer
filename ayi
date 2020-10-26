@@ -113,6 +113,7 @@ installer_lang() {
     KSC001=$(GETTEXT "Kernel")
     KSC002=$(GETTEXT "Shell")
     KSC003=$(GETTEXT "Printer support (cups)")
+    KSC004=$(GETTEXT "Samba support (File manager)")
     GRC001=$(GETTEXT "Video card")
     GRC002=$(EGETTEXT "\n\nDetected:\n\$DETECT_CARD\n")
     DEFAULT=$(GETTEXT "Default")
@@ -644,8 +645,10 @@ kernel_shell_cups_set() {
         --field="$KSC001":CB \
         --field="$KSC002":CB \
         --field="$KSC003":CB \
+        --field="$KSC004":CB \
         "^linux,linux-lts" \
         "^bash,zsh,fish" \
+        "^${NO},${YES}" \
         "^${NO},${YES}" )"
 
     unset MAIN_LIST
@@ -1648,7 +1651,7 @@ kswpfsize() {
         --buttons-layout=center --image=preferences \
         --form  --item-separator="," --separator=" " \
         --field="$KSWP001":CB \
-        "1024,2046,3072,4096")
+        "1024,2048,3072,4096")
     swaps=$(echo $swapsize | cut -d "|" -f2)
         
     if [ "$?" = "0" ]
@@ -1982,6 +1985,7 @@ install_summary() {
     kern=$(echo $ker_sh_cup | cut -d '|' -f1)
     shel_l=$(echo $ker_sh_cup | cut -d '|' -f2)
     cup_s=$(echo $ker_sh_cup | cut -d '|' -f3)
+    samba_s=$(echo $ker_sh_cup | cut -d '|' -f4)
     grc=$(echo $grap | cut -d '|' -f1)
     dm_set=$(echo $dm_des | cut -d '|' -f1)
     de_set=$(echo $dm_des | cut -d '|' -f2)
@@ -2013,7 +2017,7 @@ $MAIN003\n\t${KBL}:  $kbl\n\t${KBM}:  $kbm\n\n\
 $MAIN004\n\t${TZZ}:  $tzz\n\t${TZSZ}: $tzsz\n\t${TIM}:  $tim\n\n\
 $MAIN005\n\t${HSNM1}:  $hsnm\n\n\
 ${URSET001}:  $user_name\n\n\
-$MAIN007\n\t${KSC001}:  $kern\n\t${KSC002}:  $shel_l\n\t${KSC003}:  $cup_s\n\n\
+$MAIN007\n\t${KSC001}:  $kern\n\t${KSC002}:  $shel_l\n\t${KSC003}:  $cup_s\n\t${KSC004}:  $samba_s\n\n\
 $MAIN008\n\t${GRC001}:  $grc\n\n\
 $MAIN009\n\t${DMDE001}:  $dm_set\n\t${DMDE002}:  $de_set\n\n\
 $MAIN011\n\t$boot_load\n":LBL )"
@@ -2519,6 +2523,12 @@ install_run() {
     then
         pacstrap /mnt ghostscript gsfonts system-config-printer gtk3-print-backends cups cups-pdf cups-filters
         arch_chroot "systemctl enable org.cups.cupsd.service"
+    fi
+
+    if [ "$samba_s" = "$YES" ]
+    then
+        arch_chroot "pacman -S avahi gvfs-smb --noconfirm --needed"
+        arch_chroot "systemctl enable avahi-daemon.service"
     fi
 
     if [ "$dm_set"  = "$DEFAULT" ]
