@@ -2645,6 +2645,7 @@ install_run() {
         arch_chroot "cd /mnt/mnt/etc/skel/.config/suckless/slstatus && make && make clean install"
         mkdir -p /mnt/usr/share/xsessions
         echo -e "[Desktop Entry]\nName=DWM (MagyArch)\nComment=DWM Session\nExec=/usr/local/bin/dwm\nType=Application\nKeywords=wm;tiling" > /mnt/usr/share/xsessions/mal_dwm.desktop
+        arch_chroot "LANG=C ; yes | pacman -S libxft-bgra "
 
         arch_chroot "rm -rf /mnt/mnt"
         arch_chroot "cd /home/$user_name/; rm -rf .git/ LICENSE README.md git.sh setup-git.sh "
