@@ -2464,7 +2464,12 @@ install_run() {
     # arch_chroot "pacman -Syy"
 
     echo "# $INS005"
-    arch_chroot "pacman -S --noconfirm --needed xorg-server xorg-apps xorg-xinit xorg-twm xterm alsa-utils pulseaudio pulseaudio-alsa xf86-input-synaptics xf86-input-libinput b43-fwcutter networkmanager nm-connection-editor network-manager-applet xdg-user-dirs xdg-utils ddrescue gvfs gvfs-mtp man-db neofetch lsb-release acpi xf86-video-fbdev mc "
+    arch_chroot "pacman -S --noconfirm --needed \
+        acpi alsa-utils b43-fwcutter ddrescue gvfs gvfs-mtp lsb-release man-db mc neofetch \
+        networkmanager network-manager-applet nm-connection-editor pulseaudio pulseaudio-alsa \
+        xdg-user-dirs xdg-utils xf86-input-libinput xf86-input-synaptics xf86-video-fbdev \
+        xorg-apps xorg-server xorg-twm xorg-xinit xterm"
+
     cp /installer/lsb-release /mnt/etc/
 
     # aur_hlp="cd /home/${user_name} ; su ${user_name} -c 'git clone https://aur.archlinux.org/yay-bin' ; cd yay-bin ; su ${user_name} -c 'makepkg' ; pacman -U yay-bin*x86_64* --noconfirm ; cd .. ; rm -rf yay-bin" 
@@ -2542,7 +2547,7 @@ install_run() {
             arch_chroot "systemctl enable lightdm.service"
         elif [ "$de_set" = "lxde" ]
         then
-            arch_chroot "pacman -S --noconfirm --needed lxdm-gtk3 "
+            arch_chroot "pacman -S --noconfirm --needed lxdm "
             arch_chroot "systemctl enable lxdm.service"
         elif [ "$de_set" = "plasma" ]
         then
@@ -2598,8 +2603,19 @@ install_run() {
 
     elif [ "$de_set" = "awesome (MagyArch)" ]
     then
-        arch_chroot "pacman -S --noconfirm --needed awesome vicious sxhkd xdo rxvt-unicode scrot alacritty expac brave-bin newsboat wmctrl"
-        arch_chroot "pacman -S --noconfirm --needed  picom neofetch ttf-jetbrains-mono xorg-server xorg-xwininfo xorg-xinit xorg-xsetroot sxhkd ttf-joypixels ttf-linux-libertine lxappearance xdo vifm feh sublime-text-dev ed tree arandr calcurse dmenu2 xorg-xprop dosfstools libnotify dunst exfat-utils sxiv xwallpaper ffmpeg gnome-keyring polkit-gnome neovim spotify discord mpd mpc mpv ncmpcpp networkmanager firefox ttf-font-awesome-4 ttf-bitstream-vera ttf-dejavu ntfs-3g pavucontrol pulseaudio pulseaudio-alsa pulsemixer pulseaudio-equalizer-ladspa imagemagick sutils-git htop xtitle-git maim socat unclutter unrar unzip urlscan w3m xcape xclip xdotool xorg-xdpyinfo youtube-dl zathura zathura-pdf-poppler zathura-ps zathura-djvu mediainfo atool fzf highlight rofi xorg-xbacklight bc task-spooler polybar docx2txt odt2txt urxvt-perls rxvt-unicode pcmanfm"
+        
+        arch_chroot "pacman -S --noconfirm --needed \
+            alacritty arandr atool awesome bc brave-bin calcurse discord dmenu2 docx2txt dosfstools dunst \
+            ed exfat-utils expac feh ffmpeg firefox fzf gnome-keyring highlight htop imagemagick libnotify \
+            lxappearance maim mediainfo mpc mpd mpv ncmpcpp neofetch neovim networkmanager newsboat ntfs-3g \
+            odt2txt pavucontrol pcmanfm picom polkit-gnome polybar pulseaudio pulseaudio-alsa \
+            pulseaudio-equalizer-ladspa pulsemixer rofi rxvt-unicode rxvt-unicode scrot socat spotify \
+            sublime-text-dev sutils-git sxhkd sxhkd sxiv task-spooler tree ttf-bitstream-vera ttf-dejavu \
+            ttf-font-awesome-4 ttf-jetbrains-mono ttf-joypixels ttf-linux-libertine unclutter unrar unzip \
+            urlscan urxvt-perls vicious vifm w3m wmctrl xcape xclip xdo xdo xdotool xorg-server \
+            xorg-xbacklight xorg-xdpyinfo xorg-xinit xorg-xprop xorg-xsetroot xorg-xwininfo xtitle-git \
+            xwallpaper youtube-dl zathura zathura-djvu zathura-pdf-poppler zathura-ps"
+
         arch_chroot "rm -rf /mnt/mnt"
         arch_chroot "cd /home/$user_name/; rm -rf .git/ LICENSE README.md git.sh setup-git.sh "
 
@@ -2630,16 +2646,34 @@ install_run() {
     elif [ "$de_set" = "bspwm (MagyArch)" ]
     then
         #ch_chroot "pacman -S --noconfirm --needed  "
-        arch_chroot "pacman -S --noconfirm --needed  bspwm sxhkd xdo rxvt-unicode scrot alacritty expac brave-bin newsboat wmctrl"
-        arch_chroot "pacman -S --noconfirm --needed  picom neofetch ttf-jetbrains-mono xorg-server xorg-xwininfo xorg-xinit xorg-xsetroot sxhkd ttf-joypixels ttf-linux-libertine lxappearance xdo vifm feh sublime-text-dev ed tree arandr calcurse dmenu2 xorg-xprop dosfstools libnotify dunst exfat-utils sxiv xwallpaper ffmpeg gnome-keyring polkit-gnome neovim spotify discord mpd mpc mpv ncmpcpp networkmanager firefox ttf-font-awesome-4 ttf-bitstream-vera ttf-dejavu ntfs-3g pavucontrol pulseaudio pulseaudio-alsa pulsemixer pulseaudio-equalizer-ladspa imagemagick sutils-git htop xtitle-git maim socat unclutter unrar unzip urlscan w3m xcape xclip xdotool xorg-xdpyinfo youtube-dl zathura zathura-pdf-poppler zathura-ps zathura-djvu mediainfo atool fzf highlight rofi xorg-xbacklight bc task-spooler polybar docx2txt odt2txt urxvt-perls rxvt-unicode pcmanfm"
+        arch_chroot "pacman -S --noconfirm --needed \
+            alacritty arandr atool bc brave-bin bspwm calcurse discord dmenu2 docx2txt dosfstools dunst ed \
+            exfat-utils expac feh ffmpeg firefox fzf gnome-keyring highlight htop imagemagick libnotify \
+            lxappearance maim mediainfo mpc mpd mpv ncmpcpp neofetch neovim networkmanager newsboat \
+            ntfs-3g odt2txt pavucontrol pcmanfm picom polkit-gnome polybar pulseaudio pulseaudio-alsa \
+            pulseaudio-equalizer-ladspa pulsemixer rofi rxvt-unicode rxvt-unicode scrot socat spotify \
+            sublime-text-dev sutils-git sxhkd sxhkd sxiv task-spooler tree ttf-bitstream-vera ttf-dejavu \
+            ttf-font-awesome-4 ttf-jetbrains-mono ttf-joypixels ttf-linux-libertine unclutter unrar unzip \
+            urlscan urxvt-perls vifm w3m wmctrl xcape xclip xdo xdo xdotool xorg-server xorg-xbacklight \
+            xorg-xdpyinfo xorg-xinit xorg-xprop xorg-xsetroot xorg-xwininfo xtitle-git xwallpaper youtube-dl \
+            zathura zathura-djvu zathura-pdf-poppler zathura-ps"
+
         arch_chroot "rm -rf /mnt/mnt"
         arch_chroot "cd /home/$user_name/; rm -rf .git/ LICENSE README.md git.sh setup-git.sh "
 
     elif [ "$de_set" = "dwm (MagyArch)" ]
     then
         #ch_chroot "pacman -S --noconfirm --needed  "
-        arch_chroot "pacman -S --noconfirm --needed  sxhkd xdo rxvt-unicode scrot alacritty expac brave-bin newsboat wmctrl"
-        arch_chroot "pacman -S --noconfirm --needed  picom neofetch ttf-jetbrains-mono xorg-server xorg-xwininfo xorg-xinit xorg-xsetroot sxhkd ttf-joypixels ttf-linux-libertine lxappearance xdo vifm feh sublime-text-dev ed tree arandr calcurse dmenu2 xorg-xprop dosfstools libnotify dunst exfat-utils sxiv xwallpaper ffmpeg gnome-keyring polkit-gnome neovim spotify discord mpd mpc mpv ncmpcpp networkmanager firefox ttf-font-awesome-4 ttf-bitstream-vera ttf-dejavu ntfs-3g pavucontrol pulseaudio pulseaudio-alsa pulsemixer pulseaudio-equalizer-ladspa imagemagick sutils-git htop xtitle-git maim socat unclutter unrar unzip urlscan w3m xcape xclip xdotool xorg-xdpyinfo youtube-dl zathura zathura-pdf-poppler zathura-ps zathura-djvu mediainfo atool fzf highlight rofi xorg-xbacklight bc task-spooler polybar docx2txt odt2txt urxvt-perls rxvt-unicode pcmanfm"
+        arch_chroot "pacman -S --noconfirm --needed \
+            alacritty arandr atool bc brave-bin calcurse discord dmenu2 docx2txt dosfstools dunst ed exfat-utils expac \
+            feh ffmpeg firefox fzf gnome-keyring highlight htop imagemagick libnotify lxappearance maim mediainfo mpc mpd \
+            mpv ncmpcpp neofetch neovim networkmanager newsboat ntfs-3g odt2txt pavucontrol pcmanfm picom polkit-gnome \
+            polybar pulseaudio pulseaudio-alsa pulseaudio-equalizer-ladspa pulsemixer rofi rxvt-unicode rxvt-unicode scrot \
+            socat spotify sublime-text-dev sutils-git sxhkd sxhkd sxiv task-spooler tree ttf-bitstream-vera ttf-dejavu \
+            ttf-font-awesome-4 ttf-jetbrains-mono ttf-joypixels ttf-linux-libertine unclutter unrar unzip urlscan \
+            urxvt-perls vifm w3m wmctrl xcape xclip xdo xdo xdotool xorg-server xorg-xbacklight xorg-xdpyinfo xorg-xinit \
+            xorg-xprop xorg-xsetroot xorg-xwininfo xtitle-git xwallpaper youtube-dl zathura zathura-djvu \
+            zathura-pdf-poppler zathura-ps"
         
         arch_chroot "cd /mnt/mnt/etc/skel/.config/suckless/dwm && make && make clean install"
         arch_chroot "cd /mnt/mnt/etc/skel/.config/suckless/slstatus && make && make clean install"
@@ -2657,13 +2691,13 @@ install_run() {
     elif [ "$de_set" = "spectrwm (MagyArch)" ]
     then
         #ch_chroot "pacman -S --noconfirm --needed  "
-        
         arch_chroot "pacman -S --noconfirm --needed \
-        spectrwm unclutter dunst picom expac polkit-gnome rxvt-unicode urxvt-perls dmenu \
-        rofi firefox scrot vifm pcmanfm discord pavucontrol mpv lxappearance zathura zathura-djvu \
-        zathura-pdf-poppler ttf-joypixels ttf-jetbrains-mono terminus-font neofetch feh htop neovim \
-        figlet lolcat sublime-text-dev sxiv brave-bin xwallpaper sxhkd alacritty expac sxiv wmctrl ncmpcpp xwallpaper newsboat unzip unrar ttf-font-awesome-4"
-        
+            alacritty brave-bin discord dmenu dunst expac expac feh figlet firefox htop lolcat \
+            lxappearance mpv ncmpcpp neofetch neovim newsboat pavucontrol pcmanfm picom polkit-gnome \
+            rofi rxvt-unicode scrot spectrwm sublime-text-dev sxhkd sxiv sxiv terminus-font \
+            ttf-font-awesome-4 ttf-jetbrains-mono ttf-joypixels unclutter unrar unzip urxvt-perls vifm \
+            wmctrl xwallpaper xwallpaper zathura zathura-djvu zathura-pdf-poppler"
+
         arch_chroot "LANG=C ; yes | pacman -S libxft-bgra "
         arch_chroot "git clone https://github.com/bazeeel/st.git /mnt/mnt/st; cd /mnt/mnt/st; make clean install"
         arch_chroot "rm -rf /mnt/mnt"
@@ -2672,7 +2706,17 @@ install_run() {
     elif [ "$de_set" = "i3 (MagyArch)" ]
     then
         #ch_chroot "pacman -S --noconfirm --needed  "
-        arch_chroot "pacman -S --noconfirm --needed  wmctrl i3-gaps i3blocks pavucontrol picom neofetch ttf-jetbrains-mono xorg-server xorg-xwininfo xorg-xinit xorg-xsetroot ttf-joypixels ttf-linux-libertine lxappearance xdo vifm feh sublime-text-dev ed tree calcurse dmenu xorg-xprop dosfstools libnotify dunst exfat-utils xwallpaper ffmpeg gnome-keyring polkit-gnome neovim spotify discord mpd mpc mpv ncmpcpp networkmanager ttf-font-awesome-4 ttf-bitstream-vera ttf-dejavu ntfs-3g pulseaudio pulseaudio-alsa pulsemixer pulseaudio-equalizer-ladspa imagemagick htop maim socat unclutter unrar unzip urlscan w3m xcape xclip xdotool xorg-xdpyinfo youtube-dl zathura zathura-pdf-mupdf poppler mediainfo fzf highlight rofi xorg-xbacklight rxvt-unicode urxvt-perls scrot pcmanfm alacritty sxiv expac sxhkd brave-bin"
+
+        arch_chroot "pacman -S --noconfirm --needed \
+            alacritty brave-bin calcurse discord dmenu dosfstools dunst ed exfat-utils expac feh \
+            ffmpeg fzf gnome-keyring highlight htop i3blocks i3-gaps imagemagick libnotify lxappearance \
+            maim mediainfo mpc mpd mpv ncmpcpp neofetch neovim networkmanager ntfs-3g pavucontrol \
+            pcmanfm picom polkit-gnome poppler pulseaudio pulseaudio-alsa pulseaudio-equalizer-ladspa \
+            pulsemixer rofi rxvt-unicode scrot socat spotify sublime-text-dev sxhkd sxiv tree ttf-bitstream-vera \
+            ttf-dejavu  ttf-font-awesome-4 ttf-jetbrains-mono ttf-joypixels ttf-linux-libertine unclutter \
+            unrar unzip urlscan urxvt-perls vifm w3m wmctrl xcape xclip xdo xdotool xorg-server xorg-xbacklight \
+            xorg-xdpyinfo xorg-xinit xorg-xprop xorg-xsetroot xorg-xwininfo xwallpaper youtube-dl zathura zathura-pdf-mupdf"
+
         arch_chroot "rm -rf /mnt/mnt"
         arch_chroot "cd /home/$user_name/; rm -rf .git/ LICENSE README.md git.sh setup-git.sh "
     
@@ -2684,8 +2728,16 @@ install_run() {
     elif [ "$de_set" = "qtile (MagyArch)" ]
     then
         #ch_chroot "pacman -S --noconfirm --needed  "
-        arch_chroot "pacman -S --noconfirm --needed  qtile python-psutil python-xlib expac python-requests python-mpd2 alacritty rxvt-unicode scrot discord maim cava newsboat gtop network-manager-applet dmenu xcb-util-cursor"
-        arch_chroot "pacman -S --noconfirm --needed  picom wmctrl neofetch ttf-jetbrains-mono xorg-server xorg-xwininfo xorg-xinit xorg-xsetroot ttf-joypixels ttf-linux-libertine lxappearance vifm feh sublime-text-dev tree calcurse xorg-xprop dosfstools libnotify dunst exfat-utils sxiv ffmpeg gnome-keyring polkit-gnome neovim mpd mpc mpv ncmpcpp networkmanager ttf-font-awesome-4 ttf-bitstream-vera ttf-dejavu pavucontrol pulseaudio pulseaudio-alsa pulsemixer imagemagick htop maim unrar unzip w3m xcape xclip xorg-xdpyinfo zathura zathura-pdf-poppler zathura-ps zathura-djvu mediainfo atool fzf highlight rofi xorg-xbacklight docx2txt odt2txt urxvt-perls rxvt-unicode pcmanfm neovim vifm brave-bin"
+        arch_chroot "pacman -S --noconfirm --needed \
+            alacritty atool brave-bin calcurse cava discord dmenu docx2txt dosfstools dunst exfat-utils expac feh \
+            ffmpeg fzf gnome-keyring gtop highlight htop imagemagick libnotify lxappearance maim maim mediainfo mpc \
+            mpd mpv ncmpcpp neofetch neovim neovim networkmanager network-manager-applet newsboat odt2txt pavucontrol \
+            pcmanfm picom polkit-gnome pulseaudio pulseaudio-alsa pulsemixer python-mpd2 python-psutil python-requests \
+            python-xlib qtile rofi rxvt-unicode rxvt-unicode scrot sublime-text-dev sxiv tree ttf-bitstream-vera \
+            ttf-dejavu ttf-font-awesome-4 ttf-jetbrains-mono ttf-joypixels ttf-linux-libertine unrar unzip urxvt-perls \
+            vifm vifm w3m wmctrl xcape xcb-util-cursor xclip xorg-server xorg-xbacklight xorg-xdpyinfo xorg-xinit xorg-xprop \
+            xorg-xsetroot xorg-xwininfo zathura zathura-djvu zathura-pdf-poppler zathura-ps"
+
         arch_chroot "rm -rf /mnt/mnt"
         arch_chroot "cd /home/$user_name/; rm -rf .git/ LICENSE README.md git.sh setup-git.sh "
 
@@ -2695,8 +2747,12 @@ install_run() {
 
     elif [ "$de_set" = "herbstluftwm (MagyArch)" ]
     then
-        arch_chroot "pacman -S --noconfirm --needed herbstluftwm xorg-xsetroot dzen2 dmenu2 calcurse zathura zathura-pdf-poppler pcmanfm newsboat wmctrl"
-        arch_chroot "pacman -S --noconfirm --needed xwallpaper xclip xcape xdo wmctrl vifm vim neovim unzip unrar urxvt-perls rxvt-unicode sxiv ttf-font-awesome-4 ttf-jetbrains-mono ttf-joypixels sxhkd sublime-text-dev rofi polkit-gnome polybar picom pavucontrol neofetch mpc mpd ncmpcpp mpv maim lf-bin expac discord brave-bin atool alacritty"
+        arch_chroot "pacman -S --noconfirm --needed \
+            alacritty atool brave-bin calcurse discord dmenu2 dzen2 expac herbstluftwm lf-bin maim mpc mpd mpv ncmpcpp \
+            neofetch neovim newsboat pavucontrol pcmanfm picom polkit-gnome polybar rofi rxvt-unicode sublime-text-dev sxhkd \
+            sxiv ttf-font-awesome-4 ttf-jetbrains-mono ttf-joypixels unrar unzip urxvt-perls vifm vim wmctrl wmctrl xcape \
+            xclip xdo xorg-xsetroot xwallpaper zathura zathura-pdf-poppler"
+
         arch_chroot "rm -rf /mnt/mnt"
         arch_chroot "cd /home/$user_name/; rm -rf .git/ LICENSE README.md git.sh setup-git.sh "
         arch_chroot "sed -i 's/Exec=herbstluftwm/Exec=herbstluftwm --locked/' /usr/share/xsessions/herbstluftwm.desktop"
