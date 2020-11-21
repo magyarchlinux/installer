@@ -2757,6 +2757,16 @@ install_run() {
         arch_chroot "cd /home/$user_name/; rm -rf .git/ LICENSE README.md git.sh setup-git.sh "
         arch_chroot "sed -i 's/Exec=herbstluftwm/Exec=herbstluftwm --locked/' /usr/share/xsessions/herbstluftwm.desktop"
 
+    elif [ "$de_set" = "deepin" ]
+    then
+        if [ "$dm_set"  = "lightdm" ]
+        then
+            arch_chroot "pacman -S deepin --needed --noconfirm"
+            arch_chroot "sed -i  's/#greeter-session=example-gtk-gnome/greeter-session=lightdm-gtk-greeter/' /etc/lightdm/lightdm.conf"
+        else
+            arch_chroot "pacman -S deepin --needed --noconfirm"
+        fi
+
     else
         arch_chroot "pacman -S --noconfirm --needed $de_set "
 
