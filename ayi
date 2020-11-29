@@ -2465,7 +2465,7 @@ install_run() {
 
     echo "# $INS005"
     arch_chroot "pacman -S --noconfirm --needed \
-        acpi alsa-utils b43-fwcutter ddrescue gvfs gvfs-mtp lsb-release man-db mc neofetch \
+        acpi alsa-utils b43-fwcutter conky-lua-archers ddrescue gvfs gvfs-mtp lsb-release man-db mc neofetch \
         networkmanager network-manager-applet nm-connection-editor pulseaudio pulseaudio-alsa \
         xdg-user-dirs xdg-utils xf86-input-libinput xf86-input-synaptics xf86-video-fbdev \
         xorg-apps xorg-server xorg-twm xorg-xinit xterm"
@@ -2528,6 +2528,7 @@ install_run() {
     then
         pacstrap /mnt ghostscript gsfonts system-config-printer gtk3-print-backends cups cups-pdf cups-filters
         arch_chroot "systemctl enable org.cups.cupsd.service"
+        arch_chroot "systemctl enable cups.service"
     fi
 
     if [ "$samba_s" = "$YES" ]
