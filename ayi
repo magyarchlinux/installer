@@ -2528,7 +2528,7 @@ install_run() {
     then
         pacstrap /mnt ghostscript gsfonts system-config-printer gtk3-print-backends cups cups-pdf cups-filters
         arch_chroot "systemctl enable org.cups.cupsd.service"
-        arch_chroot "systemctl enable cups.service"
+        arch_chroot "systemctl enable --now cups.service"
     fi
 
     if [ "$samba_s" = "$YES" ]
