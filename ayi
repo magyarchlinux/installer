@@ -2568,15 +2568,16 @@ install_run() {
     
     elif [ "$dm_set" = "lightdm" ]
     then
-        arch_chroot "pacman -S --noconfirm --needed lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings "
+        # arch_chroot "pacman -S --noconfirm --needed lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings "
+        arch_chroot "pacman -S --noconfirm --needed magyarch-lightdm"
         arch_chroot "systemctl enable lightdm.service"
-        git clone https://github.com/magyarchlinux/magyarch_xfce4.git
-        mkdir -p /mnt/usr/share/backgrounds
-        cp -rf magyarch_xfce4/usr/share/backgrounds/magyarch/ /mnt/usr/share/backgrounds/
-        # cp -rf magyarch_xfce4/usr/share/icons/braincolor-green /mnt/usr/share/icons/
-        cp -rf magyarch_xfce4/usr/share/themes/MagyArch-dark /mnt/usr/share/themes/
-        cp -rf magyarch_xfce4/etc/lightdm/lightdm-gtk-greeter.conf /mnt/etc/lightdm/
-        cp -rf magyarch_xfce4/usr/share/themes/MagyArch-braincolor /mnt/usr/share/themes/""
+        # git clone https://github.com/magyarchlinux/magyarch_xfce4.git
+        # mkdir -p /mnt/usr/share/backgrounds
+        # cp -rf magyarch_xfce4/usr/share/backgrounds/magyarch/ /mnt/usr/share/backgrounds/
+        # # cp -rf magyarch_xfce4/usr/share/icons/braincolor-green /mnt/usr/share/icons/
+        # cp -rf magyarch_xfce4/usr/share/themes/MagyArch-dark /mnt/usr/share/themes/
+        # cp -rf magyarch_xfce4/etc/lightdm/lightdm-gtk-greeter.conf /mnt/etc/lightdm/
+        # # cp -rf magyarch_xfce4/usr/share/themes/MagyArch-braincolor /mnt/usr/share/themes/""
     else
         arch_chroot "pacman -S --noconfirm --needed $dm_set "
         arch_chroot "systemctl enable ${dm_set}.service"
