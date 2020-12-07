@@ -617,7 +617,7 @@ pass_check() {
 
     echo "RUN PASS CHECK FUNCTION"
 
-    user_name=$1
+    user_name=${1,,}
     userpass1=$2
     userpass2=$3
     rootpass1=$4
