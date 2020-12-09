@@ -2566,6 +2566,7 @@ install_run() {
         else 
             
             arch_chroot "pacman -S --noconfirm --needed magyarch-lightdm"
+            arch_chroot "systemctl enable lightdm.service"
             # arch_chroot "pacman -S --noconfirm --needed lightdm lightdm-gtk-greeter-settings lightdm-gtk-greeter "
             # arch_chroot "systemctl enable lightdm.service"
             # git clone https://github.com/magyarchlinux/magyarch_xfce4.git 
