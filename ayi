@@ -2564,8 +2564,8 @@ install_run() {
             arch_chroot "pacman -S --noconfirm --needed sddm "
             arch_chroot "systemctl enable sddm.service"
         else 
-            arch_chroot "pacman -S --noconfirm --needed lightdm lightdm-gtk-greeter-settings lightdm-gtk-greeter gnome-control-center gnome-backgrounds "
-            arch_chroot "systemctl enable lightdm.service"
+            
+            arch_chroot "pacman -S --noconfirm --needed magyarch-lightdm"
             # arch_chroot "pacman -S --noconfirm --needed lightdm lightdm-gtk-greeter-settings lightdm-gtk-greeter "
             # arch_chroot "systemctl enable lightdm.service"
             # git clone https://github.com/magyarchlinux/magyarch_xfce4.git 
