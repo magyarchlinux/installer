@@ -683,7 +683,7 @@ dm_desktop_set() {
         --field="$DMDE001":CB \
         --field="$DMDE002":CB \
         "^lightdm,lxdm,sddm,gdm,${DEFAULT}" \
-        "awesome (MagyArch),bspwm (MagyArch),dwm (MagyArch),herbstluftwm (MagyArch),i3 (MagyArch),qtile (MagyArch),spectrwm (MagyArch),xfce4 (MagyArch), xmonad (MagyArch) \
+        "awesome (MagyArch),bspwm (MagyArch),dwm (MagyArch),herbstluftwm (MagyArch),i3 (MagyArch),qtile (MagyArch),spectrwm (MagyArch),xfce4 (MagyArch),xmonad (MagyArch), \
 awesome,bspwm,budgie-desktop,cinnamon,deepin,dwm,gnome,herbstluftwm,i3,jwm,lxde,lxqt,mate,openbox,plasma,qtile,spectrwm,xfce4,xmonad")"
 
 
