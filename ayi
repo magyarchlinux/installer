@@ -2790,7 +2790,7 @@ install_run() {
         #ch_chroot "pacman -S --noconfirm --needed  "
         arch_chroot "pacman -S --noconfirm --needed \
             alacritty arandr atool bc brave-bin calcurse discord dmenu2 docx2txt dosfstools dunst ed exfat-utils expac feh \
-            ffmpeg firefox fzf gnome-keyring highlight htop imagemagick libnotify lxappearance maim mediainfo mpc mpd mpv \
+            ffmpeg firefox fzf gnome-keyring highlight htop imagemagick libnotify lxappearance magyarch_xmonad_pacman_hook maim mediainfo mpc mpd mpv \
             ncmpcpp neofetch neovim networkmanager newsboat ntfs-3g odt2txt pavucontrol pcmanfm picom polkit-gnome pulseaudio \
             pulseaudio-alsa pulseaudio-equalizer-ladspa pulsemixer rofi rxvt-unicode rxvt-unicode scrot socat stalonetray sublime-text-dev \
             sutils-git sxhkd sxhkd sxiv task-spooler tree ttf-bitstream-vera ttf-dejavu ttf-font-awesome-4 ttf-jetbrains-mono \
