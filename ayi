@@ -2436,7 +2436,7 @@ install_run() {
     echo "30"
 
     echo "# $INS001"
-    genfstab -U /mnt >> /mnt/etc/fstab
+    genfstab -t PARTUUID /mnt >> /mnt/etc/fstab
     if grep -q "/mnt/swapfile" "/mnt/etc/fstab"; then
     sed -i '/swapfile/d' /mnt/etc/fstab
     echo "/swapfile     none    swap    defaults    0   0" >> /mnt/etc/fstab
@@ -2931,11 +2931,11 @@ install_run() {
 
             pacstrap /mnt refind-efi efibootmgr
             # arch_chroot "grub-mkconfig -o /boot/grub/grub.cfg"
-            rootuuid=$(lsblk -lno UUID ${root_part})
+            rootuuid=$(lsblk -lno PARTUUID ${root_part})
             arch_chroot "refind-install"
-            echo "\"MagyArch Linux\" \"root=UUID=${rootuuid} rw \"" > /mnt/boot/refind_linux.conf
-            echo "\"MagyArch Linux Fallback\" \"root=UUID=${rootuuid} rw initrd=/initramfs-linux-fallback.img\"" >> /mnt/boot/refind_linux.conf
-            echo "\"MagyArch Linux Terminal\" \"root=UUID=${rootuuid} rw systemd.unit=multi-user.target\"" >> /mnt/boot/refind_linux.conf
+            echo "\"MagyArch Linux\" \"root=PARTUUID=${rootuuid} rw \"" > /mnt/boot/refind_linux.conf
+            echo "\"MagyArch Linux Fallback\" \"root=PARTUUID=${rootuuid} rw initrd=/initramfs-linux-fallback.img\"" >> /mnt/boot/refind_linux.conf
+            echo "\"MagyArch Linux Terminal\" \"root=PARTUUID=${rootuuid} rw systemd.unit=multi-user.target\"" >> /mnt/boot/refind_linux.conf
 
         fi
     fi
