@@ -2454,7 +2454,7 @@ install_run() {
     arch_chroot "passwd root" < .passwd >/dev/null
     rm .passwd
     
-    echo "# $INS003"
+    
     arch_chroot "useradd -m -g users -G adm,lp,wheel,power,audio,video -s /bin/bash $user_name"
     touch .passwd
     echo -e "$userpass1\n$userpass2" > .passwd
