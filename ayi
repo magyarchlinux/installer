@@ -1067,10 +1067,10 @@ auto_part() {
     # dev="$(echo "$device" | cut -d "|" -f2)"
     devices=$(lsblk -lno PATH,TYPE,SIZE,MODEL | grep 'disk' | awk '{$1=$1;} NF=NF' | sed "s/ disk//g" | tr "\n" ";")
 
-    device="$(yad --width=400 --center --title="$TITLE" --text="$CLCK" \
-        --buttons-layout=center --image=clock \
+    device="$(yad --width=400 --center --title="$TITLE" --text="$MAIN012" \
+        --buttons-layout=center --image=preferences \
         --form --item-separator=";" \
-        --field="$TIM":CB "$devices")"
+        --field="Disk":CB "$devices")"
     
     dev="$(echo "$device" | awk '{print $1}')"
     echo "$dev"
