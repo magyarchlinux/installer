@@ -565,7 +565,7 @@ timezone_set() {
     unset MAIN_LIST
     
     MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
-        "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
+        "true" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
         "false" "$MAIN009" "false" "$MAIN010" "false" "$MAIN011" "false" "$MAIN013")
 }
 
