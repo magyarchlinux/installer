@@ -1070,7 +1070,7 @@ auto_part() {
     device="$(yad --width=400 --center --title="$TITLE" --text="$MAIN012" \
         --buttons-layout=center --image=preferences \
         --form --item-separator=";" \
-        --field="Disk":CB "$devices")"
+        --field="Disk":CB "${devices:0:-1}")"
     
     dev="$(echo "$device" | awk '{print $1}')"
     echo "$dev"
