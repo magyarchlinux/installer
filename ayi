@@ -2521,7 +2521,7 @@ install_run() {
     # aur_hlp="cd /home/${user_name} ; su ${user_name} -c 'git clone https://aur.archlinux.org/yay-bin' ; cd yay-bin ; su ${user_name} -c 'makepkg' ; pacman -U yay-bin*x86_64* --noconfirm ; cd .. ; rm -rf yay-bin" 
 
     # arch_chroot "cd /home/${user_name} ; su ${user_name} -c 'git clone https://aur.archlinux.org/yay-bin' ; cd yay-bin ; su ${user_name} -c 'makepkg' ; pacman -U yay-bin*x86_64* --noconfirm ; cd .. ; rm -rf yay-bin"
-    arch_chroot "pacman -S paru-bin bat vifm --needed --noconfirm"
+    arch_chroot "pacman -S paru-bin bat vifm tdrop-git --needed --noconfirm"
     arch_chroot "sed -i 's/#BottomUp/BottomUp/' /etc/paru.conf"
     arch_chroot "sed -i 's/#Color/Color/' /etc/pacman.conf"
 
