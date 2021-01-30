@@ -686,7 +686,7 @@ dm_desktop_set() {
         --field="$DMDE001":CB \
         --field="$DMDE002":CB \
         "^lightdm,lxdm,sddm,gdm,${DEFAULT}" \
-        "awesome (MagyArch),bspwm (MagyArch),dwm (MagyArch),herbstluftwm (MagyArch),i3 (MagyArch),qtile (MagyArch),spectrwm (MagyArch),xfce4 (MagyArch),xmonad (MagyArch),\
+        "awesome (MagyArch),bspwm (MagyArch),dwm (MagyArch),herbstluftwm (MagyArch),i3 (MagyArch),i3+polybar (MagyArch),qtile (MagyArch),spectrwm (MagyArch),xfce4 (MagyArch),xmonad (MagyArch),\
 xmonad+polybar (MagyArch),awesome,bspwm,budgie-desktop,cinnamon,deepin,dwm,gnome,herbstluftwm,i3,jwm,lxde,lxqt,mate,openbox,plasma,qtile,spectrwm,xfce4,xmonad")"
 
 
@@ -2384,6 +2384,18 @@ install_run() {
         arch_chroot "cp -rfT /mnt/mnt/etc/skel/ /etc/skel/"
     fi
 
+    if [ "$de_set" = "i3+polybar (MagyArch)" ]
+    then
+        arch_chroot "mkdir -p /mnt/mnt/etc/skel"
+        if [ "$VERSION" = "Test" ]
+        then
+            arch_chroot "git clone https://github.com/bazeeel/magyarch-i3-polybar.git /mnt/mnt/etc/skel/"
+        else
+            arch_chroot "git clone -b $VERSION https://github.com/bazeeel/magyarch-i3-polybar.git /mnt/mnt/etc/skel/"
+        fi
+        arch_chroot "cp -rfT /mnt/mnt/etc/skel/ /etc/skel/"
+    fi
+
     if [ "$de_set" = "spectrwm (MagyArch)" ]
     then
         arch_chroot "mkdir -p /mnt/mnt/etc/skel"
@@ -2767,6 +2779,23 @@ install_run() {
             ffmpeg fzf gnome-keyring highlight htop i3blocks i3-gaps imagemagick libnotify lxappearance \
             maim mediainfo mpc mpd mpv ncmpcpp neofetch neovim networkmanager ntfs-3g pavucontrol \
             pcmanfm picom polkit-gnome poppler pulseaudio pulseaudio-alsa pulseaudio-equalizer-ladspa \
+            pulsemixer rofi rxvt-unicode scrot socat spotify sublime-text-dev sxhkd sxiv tree ttf-bitstream-vera \
+            ttf-dejavu  ttf-font-awesome-4 ttf-jetbrains-mono ttf-joypixels ttf-linux-libertine unclutter \
+            unrar unzip urlscan urxvt-perls vifm w3m wmctrl xcape xclip xdo xdotool xorg-server xorg-xbacklight \
+            xorg-xdpyinfo xorg-xinit xorg-xprop xorg-xsetroot xorg-xwininfo xwallpaper youtube-dl zathura zathura-pdf-mupdf"
+
+        arch_chroot "rm -rf /mnt/mnt"
+        arch_chroot "cd /home/$user_name/; rm -rf .git/ LICENSE README.md git.sh setup-git.sh "
+    
+    elif [ "$de_set" = "i3+polybar (MagyArch)" ]
+    then
+        #ch_chroot "pacman -S --noconfirm --needed  "
+
+        arch_chroot "pacman -S --noconfirm --needed \
+            alacritty brave-bin calcurse discord dmenu dosfstools dunst ed exfat-utils expac feh \
+            ffmpeg fzf gnome-keyring highlight htop i3blocks i3-gaps imagemagick libnotify lxappearance \
+            maim mediainfo mpc mpd mpv ncmpcpp neofetch neovim networkmanager ntfs-3g pavucontrol \
+            pcmanfm picom polkit-gnome poppler polybar pulseaudio pulseaudio-alsa pulseaudio-equalizer-ladspa \
             pulsemixer rofi rxvt-unicode scrot socat spotify sublime-text-dev sxhkd sxiv tree ttf-bitstream-vera \
             ttf-dejavu  ttf-font-awesome-4 ttf-jetbrains-mono ttf-joypixels ttf-linux-libertine unclutter \
             unrar unzip urlscan urxvt-perls vifm w3m wmctrl xcape xclip xdo xdotool xorg-server xorg-xbacklight \
