@@ -2551,11 +2551,11 @@ install_run() {
 
     if [ "$kern" = "linux" -a "$grc" = "virtualbox" ]
     then
-        pacstrap /mnt virtualbox-guest-dkms virtualbox-guest-utils linux-headers 
+        arch_chroot "pacman -S --noconfirm --needed virtualbox-guest-dkms virtualbox-guest-utils linux-headers "
         echo -e "vboxguest\nvboxsf\nvboxvideo" > /mnt/etc/modules-load.d/virtualbox.conf
     elif [ "$kern" = "linux-lts" -a "$grc" = "virtualbox" ]
     then
-        pacstrap /mnt virtualbox-guest-dkms virtualbox-guest-utils linux-lts-headers
+        arch_chroot "pacman -S --noconfirm --needed virtualbox-guest-dkms virtualbox-guest-utils linux-lts-headers"
         echo -e "vboxguest\nvboxsf\nvboxvideo" > /mnt/etc/modules-load.d/virtualbox.conf
     elif [ "$grc" = "i915" ]
     then
@@ -2570,15 +2570,15 @@ install_run() {
 
     elif [ "$kern" = "linux" -a "$grc" = "nvidia" ]
     then
-        pacstrap /mnt nvidia libvdpau lib32-nvidia-utils lib32-libvdpau
+        arch_chroot "pacman -S --noconfirm --needed nvidia libvdpau lib32-nvidia-utils lib32-libvdpau"
 
     elif [ "$kern" = "linux-lts" -a "$grc" = "nvidia" ]
     then
-        pacstrap /mnt nvidia-lts libvdpau lib32-nvidia-utils lib32-libvdpau
+        arch_chroot "pacman -S --noconfirm --needed nvidia-lts libvdpau lib32-nvidia-utils lib32-libvdpau"
 
     elif [ "$grc" = "nouveau" ]
     then
-        pacstrap /mnt xf86-video-nouveau mesa lib32-mesa
+        arch_chroot "pacman -S --noconfirm --needed xf86-video-nouveau mesa lib32-mesa"
         # echo "options nouveau modeset=1\n" > /mnt/etc/modprobe.d/blacklist-nvidia.conf
 
     fi
