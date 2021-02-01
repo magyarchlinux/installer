@@ -2589,7 +2589,7 @@ install_run() {
     then
         arch_chroot "pacman -S --needed --noconfirm ghostscript gsfonts system-config-printer gtk3-print-backends cups cups-pdf cups-filters gutenprint"
         arch_chroot "systemctl enable org.cups.cupsd.service"
-        arch_chroot "systemctl enable --now cups.service"
+        arch_chroot "systemctl enable cups.service"
         arch_chroot "systemctl start cups.service"
     fi
 
