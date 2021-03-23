@@ -2736,8 +2736,8 @@ install_run() {
             alacritty arandr atool bc brave-bin calcurse discord dmenu2 docx2txt dosfstools dunst ed exfat-utils expac \
             feh ffmpeg firefox fzf gnome-keyring highlight htop imagemagick libnotify lxappearance maim mediainfo mpc mpd \
             mpv ncmpcpp neofetch neovim networkmanager newsboat ntfs-3g odt2txt pavucontrol pcmanfm picom polkit-gnome \
-            polybar pulseaudio pulseaudio-alsa pulseaudio-equalizer-ladspa pulsemixer rofi rxvt-unicode rxvt-unicode scrot \
-            socat sublime-text-dev sutils-git sxhkd sxhkd sxiv task-spooler tree ttf-bitstream-vera ttf-dejavu \
+            pulseaudio pulseaudio-alsa pulseaudio-equalizer-ladspa pulsemixer rofi rofi-greenclip rxvt-unicode rxvt-unicode scrot \
+            socat st sublime-text-dev surfraw sutils-git sxhkd sxhkd sxiv task-spooler tree ttf-bitstream-vera ttf-dejavu \
             ttf-font-awesome-4 ttf-jetbrains-mono ttf-joypixels ttf-linux-libertine unclutter unrar unzip urlscan \
             urxvt-perls vifm w3m wmctrl xcape xclip xdo xdo xdotool xorg-server xorg-xbacklight xorg-xdpyinfo xorg-xinit \
             xorg-xprop xorg-xsetroot xorg-xwininfo xtitle-git xwallpaper youtube-dl zathura zathura-djvu \
