@@ -2735,9 +2735,9 @@ install_run() {
         arch_chroot "pacman -S --noconfirm --needed \
             alacritty arandr atool bc brave-bin calcurse discord dmenu2 docx2txt dosfstools dunst ed exfat-utils expac \
             feh ffmpeg firefox fzf gnome-keyring highlight htop imagemagick libnotify lxappearance maim mediainfo mpc mpd \
-            mpv ncmpcpp neofetch neovim networkmanager newsboat ntfs-3g odt2txt pavucontrol pcmanfm picom polkit-gnome \
+            mpv mst ncmpcpp neofetch neovim networkmanager newsboat ntfs-3g odt2txt pavucontrol pcmanfm picom polkit-gnome \
             pulseaudio pulseaudio-alsa pulseaudio-equalizer-ladspa pulsemixer rofi rofi-greenclip rxvt-unicode rxvt-unicode scrot \
-            socat st sublime-text-dev surfraw sutils-git sxhkd sxhkd sxiv task-spooler tree ttf-bitstream-vera ttf-dejavu \
+            socat sublime-text-dev surfraw sutils-git sxhkd sxhkd sxiv task-spooler tree ttf-bitstream-vera ttf-dejavu \
             ttf-font-awesome-4 ttf-jetbrains-mono ttf-joypixels ttf-linux-libertine unclutter unrar unzip urlscan \
             urxvt-perls vifm w3m wmctrl xcape xclip xdo xdo xdotool xorg-server xorg-xbacklight xorg-xdpyinfo xorg-xinit \
             xorg-xprop xorg-xsetroot xorg-xwininfo xtitle-git xwallpaper youtube-dl zathura zathura-djvu \
@@ -2745,7 +2745,7 @@ install_run() {
         
         arch_chroot "cd /mnt/mnt/etc/skel/.config/suckless/dwm && make && make clean install"
         arch_chroot "cd /mnt/mnt/etc/skel/.config/suckless/slstatus && make && make clean install"
-        arch_chroot "cd /mnt/mnt/etc/skel/.config/suckless/st && make && make clean install"
+        # arch_chroot "cd /mnt/mnt/etc/skel/.config/suckless/st && make && make clean install"
         mkdir -p /mnt/usr/share/xsessions
         echo -e "[Desktop Entry]\nName=DWM (MagyArch)\nComment=DWM Session\nExec=/usr/local/bin/dwm\nType=Application\nKeywords=wm;tiling" > /mnt/usr/share/xsessions/mal_dwm.desktop
         arch_chroot "LANG=C ; yes | pacman -S libxft-bgra "
