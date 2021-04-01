@@ -2975,7 +2975,7 @@ install_run() {
         then
             echo "# $INS010"
 
-            arch_chroot " pacman -S refind efibootmgr"
+            arch_chroot " pacman -S refind efibootmgr --noconfirm --needed"
             # arch_chroot "grub-mkconfig -o /boot/grub/grub.cfg"
             rootuuid=$(lsblk -lno PARTUUID ${root_part})
             arch_chroot "refind-install"
