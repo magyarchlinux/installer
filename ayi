@@ -2762,8 +2762,8 @@ install_run() {
     then
         #ch_chroot "pacman -S --noconfirm --needed  "
         arch_chroot "pacman -S --noconfirm --needed \
-            alacritty brave-bin discord dmenu dunst expac expac feh figlet firefox htop lolcat \
-            lxappearance mpv ncmpcpp neofetch neovim newsboat pavucontrol pcmanfm picom polkit-gnome \
+            alacritty brave-bin discord dmenu2 dunst expac expac feh figlet firefox htop lolcat \
+            lxappearance maim mpd mpv ncmpcpp neofetch neovim newsboat pavucontrol pcmanfm picom polkit-gnome \
             rofi rxvt-unicode scrot spectrwm-git sublime-text-dev sxhkd sxiv sxiv terminus-font \
             ttf-font-awesome-4 ttf-jetbrains-mono ttf-joypixels unclutter unrar unzip urxvt-perls vifm \
             wmctrl xwallpaper xwallpaper zathura zathura-djvu zathura-pdf-poppler"
