@@ -2779,7 +2779,7 @@ install_run() {
 
         arch_chroot "pacman -S --noconfirm --needed \
             alacritty brave-bin calcurse discord dmenu dosfstools dunst ed exfat-utils expac feh \
-            ffmpeg fzf gnome-keyring highlight htop i3blocks i3-gaps imagemagick libnotify lxappearance \
+            ffmpeg fzf gnome-keyring highlight htop i3blocks i3-gaps imagemagick jq libnotify lxappearance \
             maim mediainfo mpc mpd mpv ncmpcpp neofetch neovim networkmanager ntfs-3g pavucontrol \
             pcmanfm picom polkit-gnome poppler pulseaudio pulseaudio-alsa pulseaudio-equalizer-ladspa \
             pulsemixer rofi rxvt-unicode scrot socat sublime-text-dev sxhkd sxiv tree ttf-bitstream-vera \
@@ -2796,7 +2796,7 @@ install_run() {
 
         arch_chroot "pacman -S --noconfirm --needed \
             alacritty brave-bin calcurse discord dmenu dosfstools dunst ed exfat-utils expac feh \
-            ffmpeg fzf gnome-keyring highlight htop i3blocks i3-gaps imagemagick libnotify lxappearance \
+            ffmpeg fzf gnome-keyring highlight htop i3blocks i3-gaps imagemagick jq libnotify lxappearance \
             maim mediainfo mpc mpd mpv ncmpcpp neofetch neovim networkmanager ntfs-3g pavucontrol \
             pcmanfm picom polkit-gnome poppler polybar pulseaudio pulseaudio-alsa pulseaudio-equalizer-ladspa \
             pulsemixer rofi rxvt-unicode scrot socat sublime-text-dev sxhkd sxiv tree ttf-bitstream-vera \
