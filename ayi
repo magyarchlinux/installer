@@ -2819,7 +2819,7 @@ install_run() {
             alacritty atool brave-bin calcurse cava discord dmenu docx2txt dosfstools dunst exfat-utils expac feh \
             ffmpeg fzf gnome-keyring gtop highlight htop imagemagick libnotify lxappearance maim maim mediainfo mpc \
             mpd mpv ncmpcpp neofetch neovim neovim networkmanager network-manager-applet newsboat odt2txt pavucontrol \
-            pcmanfm picom-tryone-git polkit-gnome pulseaudio pulseaudio-alsa pulsemixer python-mpd2 python-psutil python-requests \
+            pcmanfm picom polkit-gnome pulseaudio pulseaudio-alsa pulsemixer python-mpd2 python-psutil python-requests \
             python-xlib qtile rofi rxvt-unicode rxvt-unicode scrot sublime-text-dev sxiv tree ttf-bitstream-vera \
             ttf-dejavu ttf-font-awesome-4 ttf-jetbrains-mono ttf-joypixels ttf-linux-libertine unrar unzip urxvt-perls \
             vifm vifm w3m wmctrl xcape xcb-util-cursor xclip xorg-server xorg-xbacklight xorg-xdpyinfo xorg-xinit xorg-xprop \
