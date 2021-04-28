@@ -2414,7 +2414,7 @@ install_run() {
         # arch_chroot "mkdir -p /mnt/mnt/etc/skel"
         # git clone https://github.com/magyarchlinux/magyarch_xfce4.git 
         # cp -rf magyarch_xfce4/.config/ /mnt/etc/skel/
-        arch_chroot "pacman -S --noconfirm --need magyarch-xfce4"
+        arch_chroot "pacman -S --noconfirm --need magyarch-xfce4 nano discord sublime-text-dev"
     fi
 
     if [ "$de_set" = "qtile (MagyArch)" ]
