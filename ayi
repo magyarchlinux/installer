@@ -2523,10 +2523,10 @@ install_run() {
 
     echo "# $INS005"
     arch_chroot "pacman -S --noconfirm --needed \
-        acpi alsa-utils b43-fwcutter conky-lua-archers ddrescue gvfs gvfs-mtp lsb-release man-db mc neofetch \
+        acpi alsa-utils b43-fwcutter conky-lua-archers cowsay ddrescue gvfs gvfs-mtp lsb-release man-db mc neofetch \
         networkmanager network-manager-applet nm-connection-editor pulseaudio pulseaudio-alsa \
         xdg-user-dirs xdg-utils xf86-input-libinput xf86-input-synaptics xf86-video-fbdev \
-        xorg-apps xorg-server xorg-twm xorg-xinit xterm"
+        xorg-apps xorg-server xorg-twm xorg-xinit xterm wget"
 
     cp /installer/lsb-release /mnt/etc/
 
@@ -2535,6 +2535,7 @@ install_run() {
     # arch_chroot "cd /home/${user_name} ; su ${user_name} -c 'git clone https://aur.archlinux.org/yay-bin' ; cd yay-bin ; su ${user_name} -c 'makepkg' ; pacman -U yay-bin*x86_64* --noconfirm ; cd .. ; rm -rf yay-bin"
     arch_chroot "pacman -S paru-bin bat vifm tdrop-git --needed --noconfirm"
     arch_chroot "sed -i 's/#BottomUp/BottomUp/' /etc/paru.conf"
+    arch_chroot "sed -i 's|BottomUp|& \nSkipReview|' /etc/paru.conf"
     arch_chroot "sed -i 's/#Color/Color/' /etc/pacman.conf"
 
     processor=$(lspci -n | awk -F " " '{print $2 $3}' | grep ^"06" | awk -F ":" '{print $2}' | sed -n  '1p')
@@ -2763,7 +2764,7 @@ install_run() {
         #ch_chroot "pacman -S --noconfirm --needed  "
         arch_chroot "pacman -S --noconfirm --needed \
             alacritty brave-bin discord dmenu2 dunst expac expac feh figlet firefox htop lolcat \
-            lxappearance maim mpd mpv ncmpcpp neofetch neovim newsboat pavucontrol pcmanfm picom polkit-gnome \
+            lxappearance magyarch_xmenu maim mpd mpv ncmpcpp neofetch neovim newsboat pavucontrol pcmanfm picom polkit-gnome \
             rofi rxvt-unicode scrot spectrwm-git sublime-text-dev sxhkd sxiv sxiv terminus-font \
             ttf-font-awesome-4 ttf-jetbrains-mono ttf-joypixels unclutter unrar unzip urxvt-perls vifm \
             wmctrl xwallpaper xwallpaper zathura zathura-djvu zathura-pdf-poppler"
