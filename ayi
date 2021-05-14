@@ -2872,8 +2872,8 @@ install_run() {
             pulseaudio-alsa pulseaudio-equalizer-ladspa pulsemixer rofi rxvt-unicode rxvt-unicode scrot socat sublime-text-dev \
             sxhkd sxiv ttf-font-awesome-4 ttf-jetbrains-mono \
             ttf-joypixels ttf-linux-libertine unclutter unrar unzip urlscan urxvt-perls vifm w3m wmctrl xcape xclip xdo xdo xdotool \
-            xmonad xmonad-contrib xmonad-utils xmonad-log xorg-server xorg-xbacklight xorg-xdpyinfo xorg-xinit xorg-xprop xorg-xsetroot xorg-xwininfo \
-            xwallpaper youtube-dl zathura zathura-djvu zathura-pdf-poppler zathura-ps"
+            xmonad xmonad-contrib xmonad-log xmonad-utils xorg-server xorg-xbacklight xorg-xdpyinfo xorg-xinit xorg-xprop xorg-xsetroot xorg-xwininfo \
+            xtitle-git xwallpaper youtube-dl zathura zathura-djvu zathura-pdf-poppler zathura-ps"
 
         arch_chroot "rm -rf /mnt/mnt"
         arch_chroot "cd /home/$user_name/; rm -rf .git/ LICENSE README.md git.sh setup-git.sh "
