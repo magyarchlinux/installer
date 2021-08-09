@@ -453,7 +453,7 @@ Partition and format your hard disk, as this is not done by the installer!")
             
     MAIN_LIST=("false" "$MAIN001" "true" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
         "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
-        "false" "$MAIN009" "false" "$MAIN010" "false" "$MAIN011" "false" "$MAIN013")
+        "false" "$MAIN009" "false" "$MAIN011" "false" "$MAIN013")
 
 }
 
@@ -481,7 +481,7 @@ system_lang() {
 
     MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "true" "$MAIN003" "false" "$MAIN004" \
         "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
-        "false" "$MAIN009" "false" "$MAIN010" "false" "$MAIN011" "false" "$MAIN013")
+        "false" "$MAIN009" "false" "$MAIN011" "false" "$MAIN013")
 }
 
 # Set keyboard layout
@@ -508,7 +508,7 @@ keyboard_set() {
     
     MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "true" "$MAIN004" \
         "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
-        "false" "$MAIN009" "false" "$MAIN010" "false" "$MAIN011" "false" "$MAIN013")
+        "false" "$MAIN009" "false" "$MAIN011" "false" "$MAIN013")
 }
 
 # Set timezone
@@ -566,7 +566,7 @@ timezone_set() {
     
     MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
         "true" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
-        "false" "$MAIN009" "false" "$MAIN010" "false" "$MAIN011" "false" "$MAIN013")
+        "false" "$MAIN009" "false" "$MAIN011" "false" "$MAIN013")
 }
 
 # Set hostname
@@ -586,7 +586,7 @@ hname() {
     unset MAIN_LIST 
     MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
         "true" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
-        "false" "$MAIN009" "false" "$MAIN010" "false" "$MAIN011" "false" "$MAIN013")
+        "false" "$MAIN009" "false" "$MAIN011" "false" "$MAIN013")
 }
 
 
@@ -610,7 +610,7 @@ user_root_set() {
 
     MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
         "false" "$MAIN006" "true" "$MAIN007" "false" "$MAIN008" \
-        "false" "$MAIN009" "false" "$MAIN010" "false" "$MAIN011" "false" "$MAIN013")
+        "false" "$MAIN009" "false" "$MAIN011" "false" "$MAIN013")
 }
 
 
@@ -658,7 +658,7 @@ kernel_shell_cups_set() {
     
     MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
         "false" "$MAIN006" "false" "$MAIN007" "true" "$MAIN008" \
-        "false" "$MAIN009" "false" "$MAIN010" "false" "$MAIN011")
+        "false" "$MAIN009" "false" "$MAIN011")
 }
 
 
@@ -674,7 +674,7 @@ graphics_set() {
     
     MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
         "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
-        "true" "$MAIN009" "false" "$MAIN010" "false" "$MAIN011" "false" "$MAIN013")
+        "true" "$MAIN009" "false" "$MAIN011" "false" "$MAIN013")
 }
 
 
@@ -694,7 +694,7 @@ xmonad+polybar (MagyArch),awesome,bspwm,budgie-desktop,cinnamon,deepin,dwm,gnome
     
     MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
         "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
-        "false" "$MAIN009" "true" "$MAIN010" "false" "$MAIN011" "false" "$MAIN013")
+        "false" "$MAIN009" "true" "$MAIN011" "false" "$MAIN013")
 }
 
 
@@ -1014,7 +1014,7 @@ other_app_set() {
     
     MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
         "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
-        "false" "$MAIN009" "false" "$MAIN010" "true" "$MAIN011" "false" "$MAIN013")
+        "false" "$MAIN009" "false" "$MAIN011" "false" "$MAIN013")
 }
 
 grub_set() {
@@ -1041,7 +1041,7 @@ bootloader_set() {
     # boot_sel=$(echo $bootloader | cut -d '|' -f2)
     MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
         "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
-        "false" "$MAIN009" "false" "$MAIN010" "False" "$MAIN011" "true" "$MAIN013")
+        "false" "$MAIN009" "false" "$MAIN011" "true" "$MAIN013")
 
     if [ "$(echo "$bootloader" | cut -d "|" -f2)" = "grub" ]
     then
@@ -1972,7 +1972,7 @@ partition_set() {
     
     MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "true" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
         "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
-        "false" "$MAIN009" "false" "$MAIN010" "false" "$MAIN011" "false" "$MAIN013")
+        "false" "$MAIN009" "false" "$MAIN011" "false" "$MAIN013")
 
     if [ "$(echo "$partition" | cut -d "|" -f2)" = "$PART000" ]
     then
@@ -2041,7 +2041,7 @@ $MAIN011\n\t$boot_load\n":LBL )"
         # boot_sel=$(echo $bootloader | cut -d '|' -f2)
         MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
             "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
-            "false" "$MAIN009" "false" "$MAIN010" "False" "$MAIN011" "false" "$MAIN013")
+            "false" "$MAIN009" "false" "$MAIN011" "false" "$MAIN013")
         main
     else
         install_run
@@ -2414,7 +2414,7 @@ install_run() {
         # arch_chroot "mkdir -p /mnt/mnt/etc/skel"
         # git clone https://github.com/magyarchlinux/magyarch_xfce4.git 
         # cp -rf magyarch_xfce4/.config/ /mnt/etc/skel/
-        arch_chroot "pacman -S --noconfirm --need magyarch-xfce4 nano discord sublime-text-4"
+        arch_chroot "pacman -S --noconfirm --need magyarch-xfce4 nano discord sublime-text-dev"
     fi
 
     if [ "$de_set" = "qtile (MagyArch)" ]
@@ -2679,7 +2679,7 @@ install_run() {
             lxappearance maim mediainfo mpc mpd mpv ncmpcpp neofetch neovim networkmanager newsboat ntfs-3g \
             odt2txt pavucontrol pcmanfm picom polkit-gnome polybar pulseaudio pulseaudio-alsa \
             pulseaudio-equalizer-ladspa pulsemixer rofi rxvt-unicode rxvt-unicode scrot socat \
-            sublime-text-4 sutils-git sxhkd sxhkd sxiv task-spooler tree ttf-bitstream-vera ttf-dejavu \
+            sublime-text-dev sutils-git sxhkd sxhkd sxiv task-spooler tree ttf-bitstream-vera ttf-dejavu \
             ttf-font-awesome-4 ttf-jetbrains-mono ttf-joypixels ttf-linux-libertine unclutter unrar unzip \
             urlscan urxvt-perls vicious vifm w3m wmctrl xcape xclip xdo xdo xdotool xorg-server \
             xorg-xbacklight xorg-xdpyinfo xorg-xinit xorg-xprop xorg-xsetroot xorg-xwininfo xtitle-git \
@@ -2721,7 +2721,7 @@ install_run() {
             lxappearance maim mediainfo mpc mpd mpv ncmpcpp neofetch neovim networkmanager newsboat \
             ntfs-3g odt2txt pavucontrol pcmanfm picom polkit-gnome polybar pulseaudio pulseaudio-alsa \
             pulseaudio-equalizer-ladspa pulsemixer rofi rxvt-unicode rxvt-unicode scrot socat \
-            sublime-text-4 sutils-git sxhkd sxhkd sxiv task-spooler tree ttf-bitstream-vera ttf-dejavu \
+            sublime-text-dev sutils-git sxhkd sxhkd sxiv task-spooler tree ttf-bitstream-vera ttf-dejavu \
             ttf-font-awesome-4 ttf-jetbrains-mono ttf-joypixels ttf-linux-libertine unclutter unrar unzip \
             urlscan urxvt-perls vifm w3m wmctrl xcape xclip xdo xdo xdotool xorg-server xorg-xbacklight \
             xorg-xdpyinfo xorg-xinit xorg-xprop xorg-xsetroot xorg-xwininfo xtitle-git xwallpaper youtube-dl \
@@ -2738,7 +2738,7 @@ install_run() {
             feh ffmpeg firefox fzf gnome-keyring highlight htop imagemagick libnotify lxappearance maim mediainfo mpc mpd \
             mpv ncmpcpp neofetch neovim networkmanager newsboat ntfs-3g odt2txt pavucontrol pcmanfm picom polkit-gnome \
             pulseaudio pulseaudio-alsa pulseaudio-equalizer-ladspa pulsemixer rofi rofi-greenclip rxvt-unicode rxvt-unicode scrot \
-            socat sublime-text-4 surfraw sutils-git sxhkd sxhkd sxiv task-spooler tree ttf-bitstream-vera ttf-dejavu \
+            socat sublime-text-dev surfraw sutils-git sxhkd sxhkd sxiv task-spooler tree ttf-bitstream-vera ttf-dejavu \
             ttf-font-awesome-4 ttf-jetbrains-mono ttf-joypixels ttf-linux-libertine unclutter unrar unzip urlscan \
             urxvt-perls vifm w3m wmctrl xcape xclip xdo xdo xdotool xorg-server xorg-xbacklight xorg-xdpyinfo xorg-xinit \
             xorg-xprop xorg-xsetroot xorg-xwininfo xtitle-git xwallpaper youtube-dl zathura zathura-djvu \
@@ -2765,7 +2765,7 @@ install_run() {
         arch_chroot "pacman -S --noconfirm --needed \
             alacritty brave-bin discord dmenu2 dunst expac expac feh figlet firefox htop lolcat \
             lxappearance magyarch_xmenu maim mpd mpv ncmpcpp neofetch neovim newsboat pavucontrol pcmanfm picom polkit-gnome \
-            rofi rxvt-unicode scrot spectrwm-git sublime-text-4 sxhkd sxiv sxiv terminus-font \
+            rofi rxvt-unicode scrot spectrwm-git sublime-text-dev sxhkd sxiv sxiv terminus-font \
             ttf-font-awesome-4 ttf-jetbrains-mono ttf-joypixels unclutter unrar unzip urxvt-perls vifm \
             wmctrl xwallpaper xwallpaper zathura zathura-djvu zathura-pdf-poppler"
 
@@ -2783,7 +2783,7 @@ install_run() {
             ffmpeg fzf gnome-keyring highlight htop i3blocks i3-gaps imagemagick jq libnotify lxappearance \
             maim mediainfo mpc mpd mpv ncmpcpp neofetch neovim networkmanager ntfs-3g pavucontrol \
             pcmanfm picom polkit-gnome poppler pulseaudio pulseaudio-alsa pulseaudio-equalizer-ladspa \
-            pulsemixer rofi rxvt-unicode scrot socat sublime-text-4 sxhkd sxiv tree ttf-bitstream-vera \
+            pulsemixer rofi rxvt-unicode scrot socat sublime-text-dev sxhkd sxiv tree ttf-bitstream-vera \
             ttf-dejavu  ttf-font-awesome-4 ttf-jetbrains-mono ttf-joypixels ttf-linux-libertine unclutter \
             unrar unzip urlscan urxvt-perls vifm w3m wmctrl xcape xclip xdo xdotool xorg-server xorg-xbacklight \
             xorg-xdpyinfo xorg-xinit xorg-xprop xorg-xsetroot xorg-xwininfo xwallpaper youtube-dl zathura zathura-pdf-mupdf"
@@ -2800,7 +2800,7 @@ install_run() {
             ffmpeg fzf gnome-keyring highlight htop i3blocks i3-gaps imagemagick jq libnotify lxappearance \
             maim mediainfo mpc mpd mpv ncmpcpp neofetch neovim networkmanager ntfs-3g pavucontrol \
             pcmanfm picom polkit-gnome poppler polybar pulseaudio pulseaudio-alsa pulseaudio-equalizer-ladspa \
-            pulsemixer rofi rxvt-unicode scrot socat sublime-text-4 sxhkd sxiv tree ttf-bitstream-vera \
+            pulsemixer rofi rxvt-unicode scrot socat sublime-text-dev sxhkd sxiv tree ttf-bitstream-vera \
             ttf-dejavu  ttf-font-awesome-4 ttf-jetbrains-mono ttf-joypixels ttf-linux-libertine unclutter \
             unrar unzip urlscan urxvt-perls vifm w3m wmctrl xcape xclip xdo xdotool xorg-server xorg-xbacklight \
             xorg-xdpyinfo xorg-xinit xorg-xprop xorg-xsetroot xorg-xwininfo xwallpaper youtube-dl zathura zathura-pdf-mupdf"
@@ -2821,7 +2821,7 @@ install_run() {
             ffmpeg fzf gnome-keyring gtop highlight htop imagemagick libnotify lxappearance maim maim mediainfo mpc \
             mpd mpv ncmpcpp neofetch neovim neovim networkmanager network-manager-applet newsboat odt2txt pavucontrol \
             pcmanfm picom-tryone-git polkit-gnome pulseaudio pulseaudio-alsa pulsemixer python-mpd2 python-psutil python-requests \
-            python-setuptools python-xlib qtile rofi rxvt-unicode rxvt-unicode scrot sublime-text-4 sxiv tree ttf-bitstream-vera \
+            python-setuptools python-xlib qtile rofi rxvt-unicode rxvt-unicode scrot sublime-text-dev sxiv tree ttf-bitstream-vera \
             ttf-dejavu ttf-font-awesome-4 ttf-jetbrains-mono ttf-joypixels ttf-linux-libertine unrar unzip urxvt-perls \
             vifm vifm w3m wmctrl xcape xcb-util-cursor xclip xorg-server xorg-xbacklight xorg-xdpyinfo xorg-xinit xorg-xprop \
             xorg-xsetroot xorg-xwininfo zathura zathura-djvu zathura-pdf-poppler zathura-ps"
@@ -2837,7 +2837,7 @@ install_run() {
     then
         arch_chroot "pacman -S --noconfirm --needed \
             alacritty atool brave-bin calcurse discord dmenu2 dzen2 expac herbstluftwm lf-bin maim mpc mpd mpv ncmpcpp \
-            neofetch neovim newsboat pavucontrol pcmanfm picom polkit-gnome polybar rofi rxvt-unicode sublime-text-4 sxhkd \
+            neofetch neovim newsboat pavucontrol pcmanfm picom polkit-gnome polybar rofi rxvt-unicode sublime-text-dev sxhkd \
             sxiv ttf-font-awesome-4 ttf-jetbrains-mono ttf-joypixels unrar unzip urxvt-perls vifm vim wmctrl wmctrl xcape \
             xclip xdo xorg-xsetroot xwallpaper zathura zathura-pdf-poppler"
 
@@ -2852,7 +2852,7 @@ install_run() {
             alacritty arandr brave-bin calcurse discord dmenu2 docx2txt dosfstools dunst ed exfat-utils expac feh \
             ffmpeg firefox fzf gnome-keyring highlight htop imagemagick jgmenu libnotify lxappearance magyarch_xmonad_pacman_hook maim mediainfo mpc mpd mpv \
             ncmpcpp neofetch neovim networkmanager newsboat ntfs-3g odt2txt pavucontrol pcmanfm picom polkit-gnome pulseaudio \
-            pulseaudio-alsa pulseaudio-equalizer-ladspa pulsemixer rofi rxvt-unicode rxvt-unicode scrot socat stalonetray sublime-text-4 \
+            pulseaudio-alsa pulseaudio-equalizer-ladspa pulsemixer rofi rxvt-unicode rxvt-unicode scrot socat stalonetray sublime-text-dev \
             sxhkd sxiv ttf-font-awesome-4 ttf-jetbrains-mono \
             ttf-joypixels ttf-linux-libertine unclutter unrar unzip urlscan urxvt-perls vifm w3m wmctrl xcape xclip xdo xdo xdotool \
             xmonad xmonad-contrib xmonad-utils xmonad-log xorg-server xorg-xbacklight xorg-xdpyinfo xorg-xinit xorg-xprop xorg-xsetroot xorg-xwininfo \
@@ -2869,7 +2869,7 @@ install_run() {
             alacritty arandr brave-bin calcurse discord dmenu2 docx2txt dosfstools dunst ed exfat-utils expac feh \
             ffmpeg firefox fzf gnome-keyring haskell-dbus highlight htop imagemagick libnotify lxappearance magyarch_xmonad_pacman_hook maim mediainfo mpc mpd mpv \
             ncmpcpp neofetch neovim networkmanager newsboat ntfs-3g odt2txt pavucontrol pcmanfm picom polkit-gnome polybar pulseaudio \
-            pulseaudio-alsa pulseaudio-equalizer-ladspa pulsemixer rofi rxvt-unicode rxvt-unicode scrot socat sublime-text-4 \
+            pulseaudio-alsa pulseaudio-equalizer-ladspa pulsemixer rofi rxvt-unicode rxvt-unicode scrot socat sublime-text-dev \
             sxhkd sxiv ttf-font-awesome-4 ttf-jetbrains-mono \
             ttf-joypixels ttf-linux-libertine unclutter unrar unzip urlscan urxvt-perls vifm w3m wmctrl xcape xclip xdo xdo xdotool \
             xmonad xmonad-contrib xmonad-log xmonad-utils xorg-server xorg-xbacklight xorg-xdpyinfo xorg-xinit xorg-xprop xorg-xsetroot xorg-xwininfo \
@@ -3055,9 +3055,9 @@ main() {
     elif [ "$(echo "$main_diag" | cut -d "|" -f2)" = "$MAIN009" ]
     then
         dm_desktop_set;main
-    elif [ "$(echo "$main_diag" | cut -d "|" -f2)" = "$MAIN010" ]
-    then
-        other_app_set;main
+    # elif [ "$(echo "$main_diag" | cut -d "|" -f2)" = "$MAIN010" ]
+    # then
+    #     other_app_set;main
     elif [ "$(echo "$main_diag" | cut -d "|" -f2)" = "$MAIN011" ]
     then
         bootloader_set;main
