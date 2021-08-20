@@ -2523,8 +2523,8 @@ install_run() {
 
     echo "# $INS005"
     arch_chroot "pacman -S --noconfirm --needed \
-        acpi alsa-utils b43-fwcutter conky-lua-archers cowsay ddrescue gvfs gvfs-mtp lsb-release man-db mc neofetch \
-        networkmanager network-manager-applet nm-connection-editor pulseaudio pulseaudio-alsa \
+        acpi alsa-utils apg b43-fwcutter conky-lua-archers cowsay ddrescue gvfs gvfs-mtp jq lsb-release man-db mc neofetch \
+        networkmanager network-manager-applet nm-connection-editor pulseaudio pulseaudio-alsa python-ueberzug python-psutil python-requests \
         xdg-user-dirs xdg-utils xf86-input-libinput xf86-input-synaptics xf86-video-fbdev \
         xorg-apps xorg-server xorg-twm xorg-xinit xterm wget"
 
@@ -2783,7 +2783,7 @@ install_run() {
             ffmpeg fzf gnome-keyring highlight htop i3blocks i3-gaps imagemagick jq libnotify lxappearance \
             maim mediainfo mpc mpd mpv ncmpcpp neofetch neovim networkmanager ntfs-3g pavucontrol \
             pcmanfm picom polkit-gnome poppler pulseaudio pulseaudio-alsa pulseaudio-equalizer-ladspa \
-            pulsemixer rofi rxvt-unicode scrot socat sublime-text-dev sxhkd sxiv tree ttf-bitstream-vera \
+            pulsemixer python-i3ipc rofi rxvt-unicode scrot socat sublime-text-dev sxhkd sxiv tree ttf-bitstream-vera \
             ttf-dejavu  ttf-font-awesome-4 ttf-jetbrains-mono ttf-joypixels ttf-linux-libertine unclutter \
             unrar unzip urlscan urxvt-perls vifm w3m wmctrl xcape xclip xdo xdotool xorg-server xorg-xbacklight \
             xorg-xdpyinfo xorg-xinit xorg-xprop xorg-xsetroot xorg-xwininfo xwallpaper youtube-dl zathura zathura-pdf-mupdf"
@@ -2800,7 +2800,7 @@ install_run() {
             ffmpeg fzf gnome-keyring highlight htop i3blocks i3-gaps imagemagick jq libnotify lxappearance \
             maim mediainfo mpc mpd mpv ncmpcpp neofetch neovim networkmanager ntfs-3g pavucontrol \
             pcmanfm picom polkit-gnome poppler polybar pulseaudio pulseaudio-alsa pulseaudio-equalizer-ladspa \
-            pulsemixer rofi rxvt-unicode scrot socat sublime-text-dev sxhkd sxiv tree ttf-bitstream-vera \
+            pulsemixer python-i3ipc rofi rxvt-unicode scrot socat sublime-text-dev sxhkd sxiv tree ttf-bitstream-vera \
             ttf-dejavu  ttf-font-awesome-4 ttf-jetbrains-mono ttf-joypixels ttf-linux-libertine unclutter \
             unrar unzip urlscan urxvt-perls vifm w3m wmctrl xcape xclip xdo xdotool xorg-server xorg-xbacklight \
             xorg-xdpyinfo xorg-xinit xorg-xprop xorg-xsetroot xorg-xwininfo xwallpaper youtube-dl zathura zathura-pdf-mupdf"
