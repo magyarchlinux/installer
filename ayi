@@ -2524,8 +2524,8 @@ install_run() {
     echo "# $INS005"
     arch_chroot "pacman -S --noconfirm --needed \
         acpi alsa-utils apg b43-fwcutter conky-lua-archers cowsay ddrescue gvfs gvfs-mtp jq lsb-release man-db mc neofetch \
-        networkmanager network-manager-applet nm-connection-editor pulseaudio pulseaudio-alsa python-ueberzug python-psutil python-requests \
-        xdg-user-dirs xdg-utils xf86-input-libinput xf86-input-synaptics xf86-video-fbdev \
+        networkmanager nerd-fonts-jetbrains-mono network-manager-applet nm-connection-editor pulseaudio pulseaudio-alsa \
+        python-ueberzug python-psutil python-requests xdg-user-dirs xdg-utils xf86-input-libinput xf86-input-synaptics xf86-video-fbdev \
         xorg-apps xorg-server xorg-twm xorg-xinit xterm wget"
 
     cp /installer/lsb-release /mnt/etc/
