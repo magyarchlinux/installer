@@ -451,6 +451,7 @@ Partition and format your hard disk, as this is not done by the installer!")
     DISKTYPE000=$(GETTEXT "Normal")
     DISKTYPE001=$(GETTEXT "LVM")
     DISKTYPE002=$(GETTEXT "LVM + LUKS (encrypt)")
+    DISKTYPE002=$(GETTEXT "LVM + LUKS (encrypt)")
 
 
             
