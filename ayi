@@ -448,9 +448,9 @@ Partition and format your hard disk, as this is not done by the installer!")
     INS011=$(GETTEXT "Installation is complete!")
     # INS012=$(GETTEXT "")
     # INS00=$(GETTEXT "")
-    DISKTYPE000=é(GETTEXT "Normal")
-    DISKTYPE000=é(GETTEXT "LVM")
-    DISKTYPE000=é(GETTEXT "LVM + LUKS (encrypt)")
+    DISKTYPE000=$(GETTEXT "Normal")
+    DISKTYPE001=$(GETTEXT "LVM")
+    DISKTYPE002=$(GETTEXT "LVM + LUKS (encrypt)")
 
 
             
