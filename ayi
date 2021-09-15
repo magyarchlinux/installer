@@ -448,6 +448,9 @@ Partition and format your hard disk, as this is not done by the installer!")
     INS011=$(GETTEXT "Installation is complete!")
     # INS012=$(GETTEXT "")
     # INS00=$(GETTEXT "")
+    DISKTYPE000=é(GETTEXT "Normal")
+    DISKTYPE000=é(GETTEXT "LVM")
+    DISKTYPE000=é(GETTEXT "LVM + LUKS (encrypt)")
 
 
             
@@ -2459,7 +2462,7 @@ install_run() {
     echo "30"
 
     echo "# $INS001"
-    genfstab -t PARTUUID /mnt >> /mnt/etc/fstab
+    genfstab -t PARTUUID -p /mnt >> /mnt/etc/fstab
     if grep -q "/mnt/swapfile" "/mnt/etc/fstab"; then
     sed -i '/swapfile/d' /mnt/etc/fstab
     echo "/swapfile     none    swap    defaults    0   0" >> /mnt/etc/fstab
