@@ -1,3 +1,0 @@
-#! /bin/sh
-
-find . -type f -iname "*.po" -exec msgmerge -U {} ayi.pot \;

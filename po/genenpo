@@ -1,9 +1,0 @@
-#! /bin/sh
-
-msginit -i ayi.pot -l en.po
-
-msgfmt -o ayi.mo en.po
-
-install ayi.mo ../lang/en/LC_MESSAGES/ayi.mo
-
-rm en.po ayi.mo

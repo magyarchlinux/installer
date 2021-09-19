@@ -1,7 +1,0 @@
-#! /bin/sh
-
-# Generate pot file
-cd ..
-xgettext  -L Shell --keyword=EGETTEXT --keyword=GETTEXT --from-code=UTF-8 -o po/ayi.pot ayi
-# xgettext -L Shell -o po/ayi.pot ayi
-
