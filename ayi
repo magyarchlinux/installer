@@ -77,6 +77,7 @@ installer_lang() {
     TITLE=$(EGETTEXT "MagyArch Installer - \$SYSTEM mode")
     YES=$(GETTEXT "Yes")
     NO=$(GETTEXT "No")
+    SELECT=$(GETTEXT "Select")
     MAIN000=$(GETTEXT "Reply from list:")
     MAIN001=$(GETTEXT "Installer language")
     MAIN002=$(GETTEXT "System language")
@@ -448,10 +449,10 @@ Partition and format your hard disk, as this is not done by the installer!")
     INS011=$(GETTEXT "Installation is complete!")
     # INS012=$(GETTEXT "")
     # INS00=$(GETTEXT "")
-    DISKTYPE000=$(GETTEXT "Normal")
-    DISKTYPE001=$(GETTEXT "LVM")
-    DISKTYPE002=$(GETTEXT "LVM + LUKS (encrypt)")
-    DISKTYPE002=$(GETTEXT "LVM + LUKS (encrypt)")
+    DISKTYPE000=$(GETTEXT "Installation method")
+    DISKTYPE001=$(GETTEXT "Normal")
+    DISKTYPE002=$(GETTEXT "LVM")
+    DISKTYPE003=$(GETTEXT "LVM + LUKS (encrypt)")
 
 
             
@@ -475,7 +476,7 @@ system_lang() {
         --form --item-separator="," \
         --field="$LAN":CB \
         "${lang_list:0:-1}")"
-    echo ""$?
+    echo "$?"
 
     echo "System language: $(echo $sys_lang | cut -d '|' -f1)"
 
@@ -1965,6 +1966,11 @@ kswpno() {
 }
 
 partition_set() {
+
+    dst="$(yad --width=400 --center --title="$TITLE" --text="$DISKTYPE000" \
+        --buttons-layout=center --image=preferences \
+        --form --item-separator=";" \
+        --field="":CB "${DISKTYPE001};${DISKTYPE002};${DISKTYPE003}")"
 
     partition="$(yad  --width=400 --center \
         --buttons-layout=center --title="$TITLE" --text="$MAIN012" \
