@@ -118,6 +118,9 @@ installer_lang() {
     URSET005=$(GETTEXT "Repeat root password")
     ERR_USER_PASS=$(GETTEXT "User passwords do not match, please try again.")
     ERR_ROOT_PASS=$(GETTEXT "Root passwords do not match, please try again.")
+    ERR_NO_PASS=$(GETTEXT "Password fields cannot be blank, please try again.")
+    ERR_NO_HOSTNAME=$(GETTEXT "Hostname field cannot be blank, please try again.")
+    ERR_NO_USERNAME=$(GETTEXT "Username field cannot be blank, please try again.")
     KSC001=$(GETTEXT "Kernel")
     KSC002=$(GETTEXT "Shell")
     KSC003=$(GETTEXT "Printer support (cups)")
@@ -473,7 +476,7 @@ Partition and format your hard disk, as this is not done by the installer!")
 
 system_lang() {
 
-    echo "RUN SYSTEM LANGUAGE FUNCTION"
+    _msg "RUN SYSTEM LANGUAGE FUNCTION"
 
     lang_list="$(grep -v "#  " /etc/locale.gen | sed 's/#//g' | sed 's/ UTF-8//g' | \
         grep .UTF-8  | tr ' ' '\n' | sort | uniq | tr "\n" "," | sed "s/${LANGUAGE}/^${LANGUAGE}/")"
@@ -484,10 +487,9 @@ system_lang() {
         --field="$LAN":CB \
         "${lang_list:0:-1}")"
     okcancel=$(echo "$?")
-    echo "Button: $(echo $okcancel)"
-    echo "Button: $(echo $okcancel)"
+    _msg "Sys_lang gutton: $okcancel"
 
-    echo "System language: $(echo $sys_lang | cut -d '|' -f1)"
+    _msg "System language: $(echo $sys_lang | cut -d '|' -f1)"
 
     KEYBOARD_LAYOUT=$(echo "${sys_lang,,}" | sed "s/.utf-8|//" | cut -d '_' -f2)
     
@@ -502,7 +504,7 @@ system_lang() {
 
 keyboard_set() {
 
-    echo "RUN KEYBOARD SETTINGS FUNCTION"
+    _msg "RUN KEYBOARD SETTINGS FUNCTION"
 
     kb_set="$(yad --window-icon=icons/magyarch_logo.png --no-escape --width=400 --center --title="$TITLE" --text="$MAIN003" \
         --buttons-layout=center --image=icons/keyboard.png \
@@ -511,10 +513,11 @@ keyboard_set() {
         --field="$KBM":CBE \
         "$(localectl list-x11-keymap-layouts | awk '{ printf ""$0"," }' | sed "s/${KEYBOARD_LAYOUT}/^$KEYBOARD_LAYOUT/")" \
         "$(localectl list-x11-keymap-models | awk '{ printf ""$0"," }' | sed "s/pc105/^pc105/")")"
-    echo "$?"
+    okcancel=$(echo "$?")
+    _msg "kb_set button: $okcancel"
 
-    echo "Keyboard layout: $(echo $kb_set | cut -d '|' -f1)"
-    echo "Keyboard modell: $(echo $kb_set | cut -d '|' -f2)"
+    _msg "Keyboard layout: $(echo $kb_set | cut -d '|' -f1)"
+    _msg "Keyboard modell: $(echo $kb_set | cut -d '|' -f2)"
 
     setxkbmap $(echo $kb_set | cut -d '|' -f1)
 
@@ -529,7 +532,7 @@ keyboard_set() {
 
 timezone_set() {
 
-    echo "RUN TIMEZONE FUNCTION"
+    _msg "RUN TIMEZONE FUNCTION"
 
     DEFAULT_ZONE="$(awk '{print $1 "," $3 }' /usr/share/zoneinfo/zone.tab | \
         grep "${KEYBOARD_LAYOUT^^}" | sort | awk -F ',' '{print $2}' | cut -d "/" -f1 | sed -n "1p")"
@@ -543,10 +546,11 @@ timezone_set() {
         --field="$TZZ":CB \
         "$(awk '{print $3}' /usr/share/zoneinfo/zone.tab | grep "/" | cut -d "/" -f1 | sort -ud | tr "\n" "," | \
             sed "s/${DEFAULT_ZONE}/^${DEFAULT_ZONE}/")")"
-    echo "$?"
+    okcancel=$(echo "$?")
+    _msg "tzzone_set button: $okcancel"
 
     TZONE=$(echo $tzzone_set | cut -d "|" -f1)
-    echo "Select timezone: $TZONE"
+    _msg "Select timezone: $TZONE"
     
     if [ "$DEFAULT_ZONE" = "$(echo "$tzzone_set" | cut -d "|" -f1)" ]
     then
@@ -556,16 +560,19 @@ timezone_set() {
             --field="$TZSZ":CB \
             "$(awk '{print $3}' /usr/share/zoneinfo/zone.tab | grep "${DEFAULT_ZONE}" | cut -d "/" -f2 | sort | tr "\n" "," |\
                 sed "s/${DEFAULT_SUBZONE}/^${DEFAULT_SUBZONE}/")")
-        echo "$?"
-        echo "Select subzone0: $(echo tzszone_set | cut -d '|' -f1)"
+        okcancel=$(echo "$?")
+        _msg "tzszone_set button: $okcancel"
+        _msg "Select subzone0: $(echo tzszone_set | cut -d '|' -f1)"
     else
         tzszone_set=$(yad --window-icon=icons/magyarch_logo.png --no-escape --width=400 --center --title="$TITLE" --text="$MAIN004" \
             --buttons-layout=center --image=icons/location.png \
             --form --item-separator="," \
             --field="$TZSZ":CB \
             "$(awk '{print $3}' /usr/share/zoneinfo/zone.tab | grep "$(echo "$tzzone_set" | cut -d "|" -f1)" | cut -d "/" -f2 | sort | tr "\n" "," )")
-        echo "$?"
-        echo "Select subzone1: $(echo tzszone_set | cut -d '|' -f1)"
+        okcancel=$(echo "$?")
+         _msg "tzszone_set button: $okcancel"
+        _msg "Select subzone0: $(echo tzszone_set | cut -d '|' -f1)"
+        
     fi
 
     clock="$(yad --window-icon=icons/magyarch_logo.png --no-escape --width=400 --center --title="$TITLE" --text="$CLCK" \
@@ -573,8 +580,9 @@ timezone_set() {
         --form --item-separator="," \
         --field="$TIM":CB \
         "^utc,localtime")"
-    echo "$?"
-    echo "Select clock set: $(echo $clock | cut -d '|' -f1)"
+    okcancel=$(echo "$?")
+    _msg "Clock button: $okcancel"
+    _msg "Select clock set: $(echo $clock | cut -d '|' -f1)"
 
     unset MAIN_LIST
     
@@ -587,7 +595,7 @@ timezone_set() {
 
 hname() {
 
-    echo "RUN HOSTNAME FUNCTION"
+    _msg "RUN HOSTNAME FUNCTION"
 
     hsname="$(yad --window-icon=icons/magyarch_logo.png --no-escape --width=400 --center --title="$TITLE" --text="$HSNM" \
         --buttons-layout=center --image=network \
@@ -606,11 +614,11 @@ hname() {
 
 user_root_set() {
 
-    echo "RUN USER ROOT SET FUNCTION"
+    _msg "RUN USER ROOT SET FUNCTION"
 
-    pass_check $(yad --window-icon=icons/magyarch_logo.png --no-escape --width=400 --center --title="$TITLE" --text="$MAIN006" \
+    hup=$(yad --window-icon=icons/magyarch_logo.png --no-escape --width=400 --center --title="$TITLE" --text="$MAIN006" \
         --buttons-layout=center --image=icons/password.png \
-        --form  --separator="\t" \
+        --form  --separator=";" \
         --field="$HSNM1" \
         --field="$URSET001" \
         --field="$URSET002":H \
@@ -618,7 +626,11 @@ user_root_set() {
         --field="$URSET004":H \
         --field="$URSET005":H \
         "magyarch")
+    okcancel=$(echo "$?")
+    _msg "hup button: $okcancel"
 
+    IFS=";"
+    pass_check $hup
 
     unset MAIN_LIST
 
@@ -630,8 +642,8 @@ user_root_set() {
 
 # Check password
 pass_check() {
-
-    echo "RUN PASS CHECK FUNCTION"
+    IFS=";"
+    _msg "RUN PASS CHECK FUNCTION"
 
     hsname=$1
     user_name=${2,,}
@@ -640,21 +652,46 @@ pass_check() {
     rootpass1=$5
     rootpass2=$6
 
+
     if [ "$userpass1" != "$userpass2" ]
     then
         yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/error.png --title="$TITLE"  --buttons-layout=center --text="$ERR_USER_PASS"
-        echo "Not same user password"
+        _msg "Not same user password"
         user_root_set
+        return 1
     elif [ "$rootpass1" != "$rootpass2" ]
     then
         yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/error.png --title="$TITLE" --buttons-layout=center --text="$ERR_ROOT_PASS"
-        echo "Not same root password"
+        _msg "Not same root password"
         user_root_set
+        return 1
+    elif [ "$rootpass1" == "" -o "$userpass1" == "" ]
+    then
+        yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/error.png --title="$TITLE"  --buttons-layout=center --text="$ERR_NO_PASS"
+        _msg "Not password"
+        user_root_set
+        return 1
+    elif [ "$hsname" == "" ]
+    then
+        yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/error.png --title="$TITLE"  --buttons-layout=center --text="$ERR_NO_HOSTNAME"
+        _msg "Not hostnamename"
+        user_root_set
+        return 1
+    elif [ "$user_name" == "" ]
+    then
+        yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/error.png --title="$TITLE"  --buttons-layout=center --text="$ERR_NO_USERNAME"
+        _msg "Not username"
+        user_root_set
+        return 1
+
     fi
+    IFS=$OLDIFS
 }
 
 
 kernel_shell_cups_set() {
+
+    _msg "RUN KERNEL SHELL CUPS SET FUNCTION"
 
     ker_sh_cup="$(yad --window-icon=icons/magyarch_logo.png --no-escape --width=400 --center --title="$TITLE" --text="$MAIN007" \
         --buttons-layout=center --image=icons/settings.png \
@@ -667,6 +704,8 @@ kernel_shell_cups_set() {
         "^bash,zsh,fish" \
         "^${NO},${YES}" \
         "^${NO},${YES}" )"
+    okcancel=$(echo "$?")
+    _msg "ker_sh_cup button: $okcancel"
 
     unset MAIN_LIST
     
@@ -677,12 +716,17 @@ kernel_shell_cups_set() {
 
 
 graphics_set() {
+
+    _msg "RUN GRAPHICS SET FUNCTION"
+
     grap="$(yad --window-icon=icons/magyarch_logo.png --no-escape --width=400 --center --title="$TITLE" --text="$MAIN008" \
         --buttons-layout=center --image=icons/gfx.png \
         --form  --item-separator="," \
         --field="$GRC001":CB \
         --field="$GRC002":LBL \
         "${NONE},amdgpu,i915,nouveau,nvidia,virtualbox")"
+    okcancel=$(echo "$?")
+    _msg "grap  button: $okcancel"
 
     unset MAIN_LIST
     
@@ -694,6 +738,8 @@ graphics_set() {
 
 dm_desktop_set() {
 
+    _msg "RUN DM DESKTOP SET FUNCTION"
+
     dm_des="$(yad --window-icon=icons/magyarch_logo.png --no-escape --width=400 --center --title="$TITLE" --text="$MAIN009" \
         --buttons-layout=center --image=icons/display_manager.png \
         --form  --item-separator="," \
@@ -703,12 +749,16 @@ dm_desktop_set() {
         "awesome (MagyArch),bspwm (MagyArch),dwm (MagyArch),herbstluftwm (MagyArch),i3 (MagyArch),i3+polybar (MagyArch),qtile (MagyArch),spectrwm (MagyArch),xfce4 (MagyArch),xmonad (MagyArch),\
 xmonad+polybar (MagyArch),awesome,bspwm,budgie-desktop,cinnamon,deepin,dwm,gnome,herbstluftwm,i3,jwm,lxde,lxqt,mate,openbox,plasma,qtile,spectrwm,xfce4,xmonad")"
 
+    okcancel=$(echo "$?")
+    _msg "dm_des  button: $okcancel"
 
     unset MAIN_LIST
     
     MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
         "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
         "false" "$MAIN009" "true" "$MAIN011" "false" "$MAIN013")
+
+
 }
 
 
@@ -1033,6 +1083,8 @@ other_app_set() {
 
 grub_set() {
 
+    _msg "RUN GRUB SET FUNCTION"
+
     devices="$(lsblk -lno NAME,TYPE | grep 'disk' | awk '{print "/dev/" $1 " " $2}' | sort -u | sed 's/disk//g' | awk '{print "false " $0}')"
 
     # grub_dev=
@@ -1041,15 +1093,24 @@ grub_set() {
         --no-selection  --image=icons/boot.png --radiolist --list --no-headers \
         --column="" --column="" $devices)"
 
+    okcancel=$(echo "$?")
+    _msg "grb_dev  button: $okcancel"
+
     # grb_dev=$(echo $grb_set | cut -d '|' -f2)
 }
 
 
 bootloader_set() {
+
+    _msg "RUN BOOTLOADER SET FUNCTION"
+
     bootloader="$(yad --window-icon=icons/magyarch_logo.png --no-escape  --width=400 --height=250 --center \
         --buttons-layout=center --title="$TITLE" --text="$BTL000" \
         --no-selection  --image=icons/boot.png --radiolist --list --no-headers \
         --column="" --column="" false grub false refind false ${NONE})"
+
+    okcancel=$(echo "$?")
+    _msg "bootloader  button: $okcancel"
 
     unset MAIN_LIST
     # boot_sel=$(echo $bootloader | cut -d '|' -f2)
@@ -1065,6 +1126,7 @@ bootloader_set() {
     if [ "$(echo "$bootloader" | cut -d "|" -f2)" = "refind" -a "$SYSTEM" = "BIOS" ]
     then
         yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/error.png --title="$TITLE" --buttons-layout=center --text="$ERROR004"
+        _msg "Refind select no UEFI."
         bootloader_set
         return 1
     fi
@@ -1073,6 +1135,9 @@ bootloader_set() {
 
 
 auto_part() {
+
+    _msg "RUN AUTO PART FUNCTION"
+
     # devices="$(lsblk -lno NAME,TYPE | grep 'disk' | awk '{print "/dev/" $1 " " $2}' | sort -u | sed "s/ disk//g" | awk '{print "false " $0}')"
     # device="$(yad --window-icon=icons/magyarch_logo.png --no-escape  --width=400 --center \
     #     --buttons-layout=center --title="$TITLE" --text="$MAIN012" \
@@ -1087,16 +1152,17 @@ auto_part() {
         --field="Disk":CB "${devices:0:-1}")"
     
     dev="$(echo "$device" | awk '{print $1}')"
-    echo "$dev"
+    
     if [ "$dev" = "" ]
     then
-        echo "no"
+        _msg "No device."
         auto_part
         return 1
     fi
 
     yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/help.png --title="$TITLE" --buttons-layout=center --text="$QUEPART000 $device $QUEPART001" --button="${NO}!gtk-no:1" --button="${YES}!gtk-yes:0"
     ans="$?"
+    _msg "ans  button: $ans"
 
     if [ "$ans" = "0" ]
     then
@@ -1174,8 +1240,11 @@ auto_part() {
 
 man_part() {
 
+    _msg "RUB MAN PART FUNCTION"
+
     yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/help.png --title="$TITLE" --buttons-layout=center --text="$MANQ000" --button="${NO}!gtk-no:1" --button="${YES}!gtk-yes:0"
     ans1="$?"
+    _msg "ans1  button: $okcancel"
 
     if [ "$ans1" = "0" ]
     then
@@ -1189,14 +1258,17 @@ man_part() {
 
 kswp() {
 
-    
+    _msg "RUN KSWP FUNCTION"
 
     swap_query="$(yad --window-icon=icons/magyarch_logo.png --no-escape  --width=400 --height=200 --center --no-headers \
         --buttons-layout=center --title="$TITLE" --text="$KSWP003" \
         --no-selection  --image=icons/swap.png --radiolist --list \
         --column="" --column="" "${KSWP_LIST[@]}")"
+    okcancel=$(echo "$?")
+    _msg "swap_query  button: $okcancel"
 
     swap_que=$(echo $swap_query | cut -d "|" -f2)
+    _msg "Select $swap_que"
 
 
 
@@ -1214,13 +1286,15 @@ kswp() {
 
 check_kswpnofile() {
 
+    _msg "RUN CHECK KSWPNOFILE FUNCTION"
+
     IFS=";"
 
     echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10}
 
     rootszamlal=0
     bootszamlal=0
-    bootefiszamlal=0
+    # bootefiszamlal=0
     homeszamlal=0
     mntszamlal=0
     optszamlal=0
@@ -1233,33 +1307,36 @@ check_kswpnofile() {
 
     root_part=$(echo "$1" | cut -d " " -f1)
     boot_part=$(echo "$2" | cut -d " " -f1)
-    bootefi_part=$(echo "$3" | cut -d " " -f1)
-    home_part=$(echo "$4" | cut -d " " -f1)
-    mnt_part=$(echo "$5" | cut -d " " -f1)
-    opt_part=$(echo "$6" | cut -d " " -f1)
-    swap_part=$(echo "$7" | cut -d " " -f1)
-    srv_part=$(echo "$8" | cut -d " " -f1)
-    tmp_part=$(echo "$9" | cut -d " " -f1)
-    usr_part=$(echo "${10}" | cut -d " " -f1)
-    var_part=$(echo "${11}" | cut -d " " -f1)
+    # bootefi_part=$(echo "$3" | cut -d " " -f1)
+    home_part=$(echo "$3" | cut -d " " -f1)
+    mnt_part=$(echo "$4" | cut -d " " -f1)
+    opt_part=$(echo "$5" | cut -d " " -f1)
+    swap_part=$(echo "$6" | cut -d " " -f1)
+    srv_part=$(echo "$7" | cut -d " " -f1)
+    tmp_part=$(echo "$8" | cut -d " " -f1)
+    usr_part=$(echo "$9" | cut -d " " -f1)
+    var_part=$(echo "${10}" | cut -d " " -f1)
 
-    echo "$root_part $boot_part $bootefi_part $home_part $opt_part $swap_part $srv_part $tmp_part $usr_part $var_part"
+    # echo "$root_part $boot_part $bootefi_part $home_part $opt_part $swap_part $srv_part $tmp_part $usr_part $var_part"
 
     # Root csatolás nem lehet üres...
     if [ "$root_part" = "${NONE}" ]
     then
         yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/error.png --title="$TITLE" --buttons-layout=center --text="$ERROR000"
+        _msg "No select root part."
         kswpnofile
         return 1
     # Ha swap partíció, ez se lehet üres...
     elif [ "$swap_part" = "${NONE}" ]
     then
         yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/error.png --title="$TITLE" --buttons-layout=center --text="$ERROR001"
+        _msg "No select swap part."
         kswpnofile
         return 1
-    elif [ "$SYSTEM" = "UEFI" -a "$bootefi_part" = "${NONE}" ]
+    elif [ "$SYSTEM" = "UEFI" -a "$boot_part" = "${NONE}" ]
     then
         yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/error.png --title="$TITLE" --buttons-layout=center --text="$ERROR002"
+        _msg "No select UEFI part."
         kswpnofile
         return 1
     fi
@@ -1278,10 +1355,10 @@ check_kswpnofile() {
             ((bootszamlal++))
         fi
 
-        if [ "$i" = "$bootefi_part" -a "$i" != "${NONE}" ]
-        then
-            ((bootefiszamlal++))
-        fi
+        # if [ "$i" = "$bootefi_part" -a "$i" != "${NONE}" ]
+        # then
+        #     ((bootefiszamlal++))
+        # fi
 
         if [ "$i" = "$home_part" -a "$i" != "${NONE}" ]
         then
@@ -1330,11 +1407,11 @@ check_kswpnofile() {
 
     done
 
-    echo $rootszamlal $bootszamlal $bootefiszamlal $homeszamlal $optszamlal $swapszamlal $srvszamlal $tmpszamlal $usrszamlal $varszamlal $nincsszamlal
+    echo $rootszamlal $bootszamlal $homeszamlal $optszamlal $swapszamlal $srvszamlal $tmpszamlal $usrszamlal $varszamlal $nincsszamlal
 
     # Check double selection
     if [ "$rootszamlal" -gt "1" -o "$bootszamlal" -gt "1" -o \
-        "$bootefiszamlal" -gt "1" -o "$homeszamlal" -gt "1"  -o "$mntszamlal" -gt "1" -o \
+        "$homeszamlal" -gt "1"  -o "$mntszamlal" -gt "1" -o \
         "$optszamlal" -gt "1" -o "$swapszamlal" -gt "1" -o \
         "$srvszamlal" -gt "1" -o "$tmpszamlal" -gt "1" -o \
         "$usrszamlal" -gt "1" -o "$varszamlal" -gt "1" ]
@@ -1433,7 +1510,6 @@ kswpnofile() {
         --form  --item-separator=";" --separator=";" \
         --field="$MNT001":CB \
         --field="$MNT002":CB \
-        --field="$MNT003":CB \
         --field="$MNT004":CB \
         --field="$MNT011":CB \
         --field="$MNT005":CB \
@@ -1445,7 +1521,7 @@ kswpnofile() {
         "^${NONE};${las:0:-1}" "^${NONE};${las:0:-1}" "^${NONE};${las:0:-1}" \
         "^${NONE};${las:0:-1}" "^${NONE};${las:0:-1}" "^${NONE};${las:0:-1}" \
         "^${NONE};${las:0:-1}" "^${NONE};${las:0:-1}" "^${NONE};${las:0:-1}" \
-        "^${NONE};${las:0:-1}" "^${NONE};${las:0:-1}")
+        "^${NONE};${las:0:-1}")
 
     IFS=";"
     check_kswpnofile $selpart2
@@ -1457,12 +1533,12 @@ check_kswpf() {
     IFS=";"
     echo "ebyes"
     echo $1
-    echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10}
+    echo $1 $2 $3 $4 $5 $6 $7 $8 $9 
     echo $1
 
     rootszamlal=0
     bootszamlal=0
-    bootefiszamlal=0
+    # bootefiszamlal=0
     homeszamlal=0
     mntszamlal=0
     optszamlal=0
@@ -1475,15 +1551,15 @@ check_kswpf() {
 
     root_part=$(echo $1 | cut -d " " -f1)
     boot_part=$(echo $2 | cut -d " " -f1)
-    bootefi_part=$(echo $3 | cut -d " " -f1)
-    home_part=$(echo $4 | cut -d " " -f1)
-    mnt_part=$(echo $5 | cut -d " " -f1)
-    opt_part=$(echo $6 | cut -d " " -f1)
+    # bootefi_part=$(echo $3 | cut -d " " -f1)
+    home_part=$(echo $3 | cut -d " " -f1)
+    mnt_part=$(echo $4 | cut -d " " -f1)
+    opt_part=$(echo $5 | cut -d " " -f1)
     # swap_part=$(echo "$6" | cut -d " " -f1)
-    srv_part=$(echo $7 | cut -d " " -f1)
-    tmp_part=$(echo $8 | cut -d " " -f1)
-    usr_part=$(echo $9 | cut -d " " -f1)
-    var_part=$(echo ${10} | cut -d " " -f1)
+    srv_part=$(echo $6 | cut -d " " -f1)
+    tmp_part=$(echo $7 | cut -d " " -f1)
+    usr_part=$(echo $8 | cut -d " " -f1)
+    var_part=$(echo $9 | cut -d " " -f1)
 
     echo "ez a 2"
     echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10}
@@ -1524,10 +1600,10 @@ check_kswpf() {
             ((bootszamlal++))
         fi
 
-        if [ "$i" = "$bootefi_part" -a "$i" != "${NONE}" ]
-        then
-            ((bootefiszamlal++))
-        fi
+        # if [ "$i" = "$bootefi_part" -a "$i" != "${NONE}" ]
+        # then
+        #     ((bootefiszamlal++))
+        # fi
 
         if [ "$i" = "$home_part" -a "$i" != "${NONE}" ]
         then
@@ -1576,11 +1652,11 @@ check_kswpf() {
 
     done
 
-    echo $rootszamlal $bootszamlal $bootefiszamlal $homeszamlal $optszamlal $srvszamlal $tmpszamlal $usrszamlal $varszamlal $nincsszamlal
+    echo $rootszamlal $bootszamlal $homeszamlal $optszamlal $srvszamlal $tmpszamlal $usrszamlal $varszamlal $nincsszamlal
 
     # Check double selection
     if [ "$rootszamlal" -gt "1" -o "$bootszamlal" -gt "1" -o \
-        "$bootefiszamlal" -gt "1" -o "$homeszamlal" -gt "1" -o \
+        "$homeszamlal" -gt "1" -o \
         "$mntszamlal" -gt "1" -o "$optszamlal" -gt "1" -o \
         "$srvszamlal" -gt "1" -o "$tmpszamlal" -gt "1" -o \
         "$usrszamlal" -gt "1" -o "$varszamlal" -gt "1" ]
@@ -1717,7 +1793,6 @@ kswpf() {
         --form  --item-separator=";" --separator=";" \
         --field="$MNT001":CB \
         --field="$MNT002":CB \
-        --field="$MNT003":CB \
         --field="$MNT004":CB \
         --field="$MNT011":CB \
         --field="$MNT005":CB \
@@ -1728,7 +1803,7 @@ kswpf() {
         "^${NONE};${las:0:-1}" "^${NONE};${las:0:-1}" "^${NONE};${las:0:-1}" \
         "^${NONE};${las:0:-1}" "^${NONE};${las:0:-1}" "^${NONE};${las:0:-1}" \
         "^${NONE};${las:0:-1}" "^${NONE};${las:0:-1}" "^${NONE};${las:0:-1}" \
-        "^${NONE};${las:0:-1}")
+        )
 
     IFS=";"
     check_kswpf $selpart
@@ -1744,7 +1819,7 @@ check_kswpno() {
 
     rootszamlal=0
     bootszamlal=0
-    bootefiszamlal=0
+    # bootefiszamlal=0
     homeszamlal=0
     mntszamlal=0
     optszamlal=0
@@ -1757,15 +1832,15 @@ check_kswpno() {
 
     root_part=$(echo "$1" | cut -d " " -f1)
     boot_part=$(echo "$2" | cut -d " " -f1)
-    bootefi_part=$(echo "$3" | cut -d " " -f1)
-    home_part=$(echo "$4" | cut -d " " -f1)
-    mnt_part=$(echo "$5" | cut -d " " -f1)
-    opt_part=$(echo "$6" | cut -d " " -f1)
+    # bootefi_part=$(echo "$3" | cut -d " " -f1)
+    home_part=$(echo "$3" | cut -d " " -f1)
+    mnt_part=$(echo "$4" | cut -d " " -f1)
+    opt_part=$(echo "$5" | cut -d " " -f1)
     # swap_part=$(echo "$6" | cut -d " " -f1)
-    srv_part=$(echo "$7" | cut -d " " -f1)
-    tmp_part=$(echo "$8" | cut -d " " -f1)
-    usr_part=$(echo "$9" | cut -d " " -f1)
-    var_part=$(echo "${10}" | cut -d " " -f1)
+    srv_part=$(echo "$6" | cut -d " " -f1)
+    tmp_part=$(echo "$7" | cut -d " " -f1)
+    usr_part=$(echo "$8" | cut -d " " -f1)
+    var_part=$(echo "$9" | cut -d " " -f1)
 
     echo "$root_part $boot_part $bootefi_part $home_part $opt_part $srv_part $tmp_part $usr_part $var_part"
 
@@ -1781,7 +1856,7 @@ check_kswpno() {
     #     yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/error.png  --buttons-layout=center --text="$ERROR001"
     #     kswpnofile
     #     return 1
-    elif [ "$SYSTEM" = "UEFI" -a "$bootefi_part" = "${NONE}" ]
+    elif [ "$SYSTEM" = "UEFI" -a "$boot_part" = "${NONE}" ]
     then
         yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/error.png --title="$TITLE" --buttons-layout=center --text="$ERROR002"
         kswpno
@@ -1802,10 +1877,10 @@ check_kswpno() {
             ((bootszamlal++))
         fi
 
-        if [ "$i" = "$bootefi_part" -a "$i" != "${NONE}" ]
-        then
-            ((bootefiszamlal++))
-        fi
+        # if [ "$i" = "$bootefi_part" -a "$i" != "${NONE}" ]
+        # then
+        #     ((bootefiszamlal++))
+        # fi
 
         if [ "$i" = "$home_part" -a "$i" != "${NONE}" ]
         then
@@ -1854,11 +1929,11 @@ check_kswpno() {
 
     done
 
-    echo $rootszamlal $bootszamlal $bootefiszamlal $homeszamlal $optszamlal $srvszamlal $tmpszamlal $usrszamlal $varszamlal $nincsszamlal
+    echo $rootszamlal $bootszamlal $homeszamlal $optszamlal $srvszamlal $tmpszamlal $usrszamlal $varszamlal $nincsszamlal
 
     # Check double selection
     if [ "$rootszamlal" -gt "1" -o "$bootszamlal" -gt "1" -o \
-        "$bootefiszamlal" -gt "1" -o "$homeszamlal" -gt "1" -o \
+        "$homeszamlal" -gt "1" -o \
         "$mntszamlal" -gt "1" -o "$optszamlal" -gt "1" -o \
         "$srvszamlal" -gt "1" -o "$tmpszamlal" -gt "1" -o \
         "$usrszamlal" -gt "1" -o "$varszamlal" -gt "1" ]
@@ -1956,7 +2031,6 @@ kswpno() {
         --form  --item-separator=";" --separator=";" \
         --field="$MNT001":CB \
         --field="$MNT002":CB \
-        --field="$MNT003":CB \
         --field="$MNT004":CB \
         --field="$MNT011":CB \
         --field="$MNT005":CB \
@@ -1967,7 +2041,7 @@ kswpno() {
         "^${NONE};${las:0:-1}" "^${NONE};${las:0:-1}" "^${NONE};${las:0:-1}" \
         "^${NONE};${las:0:-1}" "^${NONE};${las:0:-1}" "^${NONE};${las:0:-1}" \
         "^${NONE};${las:0:-1}" "^${NONE};${las:0:-1}" "^${NONE};${las:0:-1}" \
-        "^${NONE};${las:0:-1}")
+        )
 
     IFS=";"
     check_kswpno $selpart1
@@ -2100,8 +2174,8 @@ install_run() {
         mkfs.fat -F32 "$gpt_part"
         mkfs.ext4 -F "$root_part"
         mount "$root_part" /mnt
-        mkdir -p /mnt/boot/efi
-        mount "$gpt_part" /mnt/boot/efi
+        mkdir -p /mnt/boot
+        mount "$gpt_part" /mnt/boot
         touch /mnt/swapfile
         dd if=/dev/zero of=/mnt/swapfile bs=1M count="${swap_space}"
         chmod 600 /mnt/swapfile
@@ -2126,11 +2200,11 @@ install_run() {
             mount "$boot_part" /mnt/boot
         fi
     
-        if [ "$bootefi_part" != "$NONE" ]
-        then
-            mkdir -p /mnt/boot/efi
-            mount "$bootefi_part" /mnt/boot/efi
-        fi
+        # if [ "$bootefi_part" != "$NONE" ]
+        # then
+        #     mkdir -p /mnt/boot/efi
+        #     mount "$bootefi_part" /mnt/boot/efi
+        # fi
     
         if [ "$home_part" != "$NONE" ]
         then
@@ -2193,11 +2267,11 @@ install_run() {
             mount "$boot_part" /mnt/boot
         fi
     
-        if [ "$bootefi_part" != "$NONE" ]
-        then
-            mkdir -p /mnt/boot/efi
-            mount "$bootefi_part" /mnt/boot/efi
-        fi
+        # if [ "$bootefi_part" != "$NONE" ]
+        # then
+        #     mkdir -p /mnt/boot/efi
+        #     mount "$bootefi_part" /mnt/boot/efi
+        # fi
     
         if [ "$home_part" != "$NONE" ]
         then
@@ -2263,11 +2337,11 @@ install_run() {
             mount "$boot_part" /mnt/boot
         fi
     
-        if [ "$bootefi_part" != "$NONE" ]
-        then
-            mkdir -p /mnt/boot/efi
-            mount "$bootefi_part" /mnt/boot/efi
-        fi
+        # if [ "$bootefi_part" != "$NONE" ]
+        # then
+        #     mkdir -p /mnt/boot/efi
+        #     mount "$bootefi_part" /mnt/boot/efi
+        # fi
     
         if [ "$home_part" != "$NONE" ]
         then
@@ -2981,7 +3055,7 @@ install_run() {
 
             pacstrap /mnt grub efibootmgr
             #arch_chroot "os-prober"
-            arch_chroot "grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=magyarchlinux1 --recheck"
+            arch_chroot "grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=magyarchlinux1 --recheck"
             git clone https://github.com/magyarchlinux/magyarch_grub.git
             cp magyarch_grub/grub /mnt/etc/default/
             cp -r  magyarch_grub/MagyArchlinux /mnt/boot/grub/themes/
@@ -3025,7 +3099,7 @@ install_run() {
     echo "# $INS011"
     ) | yad --window-icon=icons/magyarch_logo.png --no-escape --title="$TITLE" --width=400 --height=250 --progress --auto-close --enable-log --log-expanded --no-buttons
 
-    yad --window-icon=icons/magyarch_logo.png --no-escape --image=info --title="$TITLE" --buttons-layout=center --text="$INS011"
+    yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/complate.png --title="$TITLE" --buttons-layout=center --text="$INS011"
     cev="$?"
     # reboot
     if [ "$cev" == 0 ]

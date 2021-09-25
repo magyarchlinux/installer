@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# color="#00008b"
-color="#001586"
+color="#0000ff"
+# color="#001586"
 gen_file="generate.png"
 
 for i in $(find . -maxdepth 1 -type f -exec file --mime-type {} \+ | awk -F: '{if ($2 ~/image\//) print $1}'  | sed 's/^\.\///g' | sort | tr "\n" " ")
