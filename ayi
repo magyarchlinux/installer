@@ -437,7 +437,7 @@ Partition and format your hard disk, as this is not done by the installer!")
     
     ERROR000=$(GETTEXT "No root partition selected!")
     ERROR001=$(GETTEXT "No swap partition selected!")
-    ERROR002=$(EGETTEXT "No boot / efi partition selected!\nA boot / efi partition is required for UEFI installation.")
+    ERROR002=$(EGETTEXT "No boot partition selected!\nA boot partition is required for UEFI installation.")
     ERROR003=$(GETTEXT "You have chosen the same partition multiple times!")
     ERROR004=$(EGETTEXT "Refind cannot be installed in \$SYSTEM mode.")
     
@@ -1579,7 +1579,7 @@ check_kswpf() {
     #     yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/error.png  --buttons-layout=center --text="$ERROR001"
     #     kswpnofile
     #     return 1
-    elif [ "$SYSTEM" = "UEFI" -a "$bootefi_part" = "${NONE}" ]
+    elif [ "$SYSTEM" = "UEFI" -a "$boot_part" = "${NONE}" ]
     then
         yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/error.png --title="$TITLE" --buttons-layout=center --text="$ERROR002"
         kswpf
