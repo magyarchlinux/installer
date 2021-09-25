@@ -12,7 +12,14 @@ export TEXTDOMAIN=ayi
 alias GETTEXT='gettext'
 alias EGETTEXT='eval_gettext'
 
-echo "START LOG"
+_msg() {
+    local _message="${1}"
+    printf  '[INFO] %s\n'  "${_message}"
+    
+    
+}
+
+_msg "START LOG"
 # System check.
 [ -d "/sys/firmware/efi/" ] && SYSTEM="UEFI" || SYSTEM="BIOS"
 DETECT_CARD="$(lspci -nn | grep "$(lspci -n | awk -F " " '{print $2 $3}' | grep ^"03" | awk -F ":" '{print $2":"$3}')" | awk -F ": " '{print $2}' | cut -d "[" -f1)"
@@ -46,7 +53,7 @@ Parted() {
 
 installer_lang() {
 
-    echo "RUN INSTALLER LANGUAGE FUNCTION"
+    _msg "RUN INSTALLER LANGUAGE FUNCTION"
 
     # Variables
     TITLE=$(EGETTEXT "MagyArch Installer - \$SYSTEM mode")
@@ -54,22 +61,22 @@ installer_lang() {
     MAIN002=$(GETTEXT "Keyboard settings")
     LAN=$(GETTEXT "Language")
 
-    lang="$(yad --width=400 --center --title="$TITLE" --text="$MAIN001" \
-        --buttons-layout=center --image=language-selector \
+    lang="$(yad --window-icon=icons/magyarch_logo.png --no-escape --width=400 --center --title="$TITLE" --text="$MAIN001" \
+        --buttons-layout=center --image=icons/language.png \
         --form --item-separator="," \
         --field="$LAN":CB \
         "^English,Magyar")"
-    echo "$?"
-    
+    okcancel=$(echo "$?")
+    _msg "Select language button: "${okcancel}""
     
 
     if [ "$(echo "$lang" | cut -d '|' -f1)" = "Magyar" ]
     then
         export LANGUAGE=hu_HU
-        echo "Installer language: $(echo "$lang" | cut -d '|' -f1)"
+        _msg "Installer language: $(echo "$lang" | cut -d '|' -f1)"
     else
         export LANGUAGE=en_GB
-        echo "Installer language: $(echo "$lang" | cut -d '|' -f1)"
+        _msg "Installer language: $(echo "$lang" | cut -d '|' -f1)"
     fi
     
     # Variables
@@ -471,12 +478,14 @@ system_lang() {
     lang_list="$(grep -v "#  " /etc/locale.gen | sed 's/#//g' | sed 's/ UTF-8//g' | \
         grep .UTF-8  | tr ' ' '\n' | sort | uniq | tr "\n" "," | sed "s/${LANGUAGE}/^${LANGUAGE}/")"
 
-    sys_lang="$(yad --width=400 --center --title="$TITLE" --text="$MAIN002" \
-        --buttons-layout=center --image=language-selector \
+    sys_lang="$(yad --window-icon=icons/magyarch_logo.png --no-escape --width=400 --center --title="$TITLE" --text="$MAIN002" \
+        --buttons-layout=center --image=icons/language.png \
         --form --item-separator="," \
         --field="$LAN":CB \
         "${lang_list:0:-1}")"
-    echo "$?"
+    okcancel=$(echo "$?")
+    echo "Button: $(echo $okcancel)"
+    echo "Button: $(echo $okcancel)"
 
     echo "System language: $(echo $sys_lang | cut -d '|' -f1)"
 
@@ -495,8 +504,8 @@ keyboard_set() {
 
     echo "RUN KEYBOARD SETTINGS FUNCTION"
 
-    kb_set="$(yad --width=400 --center --title="$TITLE" --text="$MAIN003" \
-        --buttons-layout=center --image=input-keyboard \
+    kb_set="$(yad --window-icon=icons/magyarch_logo.png --no-escape --width=400 --center --title="$TITLE" --text="$MAIN003" \
+        --buttons-layout=center --image=icons/keyboard.png \
         --form --item-separator="," \
         --field="$KBL":CBE \
         --field="$KBM":CBE \
@@ -528,8 +537,8 @@ timezone_set() {
     DEFAULT_SUBZONE="$(awk '{print $1 "," $3 }' /usr/share/zoneinfo/zone.tab | \
         grep "${KEYBOARD_LAYOUT^^}" | sort | awk -F ',' '{print $2}' | cut -d "/" -f2 | sed -n "1p")"
 
-    tzzone_set="$(yad --width=400 --center --title="$TITLE" --text="$MAIN004" \
-        --buttons-layout=center --image=globe \
+    tzzone_set="$(yad --window-icon=icons/magyarch_logo.png --no-escape --width=400 --center --title="$TITLE" --text="$MAIN004" \
+        --buttons-layout=center --image=icons/location.png \
         --form --item-separator="," \
         --field="$TZZ":CB \
         "$(awk '{print $3}' /usr/share/zoneinfo/zone.tab | grep "/" | cut -d "/" -f1 | sort -ud | tr "\n" "," | \
@@ -541,8 +550,8 @@ timezone_set() {
     
     if [ "$DEFAULT_ZONE" = "$(echo "$tzzone_set" | cut -d "|" -f1)" ]
     then
-        tzszone_set=$(yad --width=400 --center --title="$TITLE" --text="$MAIN004" \
-            --buttons-layout=center --image=globe \
+        tzszone_set=$(yad --window-icon=icons/magyarch_logo.png --no-escape --width=400 --center --title="$TITLE" --text="$MAIN004" \
+            --buttons-layout=center --image=icons/location.png \
             --form --item-separator="," \
             --field="$TZSZ":CB \
             "$(awk '{print $3}' /usr/share/zoneinfo/zone.tab | grep "${DEFAULT_ZONE}" | cut -d "/" -f2 | sort | tr "\n" "," |\
@@ -550,8 +559,8 @@ timezone_set() {
         echo "$?"
         echo "Select subzone0: $(echo tzszone_set | cut -d '|' -f1)"
     else
-        tzszone_set=$(yad --width=400 --center --title="$TITLE" --text="$MAIN004" \
-            --buttons-layout=center --image=globe \
+        tzszone_set=$(yad --window-icon=icons/magyarch_logo.png --no-escape --width=400 --center --title="$TITLE" --text="$MAIN004" \
+            --buttons-layout=center --image=icons/location.png \
             --form --item-separator="," \
             --field="$TZSZ":CB \
             "$(awk '{print $3}' /usr/share/zoneinfo/zone.tab | grep "$(echo "$tzzone_set" | cut -d "|" -f1)" | cut -d "/" -f2 | sort | tr "\n" "," )")
@@ -559,8 +568,8 @@ timezone_set() {
         echo "Select subzone1: $(echo tzszone_set | cut -d '|' -f1)"
     fi
 
-    clock="$(yad --width=400 --center --title="$TITLE" --text="$CLCK" \
-        --buttons-layout=center --image=clock \
+    clock="$(yad --window-icon=icons/magyarch_logo.png --no-escape --width=400 --center --title="$TITLE" --text="$CLCK" \
+        --buttons-layout=center --image=icons/clock.png \
         --form --item-separator="," \
         --field="$TIM":CB \
         "^utc,localtime")"
@@ -580,7 +589,7 @@ hname() {
 
     echo "RUN HOSTNAME FUNCTION"
 
-    hsname="$(yad --width=400 --center --title="$TITLE" --text="$HSNM" \
+    hsname="$(yad --window-icon=icons/magyarch_logo.png --no-escape --width=400 --center --title="$TITLE" --text="$HSNM" \
         --buttons-layout=center --image=network \
         --form --field="$HSNM1" \
         "magyarch" )"
@@ -599,8 +608,8 @@ user_root_set() {
 
     echo "RUN USER ROOT SET FUNCTION"
 
-    pass_check $(yad --width=400 --center --title="$TITLE" --text="$MAIN006" \
-        --buttons-layout=center --image=password \
+    pass_check $(yad --window-icon=icons/magyarch_logo.png --no-escape --width=400 --center --title="$TITLE" --text="$MAIN006" \
+        --buttons-layout=center --image=icons/password.png \
         --form  --separator="\t" \
         --field="$HSNM1" \
         --field="$URSET001" \
@@ -633,12 +642,12 @@ pass_check() {
 
     if [ "$userpass1" != "$userpass2" ]
     then
-        yad --image=error --title="$TITLE"  --buttons-layout=center --text="$ERR_USER_PASS"
+        yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/error.png --title="$TITLE"  --buttons-layout=center --text="$ERR_USER_PASS"
         echo "Not same user password"
         user_root_set
     elif [ "$rootpass1" != "$rootpass2" ]
     then
-        yad --image=error --title="$TITLE" --buttons-layout=center --text="$ERR_ROOT_PASS"
+        yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/error.png --title="$TITLE" --buttons-layout=center --text="$ERR_ROOT_PASS"
         echo "Not same root password"
         user_root_set
     fi
@@ -647,8 +656,8 @@ pass_check() {
 
 kernel_shell_cups_set() {
 
-    ker_sh_cup="$(yad --width=400 --center --title="$TITLE" --text="$MAIN007" \
-        --buttons-layout=center --image=preferences \
+    ker_sh_cup="$(yad --window-icon=icons/magyarch_logo.png --no-escape --width=400 --center --title="$TITLE" --text="$MAIN007" \
+        --buttons-layout=center --image=icons/settings.png \
         --form  --item-separator="," \
         --field="$KSC001":CB \
         --field="$KSC002":CB \
@@ -668,8 +677,8 @@ kernel_shell_cups_set() {
 
 
 graphics_set() {
-    grap="$(yad --width=400 --center --title="$TITLE" --text="$MAIN008" \
-        --buttons-layout=center --image=input-gaming \
+    grap="$(yad --window-icon=icons/magyarch_logo.png --no-escape --width=400 --center --title="$TITLE" --text="$MAIN008" \
+        --buttons-layout=center --image=icons/gfx.png \
         --form  --item-separator="," \
         --field="$GRC001":CB \
         --field="$GRC002":LBL \
@@ -685,8 +694,8 @@ graphics_set() {
 
 dm_desktop_set() {
 
-    dm_des="$(yad --width=400 --center --title="$TITLE" --text="$MAIN009" \
-        --buttons-layout=center --image=desktop \
+    dm_des="$(yad --window-icon=icons/magyarch_logo.png --no-escape --width=400 --center --title="$TITLE" --text="$MAIN009" \
+        --buttons-layout=center --image=icons/display_manager.png \
         --form  --item-separator="," \
         --field="$DMDE001":CB \
         --field="$DMDE002":CB \
@@ -735,7 +744,7 @@ other_apps_int() {
         done
     fi
 
-    oth_int="$(yad  --width=400 --height=450 --center \
+    oth_int="$(yad --window-icon=icons/magyarch_logo.png --no-escape  --width=400 --height=450 --center \
         --buttons-layout=center --title="$TITLE" --text="$OTHER000"\
         --no-selection  --image=preferences --checklist --list --no-headers \
         --column="" --column="" --column="" "${OTHER_LIST_INT[@]}")"
@@ -780,7 +789,7 @@ other_apps_sec() {
         done
     fi
 
-    oth_sec="$(yad  --width=400 --height=400 --center \
+    oth_sec="$(yad --window-icon=icons/magyarch_logo.png --no-escape  --width=400 --height=400 --center \
         --buttons-layout=center --title="$TITLE" --text="$OTHER001"\
         --no-selection  --image=preferences --checklist --list --no-headers \
         --column="" --column="" --column="" "${OTHER_LIST_SEC[@]}")"
@@ -828,7 +837,7 @@ other_apps_med() {
         done
     fi
 
-    oth_med="$(yad  --width=400 --height=400 --center \
+    oth_med="$(yad --window-icon=icons/magyarch_logo.png --no-escape  --width=400 --height=400 --center \
         --buttons-layout=center --title="$TITLE" --text="$OTHER002"\
         --no-selection  --image=preferences --checklist --list --no-headers \
         --column="" --column="" --column="" "${OTHER_LIST_MED[@]}")"
@@ -875,7 +884,7 @@ other_apps_ofi() {
         done
     fi
 
-    oth_ofi="$(yad  --width=400 --height=400 --center \
+    oth_ofi="$(yad --window-icon=icons/magyarch_logo.png --no-escape  --width=400 --height=400 --center \
         --buttons-layout=center --title="$TITLE" --text="$OTHER003"\
         --no-selection  --image=preferences --checklist --list --no-headers \
         --column="" --column="" --column="" "${OTHER_LIST_OFI[@]}")"
@@ -922,7 +931,7 @@ other_apps_uti() {
         done
     fi
 
-    oth_uti="$(yad  --width=400 --height=400 --center \
+    oth_uti="$(yad --window-icon=icons/magyarch_logo.png --no-escape  --width=400 --height=400 --center \
         --buttons-layout=center --title="$TITLE" --text="$OTHER004"\
         --no-selection  --image=preferences --checklist --list --no-headers \
         --column="" --column="" --column="" "${OTHER_LIST_UTI[@]}")"
@@ -971,7 +980,7 @@ other_apps_ter() {
         done
     fi
 
-    oth_ter="$(yad  --width=400 --height=400 --center \
+    oth_ter="$(yad --window-icon=icons/magyarch_logo.png --no-escape  --width=400 --height=400 --center \
         --buttons-layout=center --title="$TITLE" --text="$OTHER005"\
         --no-selection  --image=preferences --checklist --list --no-headers \
         --column="" --column="" --column="" "${OTHER_LIST_TER[@]}")"
@@ -983,7 +992,7 @@ other_apps_ter() {
 
 other_app_set() {
 
-    oth_app="$(yad  --width=400 --height=400 --center \
+    oth_app="$(yad --window-icon=icons/magyarch_logo.png --no-escape  --width=400 --height=400 --center \
         --buttons-layout=center --title="$TITLE" --text="$MAIN010" \
         --no-selection  --image=preferences --radiolist --list --no-headers \
         --column="" --column="" "${OTHER_LIST[@]}")"
@@ -1027,9 +1036,9 @@ grub_set() {
     devices="$(lsblk -lno NAME,TYPE | grep 'disk' | awk '{print "/dev/" $1 " " $2}' | sort -u | sed 's/disk//g' | awk '{print "false " $0}')"
 
     # grub_dev=
-    grb_set="$(yad  --width=400 --center \
+    grb_set="$(yad --window-icon=icons/magyarch_logo.png --no-escape  --width=400 --center \
         --buttons-layout=center --title="$TITLE" --text="$BTL001" \
-        --no-selection  --image=preferences --radiolist --list --no-headers \
+        --no-selection  --image=icons/boot.png --radiolist --list --no-headers \
         --column="" --column="" $devices)"
 
     # grb_dev=$(echo $grb_set | cut -d '|' -f2)
@@ -1037,9 +1046,9 @@ grub_set() {
 
 
 bootloader_set() {
-    bootloader="$(yad  --width=400 --height=250 --center \
+    bootloader="$(yad --window-icon=icons/magyarch_logo.png --no-escape  --width=400 --height=250 --center \
         --buttons-layout=center --title="$TITLE" --text="$BTL000" \
-        --no-selection  --image=preferences --radiolist --list --no-headers \
+        --no-selection  --image=icons/boot.png --radiolist --list --no-headers \
         --column="" --column="" false grub false refind false ${NONE})"
 
     unset MAIN_LIST
@@ -1055,7 +1064,7 @@ bootloader_set() {
 
     if [ "$(echo "$bootloader" | cut -d "|" -f2)" = "refind" -a "$SYSTEM" = "BIOS" ]
     then
-        yad --image=error --title="$TITLE" --buttons-layout=center --text="$ERROR004"
+        yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/error.png --title="$TITLE" --buttons-layout=center --text="$ERROR004"
         bootloader_set
         return 1
     fi
@@ -1065,15 +1074,15 @@ bootloader_set() {
 
 auto_part() {
     # devices="$(lsblk -lno NAME,TYPE | grep 'disk' | awk '{print "/dev/" $1 " " $2}' | sort -u | sed "s/ disk//g" | awk '{print "false " $0}')"
-    # device="$(yad  --width=400 --center \
+    # device="$(yad --window-icon=icons/magyarch_logo.png --no-escape  --width=400 --center \
     #     --buttons-layout=center --title="$TITLE" --text="$MAIN012" \
     #     --no-selection  --image=preferences --radiolist --list --no-headers \
     #     --column="" --column="" $devices)"
     # dev="$(echo "$device" | cut -d "|" -f2)"
     devices=$(lsblk -lno PATH,TYPE,SIZE,MODEL | grep 'disk' | awk '{$1=$1;} NF=NF' | sed "s/ disk//g" | tr "\n" ";")
 
-    device="$(yad --width=400 --center --title="$TITLE" --text="$MAIN012" \
-        --buttons-layout=center --image=preferences \
+    device="$(yad --window-icon=icons/magyarch_logo.png --no-escape --width=400 --center --title="$TITLE" --text="$MAIN012" \
+        --buttons-layout=center --image=icons/disks.png \
         --form --item-separator=";" \
         --field="Disk":CB "${devices:0:-1}")"
     
@@ -1086,7 +1095,7 @@ auto_part() {
         return 1
     fi
 
-    yad --image=help --title="$TITLE" --buttons-layout=center --text="$QUEPART000 $device $QUEPART001" --button="${NO}!gtk-no:1" --button="${YES}!gtk-yes:0"
+    yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/help.png --title="$TITLE" --buttons-layout=center --text="$QUEPART000 $device $QUEPART001" --button="${NO}!gtk-no:1" --button="${YES}!gtk-yes:0"
     ans="$?"
 
     if [ "$ans" = "0" ]
@@ -1134,7 +1143,7 @@ auto_part() {
             # chmod 600 /mnt/swapfile
             # mkswap /mnt/swapfile
             # swapon /mnt/swapfile
-            # swapfile="yes") | yad --progress --title="$TITLE" --width=450 --pulsate --auto-close --no-buttons
+            # swapfile="yes") | yad --window-icon=icons/magyarch_logo.png --no-escape --progress --title="$TITLE" --width=450 --pulsate --auto-close --no-buttons
         else
 
             partition_type="auto_uefi"
@@ -1155,7 +1164,7 @@ auto_part() {
             # chmod 600 /mnt/swapfile
             # mkswap /mnt/swapfile
             # swapon /mnt/swapfile
-            # swapfile="yes" ) | yad --progress --title="$TITLE" --width=450 --pulsate --auto-close --no-buttons
+            # swapfile="yes" ) | yad --window-icon=icons/magyarch_logo.png --no-escape --progress --title="$TITLE" --width=450 --pulsate --auto-close --no-buttons
         fi
     else
         partition_set
@@ -1165,7 +1174,7 @@ auto_part() {
 
 man_part() {
 
-    yad --image=help --title="$TITLE" --buttons-layout=center --text="$MANQ000" --button="${NO}!gtk-no:1" --button="${YES}!gtk-yes:0"
+    yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/help.png --title="$TITLE" --buttons-layout=center --text="$MANQ000" --button="${NO}!gtk-no:1" --button="${YES}!gtk-yes:0"
     ans1="$?"
 
     if [ "$ans1" = "0" ]
@@ -1182,9 +1191,9 @@ kswp() {
 
     
 
-    swap_query="$(yad  --width=400 --height=200 --center --no-headers \
+    swap_query="$(yad --window-icon=icons/magyarch_logo.png --no-escape  --width=400 --height=200 --center --no-headers \
         --buttons-layout=center --title="$TITLE" --text="$KSWP003" \
-        --no-selection  --image=help --radiolist --list \
+        --no-selection  --image=icons/swap.png --radiolist --list \
         --column="" --column="" "${KSWP_LIST[@]}")"
 
     swap_que=$(echo $swap_query | cut -d "|" -f2)
@@ -1239,18 +1248,18 @@ check_kswpnofile() {
     # Root csatolás nem lehet üres...
     if [ "$root_part" = "${NONE}" ]
     then
-        yad --image=error --title="$TITLE" --buttons-layout=center --text="$ERROR000"
+        yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/error.png --title="$TITLE" --buttons-layout=center --text="$ERROR000"
         kswpnofile
         return 1
     # Ha swap partíció, ez se lehet üres...
     elif [ "$swap_part" = "${NONE}" ]
     then
-        yad --image=error --title="$TITLE" --buttons-layout=center --text="$ERROR001"
+        yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/error.png --title="$TITLE" --buttons-layout=center --text="$ERROR001"
         kswpnofile
         return 1
     elif [ "$SYSTEM" = "UEFI" -a "$bootefi_part" = "${NONE}" ]
     then
-        yad --image=error --title="$TITLE" --buttons-layout=center --text="$ERROR002"
+        yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/error.png --title="$TITLE" --buttons-layout=center --text="$ERROR002"
         kswpnofile
         return 1
     fi
@@ -1330,7 +1339,7 @@ check_kswpnofile() {
         "$srvszamlal" -gt "1" -o "$tmpszamlal" -gt "1" -o \
         "$usrszamlal" -gt "1" -o "$varszamlal" -gt "1" ]
         then 
-            yad --image=error --title="$TITLE" --buttons-layout=center --text="$ERROR003"
+            yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/error.png --title="$TITLE" --buttons-layout=center --text="$ERROR003"
             kswpnofile
             return 1
     fi
@@ -1408,7 +1417,7 @@ kswpnofile() {
 
     # devices="$(lsblk -lno NAME,TYPE | grep 'disk' | awk '{print "/dev/" $1 " " $2}' | sort -u | sed "s/ disk//g" | awk '{print "false " $0}')"
 
-    # device="$(yad  --width=400 --center \
+    # device="$(yad --window-icon=icons/magyarch_logo.png --no-escape  --width=400 --center \
     #     --buttons-layout=center --title="$TITLE" --text="$MAIN012" \
     #     --no-selection  --image=preferences --radiolist --list \
     #     --column="" --column="" $devices)"
@@ -1419,8 +1428,8 @@ kswpnofile() {
     # echo $las
     las=$(lsblk -lno NAME,SIZE,FSTYPE,TYPE | grep "part" | awk -F " " '{print "/dev/"$1 " " $2 " " $3}'| tr "\n" ";")
 
-    selpart2=$(yad --width=400 --center --title="$TITLE" --text="" \
-        --buttons-layout=center --image=preferences \
+    selpart2=$(yad --window-icon=icons/magyarch_logo.png --no-escape --width=400 --center --title="$TITLE" --text="" \
+        --buttons-layout=center --image=icons/disks.png \
         --form  --item-separator=";" --separator=";" \
         --field="$MNT001":CB \
         --field="$MNT002":CB \
@@ -1485,18 +1494,18 @@ check_kswpf() {
     # Root csatolás nem lehet üres...
     if [ "$root_part" = "${NONE}" ]
     then
-        yad --image=error --title="$TITLE" --buttons-layout=center --text="$ERROR000"
+        yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/error.png --title="$TITLE" --buttons-layout=center --text="$ERROR000"
         kswpf
         return 1
     # Ha swap partíció, ez se lehet üres...
     # elif [ "$swap_part" = "${NONE}" ]
     # then
-    #     yad --image=error  --buttons-layout=center --text="$ERROR001"
+    #     yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/error.png  --buttons-layout=center --text="$ERROR001"
     #     kswpnofile
     #     return 1
     elif [ "$SYSTEM" = "UEFI" -a "$bootefi_part" = "${NONE}" ]
     then
-        yad --image=error --title="$TITLE" --buttons-layout=center --text="$ERROR002"
+        yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/error.png --title="$TITLE" --buttons-layout=center --text="$ERROR002"
         kswpf
         return 1
     fi
@@ -1576,7 +1585,7 @@ check_kswpf() {
         "$srvszamlal" -gt "1" -o "$tmpszamlal" -gt "1" -o \
         "$usrszamlal" -gt "1" -o "$varszamlal" -gt "1" ]
         then 
-            yad --image=error --title="$TITLE" --buttons-layout=center --text="$ERROR003"
+            yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/error.png --title="$TITLE" --buttons-layout=center --text="$ERROR003"
             kswpf
             return 1
     fi
@@ -1663,8 +1672,8 @@ check_kswpf() {
 kswpfsize() {
 
     # FALSE "3072" FALSE "4096" 
-    swapsize=$(yad --width=400 --center --title="$TITLE" --text="$KSWP004" \
-        --buttons-layout=center --image=preferences \
+    swapsize=$(yad --window-icon=icons/magyarch_logo.png --no-escape --width=400 --center --title="$TITLE" --text="$KSWP004" \
+        --buttons-layout=center --image=icons/swap.png \
         --form  --item-separator="," --separator=" " \
         --field="$KSWP001":CB \
         "1024,2048,3072,4096")
@@ -1678,7 +1687,7 @@ kswpfsize() {
         # dd if=/dev/zero of=/mnt/swapfile bs=1M count=${swaps}
         # chmod 600 /mnt/swapfile
         # mkswap /mnt/swapfile
-        # swapon /mnt/swapfile) | yad --progress --title="$TITLE" --width=450 --pulsate --auto-close --no-buttons
+        # swapon /mnt/swapfile) | yad --window-icon=icons/magyarch_logo.png --no-escape --progress --title="$TITLE" --width=450 --pulsate --auto-close --no-buttons
         #echo "swap készítés"
         # egyeb_csatolas
     else
@@ -1691,7 +1700,7 @@ kswpf() {
 
     # devices="$(lsblk -lno NAME,TYPE | grep 'disk' | awk '{print "/dev/" $1 " " $2}' | sort -u | sed "s/ disk//g" | awk '{print "false " $0}')"
 
-    # device="$(yad  --width=400 --center \
+    # device="$(yad --window-icon=icons/magyarch_logo.png --no-escape  --width=400 --center \
     #     --buttons-layout=center --title="$TITLE" --text="$MAIN012" \
     #     --no-selection  --image=preferences --radiolist --list \
     #     --column="" --column="" $devices)"
@@ -1703,8 +1712,8 @@ kswpf() {
     las=$(lsblk -lno NAME,SIZE,FSTYPE,TYPE | grep "part" | awk -F " " '{print "/dev/"$1 " " $2 " " $3}'| tr "\n" ";")
 
     # IFS=";"
-    selpart=$(yad --width=400 --center --title="$TITLE" --text="" \
-        --buttons-layout=center --image=preferences \
+    selpart=$(yad --window-icon=icons/magyarch_logo.png --no-escape --width=400 --center --title="$TITLE" --text="" \
+        --buttons-layout=center --image=icons/disks.png \
         --form  --item-separator=";" --separator=";" \
         --field="$MNT001":CB \
         --field="$MNT002":CB \
@@ -1763,18 +1772,18 @@ check_kswpno() {
     # Root csatolás nem lehet üres...
     if [ "$root_part" = "${NONE}" ]
     then
-        yad --image=error --title="$TITLE" --buttons-layout=center --text="$ERROR000"
+        yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/error.png --title="$TITLE" --buttons-layout=center --text="$ERROR000"
         kswpno
         return 1
     # Ha swap partíció, ez se lehet üres...
     # elif [ "$swap_part" = "${NONE}" ]
     # then
-    #     yad --image=error  --buttons-layout=center --text="$ERROR001"
+    #     yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/error.png  --buttons-layout=center --text="$ERROR001"
     #     kswpnofile
     #     return 1
     elif [ "$SYSTEM" = "UEFI" -a "$bootefi_part" = "${NONE}" ]
     then
-        yad --image=error --title="$TITLE" --buttons-layout=center --text="$ERROR002"
+        yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/error.png --title="$TITLE" --buttons-layout=center --text="$ERROR002"
         kswpno
         return 1
     fi
@@ -1854,7 +1863,7 @@ check_kswpno() {
         "$srvszamlal" -gt "1" -o "$tmpszamlal" -gt "1" -o \
         "$usrszamlal" -gt "1" -o "$varszamlal" -gt "1" ]
         then 
-            yad --image=error --title="$TITLE" --buttons-layout=center --text="$ERROR003"
+            yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/error.png --title="$TITLE" --buttons-layout=center --text="$ERROR003"
             kswpno
             return 1
     fi
@@ -1931,7 +1940,7 @@ kswpno() {
 
     # devices="$(lsblk -lno NAME,TYPE | grep 'disk' | awk '{print "/dev/" $1 " " $2}' | sort -u | sed "s/ disk//g" | awk '{print "false " $0}')"
 
-    # device="$(yad  --width=400 --center \
+    # device="$(yad --window-icon=icons/magyarch_logo.png --no-escape  --width=400 --center \
     #     --buttons-layout=center --title="$TITLE" --text="$MAIN012" \
     #     --no-selection  --image=preferences --radiolist --list \
     #     --column="" --column="" $devices)"
@@ -1942,8 +1951,8 @@ kswpno() {
     # echo $las
     las=$(lsblk -lno NAME,SIZE,FSTYPE,TYPE | grep "part" | awk -F " " '{print "/dev/"$1 " " $2 " " $3}'| tr "\n" ";")
 
-    selpart1=$(yad --width=400 --center --title="$TITLE" --text="" \
-        --buttons-layout=center --image=preferences \
+    selpart1=$(yad --window-icon=icons/magyarch_logo.png --no-escape --width=400 --center --title="$TITLE" --text="" \
+        --buttons-layout=center --image=icons/disks.png \
         --form  --item-separator=";" --separator=";" \
         --field="$MNT001":CB \
         --field="$MNT002":CB \
@@ -1967,14 +1976,14 @@ kswpno() {
 
 partition_set() {
 
-    dst="$(yad --width=400 --center --title="$TITLE" --text="$DISKTYPE000" \
-        --buttons-layout=center --image=preferences \
+    dst="$(yad --window-icon=icons/magyarch_logo.png --no-escape --width=400 --center --title="$TITLE" --text="$DISKTYPE000" \
+        --image=icons/disks.png --buttons-layout=center \
         --form --item-separator=";" \
         --field="":CB "${DISKTYPE001};${DISKTYPE002};${DISKTYPE003}")"
 
-    partition="$(yad  --width=400 --center \
+    partition="$(yad --window-icon=icons/magyarch_logo.png --no-escape  --width=400 --center \
         --buttons-layout=center --title="$TITLE" --text="$MAIN012" \
-        --no-selection  --image=preferences --radiolist --list --no-headers \
+        --no-selection  --image=icons/disks.png --radiolist --list --no-headers \
         --column="" --column="" "${PART_LIST[@]}")"
 
      
@@ -2030,8 +2039,8 @@ install_summary() {
     fi
 
 
-    ins_sum="$(yad --width=400 --height=600 --center --title="$TITLE" --text="$MAIN015" \
-        --buttons-layout=center --image=input-gaming \
+    ins_sum="$(yad --window-icon=icons/magyarch_logo.png --no-escape --width=400 --height=600 --center --title="$TITLE" --text="$MAIN015" \
+        --buttons-layout=center --image=icons/summary.png \
         --form  --scroll \
         --field "$MAIN002\n\t${LAN}:  $lan\n\n\
 $MAIN003\n\t${KBL}:  $kbl\n\t${KBM}:  $kbm\n\n\
@@ -3014,9 +3023,9 @@ install_run() {
 
     echo "100"
     echo "# $INS011"
-    ) | yad --title="$TITLE" --width=400 --height=250 --progress --auto-close --enable-log --log-expanded --no-buttons
+    ) | yad --window-icon=icons/magyarch_logo.png --no-escape --title="$TITLE" --width=400 --height=250 --progress --auto-close --enable-log --log-expanded --no-buttons
 
-    yad --image=info --title="$TITLE" --buttons-layout=center --text="$INS011"
+    yad --window-icon=icons/magyarch_logo.png --no-escape --image=info --title="$TITLE" --buttons-layout=center --text="$INS011"
     cev="$?"
     # reboot
     if [ "$cev" == 0 ]
@@ -3031,9 +3040,9 @@ install_run() {
 # Main
 main() {
 
-    main_diag="$(yad  --width=400 --height=480 --center \
+    main_diag="$(yad --window-icon=icons/magyarch_logo.png --no-escape  --width=400 --height=480 --center \
         --buttons-layout=center --title="$TITLE" --text="$MAIN000" \
-        --no-selection  --image=preferences --radiolist --list --no-headers \
+        --no-selection  --image=icons/select.png --radiolist --list --no-headers \
         --column="" --column="" "${MAIN_LIST[@]}")"
     if [ "$(echo "$main_diag" | cut -d "|" -f2)" = "$MAIN001" ]
     then
