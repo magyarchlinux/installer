@@ -685,6 +685,8 @@ pass_check() {
         return 1
 
     fi
+
+    _msg "Hostname: $hsname username: $user_name"
     IFS=$OLDIFS
 }
 
@@ -706,6 +708,10 @@ kernel_shell_cups_set() {
         "^${NO},${YES}" )"
     okcancel=$(echo "$?")
     _msg "ker_sh_cup button: $okcancel"
+    _msg " Kernel: $(echo $ker_sh_cup | cut -d "|" -f1) \
+Shell: $(echo $ker_sh_cup | cut -d "|" -f2) \
+Printer: $(echo $ker_sh_cup | cut -d "|" -f3) \
+Samba: $(echo $ker_sh_cup | cut -d "|" -f4)"
 
     unset MAIN_LIST
     
@@ -727,6 +733,7 @@ graphics_set() {
         "${NONE},amdgpu,i915,nouveau,nvidia,virtualbox")"
     okcancel=$(echo "$?")
     _msg "grap  button: $okcancel"
+    _msg "Graphics card select: $(echo $grap | cut -d "|" -f1)"
 
     unset MAIN_LIST
     
@@ -3097,7 +3104,7 @@ install_run() {
 
     echo "100"
     echo "# $INS011"
-    ) | yad --window-icon=icons/magyarch_logo.png --no-escape --title="$TITLE" --width=400 --height=250 --progress --auto-close --enable-log --log-expanded --no-buttons
+    ) 2>&1 | yad --window-icon=icons/magyarch_logo.png --no-escape --title="$TITLE" --width=400 --height=250 --progress --auto-close --enable-log --log-expanded --no-buttons
 
     yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/complate.png --title="$TITLE" --buttons-layout=center --text="$INS011"
     cev="$?"
