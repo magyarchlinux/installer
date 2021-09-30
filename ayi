@@ -1,5 +1,13 @@
 #! /bin/sh
 
+
+
+LOG_FILE=script.log
+exec > >(while read -r line; do printf '%s %s\n' "$(date --rfc-3339=seconds)" "$line" | tee -a $LOG_FILE; done)
+exec 2> >(while read -r line; do printf '%s %s\n' "$(date --rfc-3339=seconds)" "$line" | tee -a $LOG_FILE; done >&2)
+
+
+
 . gettext.sh
 
 VERSION=$(cat /version.txt)
@@ -3104,7 +3112,7 @@ install_run() {
 
     echo "100"
     echo "# $INS011"
-    ) 2>&1 | yad --window-icon=icons/magyarch_logo.png --no-escape --title="$TITLE" --width=400 --height=250 --progress --auto-close --enable-log --log-expanded --no-buttons
+    ) 2>&1 | (while read -r line; do printf '%s %s\n' "$(date --rfc-3339=seconds)" "$line" | tee -a $LOG_FILE; done) | yad --window-icon=icons/magyarch_logo.png --no-escape --title="$TITLE" --width=400 --height=250 --progress --auto-close --enable-log --log-expanded --no-buttons
 
     yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/complate.png --title="$TITLE" --buttons-layout=center --text="$INS011"
     cev="$?"
