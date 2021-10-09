@@ -1,13 +1,5 @@
 #! /bin/sh
 
-
-
-LOG_FILE=script.log
-exec > >(while read -r line; do printf '%s %s\n' "$(date --rfc-3339=seconds)" "$line" | tee -a $LOG_FILE; done)
-exec 2> >(while read -r line; do printf '%s %s\n' "$(date --rfc-3339=seconds)" "$line" | tee -a $LOG_FILE; done >&2)
-
-
-
 . gettext.sh
 
 VERSION=$(cat /version.txt)
@@ -66,7 +58,7 @@ installer_lang() {
     # Variables
     TITLE=$(EGETTEXT "MagyArch Installer - \$SYSTEM mode")
     MAIN001=$(GETTEXT "Installer language")
-    MAIN002=$(GETTEXT "Keyboard settings")
+    # MAIN002=$(GETTEXT "Keyboard settings")
     LAN=$(GETTEXT "Language")
 
     lang="$(yad --window-icon=icons/magyarch_logo.png --no-escape --width=400 --center --title="$TITLE" --text="$MAIN001" \
@@ -409,7 +401,7 @@ installer_lang() {
     PART000=$(GETTEXT "Automatic partitioning")
     PART001=$(GETTEXT "Manual partitioning")
 
-    PART_LIST=("false" "$PART000" "false" "$PART001")
+    PART_LIST="${PART000};${PART001}"
 
     QUEPART000=$(EGETTEXT "ATTENTION!\nThis will erase ALL data here: ")
     QUEPART001=$(EGETTEXT "\nAre you sure you want to continue?")
@@ -469,12 +461,15 @@ Partition and format your hard disk, as this is not done by the installer!")
     # INS00=$(GETTEXT "")
     DISKTYPE000=$(GETTEXT "Installation method")
     DISKTYPE001=$(GETTEXT "Normal")
-    DISKTYPE002=$(GETTEXT "LVM")
-    DISKTYPE003=$(GETTEXT "LVM + LUKS (encrypt)")
+    DISKTYPE002=$(GETTEXT "Normal + LUKS (encrypt)")
+    DISKTYPE003=$(GETTEXT "LVM")
+    DISKTYPE004=$(GETTEXT "LVM + LUKS (encrypt)")
+    ENCRYPT_PASS001=$(GETTEXT "Encrypt password")
+    ENCRYPT_PASS002=$(GETTEXT "Repeat encrypt password")
 
 
             
-    MAIN_LIST=("false" "$MAIN001" "true" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
+    MAIN_LIST=("false" "$MAIN001" "true" "$MAIN002" "false" "$MAIN003" "false" "$MAIN012" "false" "$MAIN004" \
         "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
         "false" "$MAIN009" "false" "$MAIN011" "false" "$MAIN013")
 
@@ -503,7 +498,7 @@ system_lang() {
     
     unset MAIN_LIST
 
-    MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "true" "$MAIN003" "false" "$MAIN004" \
+    MAIN_LIST=("false" "$MAIN001" "false" "$MAIN002" "true" "$MAIN003" "false" "$MAIN012" "false" "$MAIN004" \
         "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
         "false" "$MAIN009" "false" "$MAIN011" "false" "$MAIN013")
 }
@@ -531,7 +526,7 @@ keyboard_set() {
 
     unset MAIN_LIST
     
-    MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "true" "$MAIN004" \
+    MAIN_LIST=("false" "$MAIN001" "false" "$MAIN002" "false" "$MAIN003" "true" "$MAIN012" "falsee" "$MAIN004" \
         "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
         "false" "$MAIN009" "false" "$MAIN011" "false" "$MAIN013")
 }
@@ -594,7 +589,7 @@ timezone_set() {
 
     unset MAIN_LIST
     
-    MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
+    MAIN_LIST=("false" "$MAIN001" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN012" "false" "$MAIN004" \
         "true" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
         "false" "$MAIN009" "false" "$MAIN011" "false" "$MAIN013")
 }
@@ -614,7 +609,7 @@ hname() {
     # echo "Select hostname set: $(echo $hsname | cut -d '|' -f1)"
 
     unset MAIN_LIST 
-    MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
+    MAIN_LIST=("false" "$MAIN001" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN012" "false" "$MAIN004" \
         "true" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
         "false" "$MAIN009" "false" "$MAIN011" "false" "$MAIN013")
 }
@@ -642,7 +637,7 @@ user_root_set() {
 
     unset MAIN_LIST
 
-    MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
+    MAIN_LIST=("false" "$MAIN001" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN012" "false" "$MAIN004" \
         "false" "$MAIN006" "true" "$MAIN007" "false" "$MAIN008" \
         "false" "$MAIN009" "false" "$MAIN011" "false" "$MAIN013")
 }
@@ -718,12 +713,12 @@ kernel_shell_cups_set() {
     _msg "ker_sh_cup button: $okcancel"
     _msg " Kernel: $(echo $ker_sh_cup | cut -d "|" -f1) \
 Shell: $(echo $ker_sh_cup | cut -d "|" -f2) \
-Printer: $(echo $ker_sh_cup | cut -d "|" -f3) \
-Samba: $(echo $ker_sh_cup | cut -d "|" -f4)"
+    Printer: $(echo $ker_sh_cup | cut -d "|" -f3) \
+    Samba: $(echo $ker_sh_cup | cut -d "|" -f4)"
 
     unset MAIN_LIST
     
-    MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
+    MAIN_LIST=("false" "$MAIN001" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN012" "false" "$MAIN004" \
         "false" "$MAIN006" "false" "$MAIN007" "true" "$MAIN008" \
         "false" "$MAIN009" "false" "$MAIN011")
 }
@@ -741,11 +736,10 @@ graphics_set() {
         "${NONE},amdgpu,i915,nouveau,nvidia,virtualbox")"
     okcancel=$(echo "$?")
     _msg "grap  button: $okcancel"
-    _msg "Graphics card select: $(echo $grap | cut -d "|" -f1)"
 
     unset MAIN_LIST
     
-    MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
+    MAIN_LIST=("false" "$MAIN001" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN012" "false" "$MAIN004" \
         "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
         "true" "$MAIN009" "false" "$MAIN011" "false" "$MAIN013")
 }
@@ -769,7 +763,7 @@ xmonad+polybar (MagyArch),awesome,bspwm,budgie-desktop,cinnamon,deepin,dwm,gnome
 
     unset MAIN_LIST
     
-    MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
+    MAIN_LIST=("false" "$MAIN001" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN012" "false" "$MAIN004" \
         "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
         "false" "$MAIN009" "true" "$MAIN011" "false" "$MAIN013")
 
@@ -1091,7 +1085,7 @@ other_app_set() {
     
     unset MAIN_LIST
     
-    MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
+    MAIN_LIST=("false" "$MAIN001" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN012" "false" "$MAIN004" \
         "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
         "false" "$MAIN009" "false" "$MAIN011" "false" "$MAIN013")
 }
@@ -1129,7 +1123,7 @@ bootloader_set() {
 
     unset MAIN_LIST
     # boot_sel=$(echo $bootloader | cut -d '|' -f2)
-    MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
+    MAIN_LIST=("false" "$MAIN001" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN012" "false" "$MAIN004" \
         "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
         "false" "$MAIN009" "false" "$MAIN011" "true" "$MAIN013")
 
@@ -1148,6 +1142,36 @@ bootloader_set() {
     
 }
 
+encrypt_pass_check() {
+    IFS=";"
+    _msg "RUN ENCRYPT PASS CHECK FUNCTION"
+
+    # dev=$1
+    encryptpass1=$2
+    encryptpass2=$3
+
+
+    if [ "$encryptpass1" != "$encryptpass2" ]
+    then
+        yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/error.png --title="$TITLE"  --buttons-layout=center --text="$ERR_USER_PASS"
+        _msg "Not same encrypt  password"
+        auto_part
+        return 1
+    
+    elif [ "$encryptpass1" == "" ]
+    then
+        yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/error.png --title="$TITLE"  --buttons-layout=center --text="$ERR_NO_PASS"
+        _msg "Not encrypt  password"
+        auto_part
+        return 1
+    fi
+
+    dev="$(echo "$1" | awk '{print $1}')"
+    _msg "Device: $dev"
+    IFS=$OLDIFS
+    auto_disk_set
+
+}
 
 auto_part() {
 
@@ -1161,17 +1185,43 @@ auto_part() {
     # dev="$(echo "$device" | cut -d "|" -f2)"
     devices=$(lsblk -lno PATH,TYPE,SIZE,MODEL | grep 'disk' | awk '{$1=$1;} NF=NF' | sed "s/ disk//g" | tr "\n" ";")
 
-    device="$(yad --window-icon=icons/magyarch_logo.png --no-escape --width=400 --center --title="$TITLE" --text="$MAIN012" \
-        --buttons-layout=center --image=icons/disks.png \
-        --form --item-separator=";" \
-        --field="Disk":CB "${devices:0:-1}")"
+    if [ "${ins_type}" = "${DISKTYPE001}" ]
+    then
+        device="$(yad --window-icon=icons/magyarch_logo.png --no-escape --width=400 --center --title="$TITLE" --text="$MAIN012" \
+            --buttons-layout=center --image=icons/disks.png \
+            --form --item-separator=";" \
+            --field="Disk":CB "${devices:0:-1}")"
+    elif [ "${ins_type}" = "${DISKTYPE002}" ]
+    then
+        device="$(yad --window-icon=icons/magyarch_logo.png --no-escape --width=400 --center --title="$TITLE" --text="$MAIN012" \
+            --buttons-layout=center --image=icons/disks.png \
+            --form --item-separator=";" --separator=";" \
+            --field="Disk":CB \
+            --field="$ENCRYPT_PASS001":H \
+            --field="$ENCRYPT_PASS002":H \
+            "${devices:0:-1}")"
+    fi
+
+    if [ "${ins_type}" = "${DISKTYPE002}" ]
+    then
+        IFS=";"
+        encrypt_pass_check $device
+        return 1
+    fi
     
     dev="$(echo "$device" | awk '{print $1}')"
+    _msg "Device: $dev"
+
+    auto_disk_set
     
+}
+
+auto_disk_set() {
     if [ "$dev" = "" ]
     then
         _msg "No device."
-        auto_part
+        # auto_part
+        partition_set
         return 1
     fi
 
@@ -1181,20 +1231,39 @@ auto_part() {
 
     if [ "$ans" = "0" ]
     then
-        if [ "${dev:0:9}" = "/dev/nvme" -a "$SYSTEM" = "BIOS" ]
+        if [ "${dev:0:9}" = "/dev/nvme" -a "$SYSTEM" = "BIOS" -a "$ins_type" = "$DISKTYPE001" ]
         then
             root_part=${dev}p1
-        elif [ "${dev:0:9}" = "/dev/nvme" -a "$SYSTEM" != "BIOS" ]
+        elif [ "${dev:0:9}" = "/dev/nvme" -a "$SYSTEM" != "BIOS" -a "$ins_type" = "$DISKTYPE001" ]
         then
             gpt_part=${dev}p1
             root_part=${dev}p2
-        elif [ "${dev:0:9}" != "/dev/nvme" -a "$SYSTEM" = "BIOS" ]
+        elif [ "${dev:0:9}" != "/dev/nvme" -a "$SYSTEM" = "BIOS" -a "$ins_type" = "$DISKTYPE001" ]
         then
             root_part=${dev}1
-        elif [ "${dev:0:9}" != "/dev/nvme" -a "$SYSTEM" != "BIOS" ]  
+        elif [ "${dev:0:9}" != "/dev/nvme" -a "$SYSTEM" != "BIOS" -a "$ins_type" = "$DISKTYPE001" ]  
         then
             gpt_part=${dev}1
             root_part=${dev}2
+        elif [ "${dev:0:9}" = "/dev/nvme" -a "$SYSTEM" = "BIOS" -a "$ins_type" = "$DISKTYPE002" ]
+        then
+            boot_part=${dev}p1
+            root_part=${dev}p2
+        elif [ "${dev:0:9}" = "/dev/nvme" -a "$SYSTEM" != "BIOS" -a "$ins_type" = "$DISKTYPE002" ]
+        then
+            gpt_part=${dev}p1
+            root_part=${dev}p2
+            boot_part="${gpt_part}"
+        elif [ "${dev:0:9}" = "/dev/nvme" -a "$SYSTEM" != "BIOS" -a "$ins_type" = "$DISKTYPE002" ]  
+        then
+            boot_part=${dev}1
+            root_part=${dev}2
+        elif [ "${dev:0:9}" != "/dev/nvme" -a "$SYSTEM" != "BIOS" -a "$ins_type" = "$DISKTYPE002" ]  
+        then
+            gpt_part=${dev}1
+            root_part=${dev}2
+            boot_part="${gpt_part}"
+
         fi
         
         ram="$(grep MemTotal /proc/meminfo | awk '{print $2/1024}' | sed 's/\..*//')"
@@ -1207,7 +1276,7 @@ auto_part() {
             swap_space="$ram"
         fi
 
-        if [ "$SYSTEM" = "BIOS" ]
+        if [ "$SYSTEM" = "BIOS" -a "$ins_type" = "$DISKTYPE001" ]
         then
 
             partition_type="auto_bios"
@@ -1225,9 +1294,19 @@ auto_part() {
             # mkswap /mnt/swapfile
             # swapon /mnt/swapfile
             # swapfile="yes") | yad --window-icon=icons/magyarch_logo.png --no-escape --progress --title="$TITLE" --width=450 --pulsate --auto-close --no-buttons
-        else
+        elif [ "$SYSTEM" != "BIOS" -a "$ins_type" = "$DISKTYPE001" ]
+        then
 
             partition_type="auto_uefi"
+
+        elif [ "$SYSTEM" != "BIOS" -a "$ins_type" = "$DISKTYPE002" ]
+        then
+
+            partition_type="auto_uefi_encrypt"
+        elif [ "$SYSTEM" = "BIOS" -a "$ins_type" = "$DISKTYPE002" ]
+        then
+
+            partition_type="auto_bios_encrypt"
 
             # (echo "# $CRUEFI"
             # dd if=/dev/zero of="$dev" bs=512 count=1
@@ -2065,20 +2144,28 @@ kswpno() {
 
 partition_set() {
 
-    dst="$(yad --window-icon=icons/magyarch_logo.png --no-escape --width=400 --center --title="$TITLE" --text="$DISKTYPE000" \
+    install_type="${DISKTYPE001};${DISKTYPE002};${DISKTYPE003};${DISKTYPE004}"
+
+    partition="$(yad --window-icon=icons/magyarch_logo.png --no-escape --width=400 --center --title="$TITLE" --text="$DISKTYPE000" \
         --image=icons/disks.png --buttons-layout=center \
         --form --item-separator=";" \
-        --field="":CB "${DISKTYPE001};${DISKTYPE002};${DISKTYPE003}")"
+        --field="":CB \
+        --field="":CB \
+        "${install_type}" "${PART_LIST}")"
+    
+    
+    
+    # partition="$(yad --window-icon=icons/magyarch_logo.png --no-escape  --width=400 --center \
+    #     --buttons-layout=center --title="$TITLE" --text="$MAIN012" \
+    #     --no-selection  --image=icons/disks.png --radiolist --list --no-headers \
+    #     --column="" --column="" "${PART_LIST[@]}")"
 
-    partition="$(yad --window-icon=icons/magyarch_logo.png --no-escape  --width=400 --center \
-        --buttons-layout=center --title="$TITLE" --text="$MAIN012" \
-        --no-selection  --image=icons/disks.png --radiolist --list --no-headers \
-        --column="" --column="" "${PART_LIST[@]}")"
+    ins_type="$(echo "$partition" | cut -d "|" -f1)"
+    echo $ins_type
 
-     
     unset MAIN_LIST
     
-    MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "true" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
+    MAIN_LIST=("false" "$MAIN001" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN012" "true" "$MAIN004" \
         "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
         "false" "$MAIN009" "false" "$MAIN011" "false" "$MAIN013")
 
@@ -2147,7 +2234,7 @@ $MAIN011\n\t$boot_load\n":LBL )"
     then
         unset MAIN_LIST
         # boot_sel=$(echo $bootloader | cut -d '|' -f2)
-        MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
+        MAIN_LIST=("false" "$MAIN001" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN012" "false" "$MAIN004" \
             "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
             "false" "$MAIN009" "false" "$MAIN011" "false" "$MAIN013")
         main
@@ -2188,6 +2275,41 @@ install_run() {
         Parted "set 1 boot on"
         mkfs.fat -F32 "$gpt_part"
         mkfs.ext4 -F "$root_part"
+        mount "$root_part" /mnt
+        mkdir -p /mnt/boot
+        mount "$gpt_part" /mnt/boot
+        touch /mnt/swapfile
+        dd if=/dev/zero of=/mnt/swapfile bs=1M count="${swap_space}"
+        chmod 600 /mnt/swapfile
+        mkswap /mnt/swapfile
+        swapon /mnt/swapfile
+        swapfile="yes"
+    fi
+
+    if [ "$partition_type" = "auto_uefi_encrypt" ]
+    then
+        echo "# $CRUEFI"
+        dd if=/dev/zero of="$dev" bs=512 count=1
+        Parted "mklabel gpt"
+        Parted "mkpart primary fat32 1MiB 513MiB"
+        Parted "mkpart primary ext4 513MiB 100%"
+        Parted "set 1 boot on"
+        mkfs.fat -F32 "$gpt_part"
+        mkfs.ext4 -F "$root_part"
+        
+        # encrypt
+
+        touch .encryptpasswd
+        echo -e "$encryptpass1\n$encryptpass2" > .encryptpasswd
+        
+
+        cryptsetup -c aes-xts-plain64 -y --use-random luksFormat "$root_part" < .encryptpasswd >/dev/null
+        echo -e "$encryptpass1" > .encryptpasswd
+        cryptsetup luksOpen "$root_part" luks < .encryptpasswd >/dev/null
+
+        rm .encryptpasswd
+
+
         mount "$root_part" /mnt
         mkdir -p /mnt/boot
         mount "$gpt_part" /mnt/boot
@@ -3054,28 +3176,71 @@ install_run() {
 
     if [ "$boot_sel" = "grub" ]
     then
-        if [ "$SYSTEM" = 'BIOS' ]
+        if [ "$SYSTEM" = 'BIOS' -a "${ins_type}" = "${DISKTYPE001}" ]
         then
             echo "# $INS010"
-            pacstrap /mnt grub
+            arch_chroot "pacman -S  grub --noconfirm --needed "
             #arch_chroot "os-prober"
-            arch_chroot "grub-install --target=i386-pc $grb_dev"
+            
             git clone https://github.com/magyarchlinux/magyarch_grub.git
             cp magyarch_grub/grub /mnt/etc/default/
             cp -r  magyarch_grub/MagyArchlinux /mnt/boot/grub/themes/
+            arch_chroot "grub-install --target=i386-pc $grb_dev"
 
-            arch_chroot "grub-mkconfig -o /boot/grub/grub.cfg"
-        else
+        elif [ "$SYSTEM" = 'BIOS' -a "${ins_type}" = "${DISKTYPE002}" ]
+        then
+            echo "# $INS010"
+            arch_chroot "pacman -S  grub --noconfirm --needed "
+            #arch_chroot "os-prober"
+            # mkinitcpio 
+            arch_chroot "sed -i "s|HOOKS=(|# HOOKS=(|" /etc/mkinitcpio.conf "
+            arch_chroot "sed -i "s|# HOOKS=(.*|\0\nHOOKS=(base udev autodetect keyboard vconsole modconf block encrypt filesystems keyboard fsck)|" /etc/mkinitcpio.conf"
+            arch_chroot "mkinitcpio -p $kern"
+
+            git clone https://github.com/magyarchlinux/magyarch_grub.git
+            cp magyarch_grub/grub /mnt/etc/default/
+            cp -r  magyarch_grub/MagyArchlinux /mnt/boot/grub/themes/
+            # grub set
+            part_uuid="PARTUUID=$(lsblk -lno PARTUUID $root_part)"
+            arch_chroot "sed -i "s|GRUB_CMDLINE_LINUX=\"|GRUB_CMDLINE_LINUX=\"cryptdevice=${part_uuid}:luks:allow-discards|" /etc/default/grub"
+
+            arch_chroot "grub-install --target=i386-pc $grb_dev"
+
+        elif [ "$SYSTEM" != 'BIOS' -a "${ins_type}" = "${DISKTYPE001}" ]
+        then
             echo "# $INS010"
 
-            pacstrap /mnt grub efibootmgr
+            arch_chroot "pacman -S  grub efibootmgr --noconfirm --needed "
+            arch_chroot " "
             #arch_chroot "os-prober"
-            arch_chroot "grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=magyarchlinux1 --recheck"
             git clone https://github.com/magyarchlinux/magyarch_grub.git
             cp magyarch_grub/grub /mnt/etc/default/
             cp -r  magyarch_grub/MagyArchlinux /mnt/boot/grub/themes/
 
             arch_chroot "grub-mkconfig -o /boot/grub/grub.cfg"
+        elif [ "$SYSTEM" != 'BIOS' -a "${ins_type}" = "${DISKTYPE002}" ]
+        then
+            echo "# $INS010"
+
+            arch_chroot "pacman -S  grub efibootmgr --noconfirm --needed "
+            arch_chroot " "
+            #arch_chroot "os-prober"
+            # mkinitcpio 
+            arch_chroot "sed -i "s|HOOKS=(|# HOOKS=(|" /etc/mkinitcpio.conf "
+            arch_chroot "sed -i "s|# HOOKS=(.*|\0\nHOOKS=(base udev autodetect keyboard vconsole modconf block encrypt filesystems keyboard fsck)|" /etc/mkinitcpio.conf"
+            arch_chroot "mkinitcpio -p $kern"
+
+            git clone https://github.com/magyarchlinux/magyarch_grub.git
+            cp magyarch_grub/grub /mnt/etc/default/
+            cp -r  magyarch_grub/MagyArchlinux /mnt/boot/grub/themes/
+
+            part_uuid="PARTUUID=$(lsblk -lno PARTUUID $root_part)"
+            arch_chroot "sed -i "s|GRUB_CMDLINE_LINUX=\"|GRUB_CMDLINE_LINUX=\"cryptdevice=${part_uuid}:luks:allow-discards|" /etc/default/grub"
+
+
+            arch_chroot "grub-mkconfig -o /boot/grub/grub.cfg"
+
+
         fi
 
     elif [ "$boot_sel" = "refind" ]
@@ -3106,13 +3271,13 @@ install_run() {
         cp /installer/40-libinput.conf /mnt/etc/X11/xorg.conf.d/
     fi
 
-    arch_chroot "mkinitcpio -p $kern"
+    # arch_chroot "mkinitcpio -p $kern"
 
     umount -R /mnt
 
     echo "100"
     echo "# $INS011"
-    )  | tee -a $LOG_FILE | yad --window-icon=icons/magyarch_logo.png --no-escape --title="$TITLE" --width=400 --height=250 --progress --auto-close --enable-log --log-expanded --no-buttons
+    ) | yad --window-icon=icons/magyarch_logo.png --no-escape --title="$TITLE" --width=400 --height=250 --progress --auto-close --enable-log --log-expanded --no-buttons
 
     yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/complate.png --title="$TITLE" --buttons-layout=center --text="$INS011"
     cev="$?"

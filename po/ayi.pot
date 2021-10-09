@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-25 19:00+0200\n"
+"POT-Creation-Date: 2021-10-07 10:14+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,10 +24,6 @@ msgstr ""
 
 #: ../ayi:60 ../ayi:89
 msgid "Installer language"
-msgstr ""
-
-#: ../ayi:61 ../ayi:91
-msgid "Keyboard settings"
 msgstr ""
 
 #: ../ayi:62 ../ayi:105
@@ -52,6 +48,10 @@ msgstr ""
 
 #: ../ayi:90
 msgid "System language"
+msgstr ""
+
+#: ../ayi:91
+msgid "Keyboard settings"
 msgstr ""
 
 #: ../ayi:92
@@ -677,9 +677,13 @@ msgid "Normal"
 msgstr ""
 
 #: ../ayi:464
-msgid "LVM"
+msgid "Normal + LUKS (encrypt)"
 msgstr ""
 
 #: ../ayi:465
+msgid "LVM"
+msgstr ""
+
+#: ../ayi:466
 msgid "LVM + LUKS (encrypt)"
 msgstr ""

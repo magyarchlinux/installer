@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-25 19:00+0200\n"
-"PO-Revision-Date: 2021-09-25 19:05+0200\n"
+"POT-Creation-Date: 2021-10-07 10:14+0200\n"
+"PO-Revision-Date: 2021-10-07 10:16+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: hu\n"
@@ -27,10 +27,6 @@ msgstr "MagyArch telepítő - $SYSTEM mód"
 #: ../ayi:60 ../ayi:89
 msgid "Installer language"
 msgstr "Telepítő nyelve"
-
-#: ../ayi:61 ../ayi:91
-msgid "Keyboard settings"
-msgstr "Billentyűzet beállítása"
 
 #: ../ayi:62 ../ayi:105
 msgid "Language"
@@ -55,6 +51,10 @@ msgstr "Válaszon a listából:"
 #: ../ayi:90
 msgid "System language"
 msgstr "Rendszer nyelv"
+
+#: ../ayi:91
+msgid "Keyboard settings"
+msgstr "Billentyűzet beállítása"
 
 #: ../ayi:92
 msgid "Choose your location"
@@ -692,10 +692,14 @@ msgid "Normal"
 msgstr "Normál"
 
 #: ../ayi:464
+msgid "Normal + LUKS (encrypt)"
+msgstr "Normál + LUKS (titkosítás)"
+
+#: ../ayi:465
 msgid "LVM"
 msgstr "LVM"
 
-#: ../ayi:465
+#: ../ayi:466
 msgid "LVM + LUKS (encrypt)"
 msgstr "LVM + LUKS (titkosítás)"
 
