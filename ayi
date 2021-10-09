@@ -2294,8 +2294,6 @@ install_run() {
         Parted "mkpart primary fat32 1MiB 513MiB"
         Parted "mkpart primary ext4 513MiB 100%"
         Parted "set 1 boot on"
-        mkfs.fat -F32 "$gpt_part"
-        mkfs.ext4 -F "$root_part"
         
         # encrypt
 
@@ -2304,11 +2302,13 @@ install_run() {
         
 
         cryptsetup -c aes-xts-plain64 -y --use-random luksFormat "$root_part" < .encryptpasswd >/dev/null
-        echo -e "$encryptpass1" > .encryptpasswd
+        echo -e "$encryptpass1" > ..encryptpasswd
         cryptsetup luksOpen "$root_part" luks < .encryptpasswd >/dev/null
 
         rm .encryptpasswd
 
+        mkfs.fat -F32 "$gpt_part"
+        mkfs.ext4 -F "$root_part"
 
         mount "$root_part" /mnt
         mkdir -p /mnt/boot
