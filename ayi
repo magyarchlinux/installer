@@ -3193,8 +3193,8 @@ install_run() {
             arch_chroot "pacman -S  grub --noconfirm --needed "
             #arch_chroot "os-prober"
             # mkinitcpio 
-            arch_chroot "sed -i "s|HOOKS=(|# HOOKS=(|" /etc/mkinitcpio.conf "
-            arch_chroot "sed -i "s|# HOOKS=(.*|\0\nHOOKS=(base udev autodetect keyboard vconsole modconf block encrypt filesystems keyboard fsck)|" /etc/mkinitcpio.conf"
+            arch_chroot "sed -i 's|HOOKS=(|# HOOKS=(|'' /etc/mkinitcpio.conf"
+            arch_chroot "sed -i 's|# HOOKS=(.*|\0\nHOOKS=(base udev autodetect keyboard vconsole modconf block encrypt filesystems keyboard fsck)|'' /etc/mkinitcpio.conf"
             arch_chroot "mkinitcpio -p $kern"
 
             git clone https://github.com/magyarchlinux/magyarch_grub.git
@@ -3202,7 +3202,7 @@ install_run() {
             cp -r  magyarch_grub/MagyArchlinux /mnt/boot/grub/themes/
             # grub set
             part_uuid="PARTUUID=$(lsblk -lno PARTUUID $root_part)"
-            arch_chroot "sed -i "s|GRUB_CMDLINE_LINUX=\"|GRUB_CMDLINE_LINUX=\"cryptdevice=${part_uuid}:luks:allow-discards|" /etc/default/grub"
+            arch_chroot "sed -i 's|GRUB_CMDLINE_LINUX=\"|GRUB_CMDLINE_LINUX=\"cryptdevice=${part_uuid}:luks:allow-discards|'' /etc/default/grub"
 
             arch_chroot "grub-install --target=i386-pc $grb_dev"
 
@@ -3226,8 +3226,8 @@ install_run() {
             arch_chroot " "
             #arch_chroot "os-prober"
             # mkinitcpio 
-            arch_chroot "sed -i "s|HOOKS=(|# HOOKS=(|" /etc/mkinitcpio.conf "
-            arch_chroot "sed -i "s|# HOOKS=(.*|\0\nHOOKS=(base udev autodetect keyboard vconsole modconf block encrypt filesystems keyboard fsck)|" /etc/mkinitcpio.conf"
+            arch_chroot "sed -i 's|HOOKS=(|# HOOKS=(|'' /etc/mkinitcpio.conf "
+            arch_chroot "sed -i 's|# HOOKS=(.*|\0\nHOOKS=(base udev autodetect keyboard vconsole modconf block encrypt filesystems keyboard fsck)|'' /etc/mkinitcpio.conf"
             arch_chroot "mkinitcpio -p $kern"
 
             git clone https://github.com/magyarchlinux/magyarch_grub.git
@@ -3235,7 +3235,7 @@ install_run() {
             cp -r  magyarch_grub/MagyArchlinux /mnt/boot/grub/themes/
 
             part_uuid="PARTUUID=$(lsblk -lno PARTUUID $root_part)"
-            arch_chroot "sed -i "s|GRUB_CMDLINE_LINUX=\"|GRUB_CMDLINE_LINUX=\"cryptdevice=${part_uuid}:luks:allow-discards|" /etc/default/grub"
+            arch_chroot "sed -i 's|GRUB_CMDLINE_LINUX=\"|GRUB_CMDLINE_LINUX=\"cryptdevice=${part_uuid}:luks:allow-discards|'' /etc/default/grub"
 
 
             arch_chroot "grub-mkconfig -o /boot/grub/grub.cfg"
