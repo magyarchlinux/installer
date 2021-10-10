@@ -2327,6 +2327,44 @@ install_run() {
         swapfile="yes"
     fi
 
+    if [ "$partition_type" = "auto_bios_encrypt" ]
+    then
+        echo "# $CRUEFI"
+        dd if=/dev/zero of="$dev" bs=512 count=1
+        Parted "mklabel msdos"
+
+        Parted "mkpart primary ext4 1MiB 513MiB"
+        Parted "mkpart primary ext4 513MiB 100%"
+        Parted "set 1 boot on"
+        
+        # encrypt
+
+        touch .encryptpasswd
+        echo -e "$encryptpass1\n$encryptpass2" > .encryptpasswd
+        
+
+        cryptsetup -c aes-xts-plain64 -y --use-random luksFormat "$root_part" < .encryptpasswd >/dev/null
+        echo -e "$encryptpass1" > .encryptpasswd
+        cryptsetup luksOpen "$root_part" luks < .encryptpasswd >/dev/null
+
+        rm .encryptpasswd
+
+        mkfs.ext4 -F "$boot_part"
+        mkfs.ext4 -F /dev/mapper/luks
+
+        mount /dev/mapper/luks /mnt
+        mkdir -p /mnt/boot
+        mount "$gpt_part" /mnt/boot
+        touch /mnt/swapfile
+        dd if=/dev/zero of=/mnt/swapfile bs=1M count="${swap_space}"
+        chmod 600 /mnt/swapfile
+        mkswap /mnt/swapfile
+        swapon /mnt/swapfile
+        swapfile="yes"
+    fi
+
+
+
     if [ "$partition_type" = "man_swap_part" ]
     then
 
@@ -3187,11 +3225,14 @@ install_run() {
             echo "# $INS010"
             arch_chroot "pacman -S --noconfirm --need grub "
             #arch_chroot "os-prober"
-            
+            arch_chroot "grub-install --target=i386-pc $boot_part"
+
             git clone https://github.com/magyarchlinux/magyarch_grub.git
             cp magyarch_grub/grub /mnt/etc/default/
             cp -r  magyarch_grub/MagyArchlinux /mnt/boot/grub/themes/
-            arch_chroot "grub-install --target=i386-pc $grb_dev"
+
+            arch_chroot "grub-mkconfig -o /boot/grub/grub.cfg"
+            
 
         elif [ "$SYSTEM" = 'BIOS' -a "${ins_type}" = "${DISKTYPE002}" ]
         then
@@ -3205,7 +3246,7 @@ install_run() {
             sed -i "s|# HOOKS=(.*|\0\nHOOKS=(base udev autodetect keyboard keymap modconf block encrypt filesystems keyboard fsck)|" /mnt/etc/mkinitcpio.conf
             arch_chroot "mkinitcpio -p $kern"
 
-            arch_chroot "grub-install --target=i386-pc $grb_dev"
+            arch_chroot "grub-install --target=i386-pc $boot_part"
 
             git clone https://github.com/magyarchlinux/magyarch_grub.git
             cp magyarch_grub/grub /mnt/etc/default/
@@ -3215,7 +3256,9 @@ install_run() {
             echo $_uuid
             sed -i "s|GRUB_CMDLINE_LINUX=\"|GRUB_CMDLINE_LINUX=\"cryptdevice=`echo ${_uuid}`:luks:allow-discards|" /mnt/etc/default/grub
 
-            arch_chroot "grub-install --target=i386-pc $grb_dev"
+            arch_chroot "grub-mkconfig -o /boot/grub/grub.cfg"
+
+
 
         elif [ "$SYSTEM" != 'BIOS' -a "${ins_type}" = "${DISKTYPE001}" ]
         then
