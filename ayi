@@ -2354,7 +2354,7 @@ install_run() {
 
         mount /dev/mapper/luks /mnt
         mkdir -p /mnt/boot
-        mount "$gpt_part" /mnt/boot
+        mount "$boot_part" /mnt/boot
         touch /mnt/swapfile
         dd if=/dev/zero of=/mnt/swapfile bs=1M count="${swap_space}"
         chmod 600 /mnt/swapfile
@@ -3225,7 +3225,7 @@ install_run() {
             echo "# $INS010"
             arch_chroot "pacman -S --noconfirm --need grub "
             #arch_chroot "os-prober"
-            arch_chroot "grub-install --target=i386-pc $boot_part"
+            arch_chroot "grub-install --target=i386-pc $grb_dev"
 
             git clone https://github.com/magyarchlinux/magyarch_grub.git
             cp magyarch_grub/grub /mnt/etc/default/
@@ -3246,7 +3246,7 @@ install_run() {
             sed -i "s|# HOOKS=(.*|\0\nHOOKS=(base udev autodetect keyboard keymap modconf block encrypt filesystems keyboard fsck)|" /mnt/etc/mkinitcpio.conf
             arch_chroot "mkinitcpio -p $kern"
 
-            arch_chroot "grub-install --target=i386-pc $boot_part"
+            arch_chroot "grub-install --target=i386-pc $grb_dev"
 
             git clone https://github.com/magyarchlinux/magyarch_grub.git
             cp magyarch_grub/grub /mnt/etc/default/
