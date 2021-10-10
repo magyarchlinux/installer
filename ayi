@@ -2308,9 +2308,9 @@ install_run() {
         rm .encryptpasswd
 
         mkfs.fat -F32 "$gpt_part"
-        mkfs.ext4 -F "$root_part"
+        mkfs.ext4 -F /dev/mapper/luks
 
-        mount "$root_part" /mnt
+        mount /dev/mapper/luks /mnt
         mkdir -p /mnt/boot
         mount "$gpt_part" /mnt/boot
         touch /mnt/swapfile
@@ -3201,8 +3201,8 @@ install_run() {
             cp magyarch_grub/grub /mnt/etc/default/
             cp -r  magyarch_grub/MagyArchlinux /mnt/boot/grub/themes/
             # grub set
-            part_uuid="PARTUUID=$(lsblk -lno PARTUUID $root_part)"
-            arch_chroot "sed -i 's|GRUB_CMDLINE_LINUX=\"|GRUB_CMDLINE_LINUX=\"cryptdevice=${part_uuid}:luks:allow-discards|'' /etc/default/grub"
+            _uuid="UUID=$(lsblk -lno TYPE,UUID $root_part | grep -v "crypto" | awk '{print $2}')"
+            arch_chroot "sed -i 's|GRUB_CMDLINE_LINUX=\"|GRUB_CMDLINE_LINUX=\"cryptdevice=${_uuid}:luks:allow-discards|'' /etc/default/grub"
 
             arch_chroot "grub-install --target=i386-pc $grb_dev"
 
@@ -3234,8 +3234,8 @@ install_run() {
             cp magyarch_grub/grub /mnt/etc/default/
             cp -r  magyarch_grub/MagyArchlinux /mnt/boot/grub/themes/
 
-            part_uuid="PARTUUID=$(lsblk -lno PARTUUID $root_part)"
-            arch_chroot "sed -i 's|GRUB_CMDLINE_LINUX=\"|GRUB_CMDLINE_LINUX=\"cryptdevice=${part_uuid}:luks:allow-discards|'' /etc/default/grub"
+            _uuid="UUID=$(lsblk -lno TYPE,UUID $root_part | grep -v "crypto" | awk '{print $2}')"
+            arch_chroot "sed -i 's|GRUB_CMDLINE_LINUX=\"|GRUB_CMDLINE_LINUX=\"cryptdevice=${_uuid}:luks:allow-discards|'' /etc/default/grub"
 
 
             arch_chroot "grub-mkconfig -o /boot/grub/grub.cfg"
