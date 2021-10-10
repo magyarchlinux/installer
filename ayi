@@ -1260,7 +1260,7 @@ auto_disk_set() {
             gpt_part=${dev}p1
             root_part=${dev}p2
             boot_part="${gpt_part}"
-        elif [ "${dev:0:9}" = "/dev/nvme" -a "$SYSTEM" != "BIOS" -a "$ins_type" = "$DISKTYPE002" ]  
+        elif [ "${dev:0:9}" != "/dev/nvme" -a "$SYSTEM" = "BIOS" -a "$ins_type" = "$DISKTYPE002" ]  
         then
             boot_part=${dev}1
             root_part=${dev}2
