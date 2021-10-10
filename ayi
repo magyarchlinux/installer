@@ -2302,7 +2302,7 @@ install_run() {
         
 
         cryptsetup -c aes-xts-plain64 -y --use-random luksFormat "$root_part" < .encryptpasswd >/dev/null
-        echo -e "$encryptpass1" > ..encryptpasswd
+        echo -e "$encryptpass1" > .encryptpasswd
         cryptsetup luksOpen "$root_part" luks < .encryptpasswd >/dev/null
 
         rm .encryptpasswd
@@ -3179,7 +3179,7 @@ install_run() {
         if [ "$SYSTEM" = 'BIOS' -a "${ins_type}" = "${DISKTYPE001}" ]
         then
             echo "# $INS010"
-            arch_chroot "pacman -S  grub --noconfirm --needed "
+            arch_chroot "pacman -S --noconfirm --need grub "
             #arch_chroot "os-prober"
             
             git clone https://github.com/magyarchlinux/magyarch_grub.git
@@ -3190,7 +3190,7 @@ install_run() {
         elif [ "$SYSTEM" = 'BIOS' -a "${ins_type}" = "${DISKTYPE002}" ]
         then
             echo "# $INS010"
-            arch_chroot "pacman -S  grub --noconfirm --needed "
+            arch_chroot "pacman -S --noconfirm --need grub "
             #arch_chroot "os-prober"
             # mkinitcpio 
             arch_chroot "sed -i 's|HOOKS=(|# HOOKS=(|'' /etc/mkinitcpio.conf"
@@ -3210,7 +3210,7 @@ install_run() {
         then
             echo "# $INS010"
 
-            arch_chroot "pacman -S  grub efibootmgr --noconfirm --needed "
+            arch_chroot "pacman -S --noconfirm --need  grub efibootmgr "
             arch_chroot " "
             #arch_chroot "os-prober"
             git clone https://github.com/magyarchlinux/magyarch_grub.git
@@ -3222,8 +3222,8 @@ install_run() {
         then
             echo "# $INS010"
 
-            arch_chroot "pacman -S  grub efibootmgr --noconfirm --needed "
-            arch_chroot " "
+            arch_chroot "pacman -S --noconfirm --need grub efibootmgr "
+            
             #arch_chroot "os-prober"
             # mkinitcpio 
             arch_chroot "sed -i 's|HOOKS=(|# HOOKS=(|'' /etc/mkinitcpio.conf "
