@@ -711,7 +711,7 @@ kernel_shell_cups_set() {
         --field="$KSC002":CB \
         --field="$KSC003":CB \
         --field="$KSC004":CB \
-        "^linux,linux-lts" \
+        "^linux,linux-lts,linux-zen,linux-hardened" \
         "^bash,zsh,fish" \
         "^${NO},${YES}" \
         "^${NO},${YES}" )"
@@ -2582,11 +2582,17 @@ install_run() {
     echo "# $INS009"
     if [ "$kern" = "linux" ]
     then
-        pacstrap /mnt base base-devel linux linux-firmware git
+        pacstrap /mnt base base-devel linux linux-headers linux-firmware git
         echo "end base"
     elif [ "$kern" = "linux-lts" ]
     then
-        pacstrap /mnt  base base-devel linux-lts linux-firmware git
+        pacstrap /mnt  base base-devel linux-lts linux-lts-headers linux-firmware git
+    elif [ "$kern" = "linux-zen" ]
+    then
+        pacstrap /mnt  base base-devel linux-zen linux-zen-headers linux-firmware git
+    elif [ "$kern" = "linux-hardened" ]
+    then
+        pacstrap /mnt  base base-devel linux-hardened linux-hardened-headers linux-firmware git
     fi
 
     # Added repo.
@@ -2824,14 +2830,14 @@ install_run() {
 
     echo "# $INS006"
 
-    if [ "$kern" = "linux" -a "$grc" = "virtualbox" ]
+    if [ "$grc" = "virtualbox" ]
     then
-        arch_chroot "pacman -S --noconfirm --needed virtualbox-guest-dkms virtualbox-guest-utils linux-headers "
+        arch_chroot "pacman -S --noconfirm --needed virtualbox-guest-dkms virtualbox-guest-utils "
         echo -e "vboxguest\nvboxsf\nvboxvideo" > /mnt/etc/modules-load.d/virtualbox.conf
-    elif [ "$kern" = "linux-lts" -a "$grc" = "virtualbox" ]
-    then
-        arch_chroot "pacman -S --noconfirm --needed virtualbox-guest-dkms virtualbox-guest-utils linux-lts-headers"
-        echo -e "vboxguest\nvboxsf\nvboxvideo" > /mnt/etc/modules-load.d/virtualbox.conf
+    # elif [ "$kern" = "linux-lts" -a "$grc" = "virtualbox" ]
+    # then
+    #     arch_chroot "pacman -S --noconfirm --needed virtualbox-guest-dkms virtualbox-guest-utils linux-lts-headers"
+    #     echo -e "vboxguest\nvboxsf\nvboxvideo" > /mnt/etc/modules-load.d/virtualbox.conf
     elif [ "$grc" = "i915" ]
     then
         # pacstrap /mnt xf86-video-intel libva-intel-driver lib32-mesa
@@ -2846,6 +2852,14 @@ install_run() {
     elif [ "$kern" = "linux" -a "$grc" = "nvidia" ]
     then
         arch_chroot "pacman -S --noconfirm --needed nvidia libvdpau lib32-nvidia-utils lib32-libvdpau"
+
+    lif [ "$kern" = "linux-zen" -a "$grc" = "nvidia" ]
+    then
+        arch_chroot "pacman -S --noconfirm --needed nvidia-dkms libvdpau lib32-nvidia-utils lib32-libvdpau"
+
+    lif [ "$kern" = "linux-hardened" -a "$grc" = "nvidia" ]
+    then
+        arch_chroot "pacman -S --noconfirm --needed nvidia-dkms libvdpau lib32-nvidia-utils lib32-libvdpau"
 
     elif [ "$kern" = "linux-lts" -a "$grc" = "nvidia" ]
     then
