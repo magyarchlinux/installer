@@ -3343,9 +3343,9 @@ install_run() {
             rootuuid=$(lsblk -lno TYPE,PARTUUID "${}root_part}" | grep -v "crypt" | awk '{print $2}')
 
             arch_chroot "refind-install"
-            echo "\"MagyArch Linux\" \"cryptdevice=PARTUUID=${rootuuid}:luks root=PARTUUID=${rootuuid} rw \"" > /mnt/boot/refind_linux.conf
-            echo "\"MagyArch Linux Fallback\" \"cryptdevice=PARTUUID=${rootuuid}:luks root=PARTUUID=${rootuuid} rw initrd=/initramfs-linux-fallback.img\"" >> /mnt/boot/refind_linux.conf
-            echo "\"MagyArch Linux Terminal\" \"cryptdevice=PARTUUID=${rootuuid}:luks root=PARTUUID=${rootuuid} rw systemd.unit=multi-user.target\"" >> /mnt/boot/refind_linux.conf
+            echo "\"MagyArch Linux\" \"cryptdevice=PARTUUID=`echo ${rootuuid}`:luks root=PARTUUID=`echo ${rootuuid}` rw \"" > /mnt/boot/refind_linux.conf
+            echo "\"MagyArch Linux Fallback\" \"cryptdevice=PARTUUID=`echo ${rootuuid}`:luks root=PARTUUID=`echo ${rootuuid}` rw initrd=/initramfs-linux-fallback.img\"" >> /mnt/boot/refind_linux.conf
+            echo "\"MagyArch Linux Terminal\" \"cryptdevice=PARTUUID=`echo ${rootuuid}`:luks root=PARTUUID=`echo ${rootuuid}` rw systemd.unit=multi-user.target\"" >> /mnt/boot/refind_linux.conf
 
 
         fi
