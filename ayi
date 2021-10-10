@@ -2853,11 +2853,11 @@ install_run() {
     then
         arch_chroot "pacman -S --noconfirm --needed nvidia libvdpau lib32-nvidia-utils lib32-libvdpau"
 
-    lif [ "$kern" = "linux-zen" -a "$grc" = "nvidia" ]
+    elif [ "$kern" = "linux-zen" -a "$grc" = "nvidia" ]
     then
         arch_chroot "pacman -S --noconfirm --needed nvidia-dkms libvdpau lib32-nvidia-utils lib32-libvdpau"
 
-    lif [ "$kern" = "linux-hardened" -a "$grc" = "nvidia" ]
+    elif [ "$kern" = "linux-hardened" -a "$grc" = "nvidia" ]
     then
         arch_chroot "pacman -S --noconfirm --needed nvidia-dkms libvdpau lib32-nvidia-utils lib32-libvdpau"
 
