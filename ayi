@@ -3310,7 +3310,7 @@ install_run() {
 
         fi
 
-    elif [ "$boot_sel" = "refind" ]
+    elif [ "$boot_sel" = "refind" -a "${ins_type}" = "${DISKTYPE001}" ]
     then
         if [ "$SYSTEM" = 'UEFI' ]
         then
@@ -3323,6 +3323,29 @@ install_run() {
             echo "\"MagyArch Linux\" \"root=PARTUUID=${rootuuid} rw \"" > /mnt/boot/refind_linux.conf
             echo "\"MagyArch Linux Fallback\" \"root=PARTUUID=${rootuuid} rw initrd=/initramfs-linux-fallback.img\"" >> /mnt/boot/refind_linux.conf
             echo "\"MagyArch Linux Terminal\" \"root=PARTUUID=${rootuuid} rw systemd.unit=multi-user.target\"" >> /mnt/boot/refind_linux.conf
+
+    elif [ "$boot_sel" = "refind" -a "${ins_type}" = "${DISKTYPE002}" ]
+    then
+        if [ "$SYSTEM" = 'UEFI' ]
+        then
+            echo "# $INS010"
+
+            arch_chroot " pacman -S refind efibootmgr --noconfirm --needed"
+
+            # mkinitcpio 
+            sed -i "s|HOOKS=(|# HOOKS=(|" /mnt/etc/mkinitcpio.conf
+            sed -i "s|# HOOKS=(.*|\0\nHOOKS=(base udev autodetect keyboard keymap modconf block encrypt filesystems keyboard fsck)|" /mnt/etc/mkinitcpio.conf
+            arch_chroot "mkinitcpio -p $kern"
+            # arch_chroot "grub-mkconfig -o /boot/grub/grub.cfg"
+            # rootuuid=$(lsblk -lno PARTUUID ${root_part})
+            # _uuid="UUID=$(lsblk -lno TYPE,UUID "$root_part" | grep -v "crypt" | awk '{print $2}')"
+            rootuuid=$(lsblk -lno TYPE,PARTUUID "${}root_part}" | grep -v "crypt" | awk '{print $2}')
+
+            arch_chroot "refind-install"
+            echo "\"MagyArch Linux\" \"cryptdevice=PARTUUID=${rootuuid}:luks root=PARTUUID=${rootuuid} rw \"" > /mnt/boot/refind_linux.conf
+            echo "\"MagyArch Linux Fallback\" \"cryptdevice=PARTUUID=${rootuuid}:luks root=PARTUUID=${rootuuid} rw initrd=/initramfs-linux-fallback.img\"" >> /mnt/boot/refind_linux.conf
+            echo "\"MagyArch Linux Terminal\" \"cryptdevice=PARTUUID=${rootuuid}:luks root=PARTUUID=${rootuuid} rw systemd.unit=multi-user.target\"" >> /mnt/boot/refind_linux.conf
+
 
         fi
     fi
