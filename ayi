@@ -3323,6 +3323,7 @@ install_run() {
             echo "\"MagyArch Linux\" \"root=PARTUUID=${rootuuid} rw \"" > /mnt/boot/refind_linux.conf
             echo "\"MagyArch Linux Fallback\" \"root=PARTUUID=${rootuuid} rw initrd=/initramfs-linux-fallback.img\"" >> /mnt/boot/refind_linux.conf
             echo "\"MagyArch Linux Terminal\" \"root=PARTUUID=${rootuuid} rw systemd.unit=multi-user.target\"" >> /mnt/boot/refind_linux.conf
+        fi
 
     elif [ "$boot_sel" = "refind" -a "${ins_type}" = "${DISKTYPE002}" ]
     then
