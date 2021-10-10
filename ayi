@@ -3212,7 +3212,7 @@ install_run() {
             cp -r  magyarch_grub/MagyArchlinux /mnt/boot/grub/themes/
             # grub set
             _uuid="UUID=$(lsblk -lno TYPE,UUID $root_part | grep -v "crypto" | awk '{print $2}')"
-            sed -i "s|GRUB_CMDLINE_LINUX=\"|GRUB_CMDLINE_LINUX=\"cryptdevice=${_uuid}:luks:allow-discards|" /mnt/etc/default/grub
+            sed -i "s|GRUB_CMDLINE_LINUX=\"|GRUB_CMDLINE_LINUX=\"cryptdevice=`echo ${_uuid}`:luks:allow-discards|" /mnt/etc/default/grub
 
             arch_chroot "grub-install --target=i386-pc $grb_dev"
 
@@ -3243,7 +3243,7 @@ install_run() {
             # arch_chroot "os-prober"
             # mkinitcpio 
             arch_chroot "grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=magyarchlinux1 --recheck"
-            
+
             sed -i "s|HOOKS=(|# HOOKS=(|" /mnt/etc/mkinitcpio.conf 
             sed -i "s|# HOOKS=(.*|\0\nHOOKS=(base udev autodetect keyboard vconsole modconf block encrypt filesystems keyboard fsck)|" /mnt/etc/mkinitcpio.conf
             arch_chroot "mkinitcpio -p $kern"
@@ -3256,7 +3256,7 @@ install_run() {
             
 
             _uuid="UUID=$(lsblk -lno TYPE,UUID $root_part | grep -v "crypto" | awk '{print $2}')"
-            sed -i "s|GRUB_CMDLINE_LINUX=\"|GRUB_CMDLINE_LINUX=\"cryptdevice=${_uuid}:luks:allow-discards|" /mnt/etc/default/grub
+            sed -i "s|GRUB_CMDLINE_LINUX=\"|GRUB_CMDLINE_LINUX=\"cryptdevice=`echo ${_uuid}`:luks:allow-discards|" /mnt/etc/default/grub
 
 
             arch_chroot "grub-mkconfig -o /boot/grub/grub.cfg"
