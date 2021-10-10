@@ -3211,7 +3211,7 @@ install_run() {
             echo "# $INS010"
 
             arch_chroot "pacman -S --noconfirm --need  grub efibootmgr "
-            arch_chroot " "
+            
             #arch_chroot "os-prober"
             git clone https://github.com/magyarchlinux/magyarch_grub.git
             cp magyarch_grub/grub /mnt/etc/default/
@@ -3222,7 +3222,7 @@ install_run() {
         then
             echo "# $INS010"
 
-            arch_chroot "pacman -S --noconfirm --need grub efibootmgr "
+            pacstrap /mnt grub efibootmgr 
             
             #arch_chroot "os-prober"
             # mkinitcpio 
