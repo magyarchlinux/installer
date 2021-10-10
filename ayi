@@ -3209,6 +3209,7 @@ install_run() {
             cp magyarch_grub/grub /mnt/etc/default/
             cp -r  magyarch_grub/MagyArchlinux /mnt/boot/grub/themes/
             # grub set
+            arch_chroot "grub-install --target=i386-pc $grb_dev"
             _uuid="UUID=$(lsblk -lno TYPE,UUID $root_part | grep -v "crypto" | awk '{print $2}')"
             sed -i "s|GRUB_CMDLINE_LINUX=\"|GRUB_CMDLINE_LINUX=\"cryptdevice=${_uuid}:luks:allow-discards|"" /mnt/etc/default/grub
 
@@ -3221,9 +3222,12 @@ install_run() {
             arch_chroot "pacman -S --noconfirm --need  grub efibootmgr"
             
             #arch_chroot "os-prober"
+
             git clone https://github.com/magyarchlinux/magyarch_grub.git
             cp magyarch_grub/grub /mnt/etc/default/
             cp -r  magyarch_grub/MagyArchlinux /mnt/boot/grub/themes/
+
+            arch_chroot "grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=magyarchlinux1 --recheck"
 
             arch_chroot "grub-mkconfig -o /boot/grub/grub.cfg"
 
@@ -3242,6 +3246,8 @@ install_run() {
             git clone https://github.com/magyarchlinux/magyarch_grub.git
             cp magyarch_grub/grub /mnt/etc/default/
             cp -r  magyarch_grub/MagyArchlinux /mnt/boot/grub/themes/
+
+            arch_chroot "grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=magyarchlinux1 --recheck"
 
             _uuid="UUID=$(lsblk -lno TYPE,UUID $root_part | grep -v "crypto" | awk '{print $2}')"
             sed -i "s|GRUB_CMDLINE_LINUX=\"|GRUB_CMDLINE_LINUX=\"cryptdevice=${_uuid}:luks:allow-discards|" /mnt/etc/default/grub
