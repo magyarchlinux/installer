@@ -3211,7 +3211,8 @@ install_run() {
             cp magyarch_grub/grub /mnt/etc/default/
             cp -r  magyarch_grub/MagyArchlinux /mnt/boot/grub/themes/
             # grub set
-            _uuid="UUID=$(lsblk -lno TYPE,UUID $root_part | grep -v "crypt" | awk '{print $2}')"
+            _uuid="UUID=$(lsblk -lno TYPE,UUID "$root_part" | grep -v "crypt" | awk '{print $2}')"
+            echo $_uuid
             sed -i "s|GRUB_CMDLINE_LINUX=\"|GRUB_CMDLINE_LINUX=\"cryptdevice=`echo ${_uuid}`:luks:allow-discards|" /mnt/etc/default/grub
 
             arch_chroot "grub-install --target=i386-pc $grb_dev"
@@ -3255,7 +3256,9 @@ install_run() {
 
             
 
-            _uuid="UUID=$(lsblk -lno TYPE,UUID $root_part | grep -v "crypt" | awk '{print $2}')"
+            _uuid="UUID=$(lsblk -lno TYPE,UUID "$root_part" | grep -v "crypt" | awk '{print $2}')"
+            echo $_uuid
+            
             sed -i "s|GRUB_CMDLINE_LINUX=\"|GRUB_CMDLINE_LINUX=\"cryptdevice=`echo ${_uuid}`:luks:allow-discards|" /mnt/etc/default/grub
 
 
