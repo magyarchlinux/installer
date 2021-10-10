@@ -5,6 +5,12 @@
 VERSION=$(cat /version.txt)
 
 
+LOG_FILE=script.log
+exec > >(while read -r line; do printf '%s %s\n' "$(date --rfc-3339=seconds)" "$line" | tee -a $LOG_FILE; done)
+exec 2> >(while read -r line; do printf '%s %s\n' "$(date --rfc-3339=seconds)" "$line" | tee -a $LOG_FILE; done >&2)
+
+
+
 export TEXTDOMAINDIR=$PWD/lang
 export TEXTDOMAIN=ayi
 # export LANGUAGE=en_GB
@@ -3190,11 +3196,13 @@ install_run() {
         elif [ "$SYSTEM" = 'BIOS' -a "${ins_type}" = "${DISKTYPE002}" ]
         then
             echo "# $INS010"
+
+            echo "bios diskt2"
             arch_chroot "pacman -S --noconfirm --need grub "
             #arch_chroot "os-prober"
             # mkinitcpio 
-            arch_chroot "sed -i 's|HOOKS=(|# HOOKS=(|'' /etc/mkinitcpio.conf"
-            arch_chroot "sed -i 's|# HOOKS=(.*|\0\nHOOKS=(base udev autodetect keyboard vconsole modconf block encrypt filesystems keyboard fsck)|'' /etc/mkinitcpio.conf"
+            sed -i "s|HOOKS=(|# HOOKS=(|" /mnt/etc/mkinitcpio.conf
+            sed -i "s|# HOOKS=(.*|\0\nHOOKS=(base udev autodetect keyboard vconsole modconf block encrypt filesystems keyboard fsck)|"" /mnt/etc/mkinitcpio.conf
             arch_chroot "mkinitcpio -p $kern"
 
             git clone https://github.com/magyarchlinux/magyarch_grub.git
@@ -3202,15 +3210,15 @@ install_run() {
             cp -r  magyarch_grub/MagyArchlinux /mnt/boot/grub/themes/
             # grub set
             _uuid="UUID=$(lsblk -lno TYPE,UUID $root_part | grep -v "crypto" | awk '{print $2}')"
-            arch_chroot "sed -i 's|GRUB_CMDLINE_LINUX=\"|GRUB_CMDLINE_LINUX=\"cryptdevice=${_uuid}:luks:allow-discards|'' /etc/default/grub"
+            sed -i "s|GRUB_CMDLINE_LINUX=\"|GRUB_CMDLINE_LINUX=\"cryptdevice=${_uuid}:luks:allow-discards|"" /mnt/etc/default/grub
 
             arch_chroot "grub-install --target=i386-pc $grb_dev"
 
         elif [ "$SYSTEM" != 'BIOS' -a "${ins_type}" = "${DISKTYPE001}" ]
         then
             echo "# $INS010"
-
-            arch_chroot "pacman -S --noconfirm --need  grub efibootmgr "
+            echo "uefi diskt1"
+            arch_chroot "pacman -S --noconfirm --need  grub efibootmgr"
             
             #arch_chroot "os-prober"
             git clone https://github.com/magyarchlinux/magyarch_grub.git
@@ -3218,16 +3226,17 @@ install_run() {
             cp -r  magyarch_grub/MagyArchlinux /mnt/boot/grub/themes/
 
             arch_chroot "grub-mkconfig -o /boot/grub/grub.cfg"
+
         elif [ "$SYSTEM" != 'BIOS' -a "${ins_type}" = "${DISKTYPE002}" ]
         then
             echo "# $INS010"
-
+            echo "uefi diskt2"
             pacstrap /mnt grub efibootmgr 
             
-            #arch_chroot "os-prober"
+            # arch_chroot "os-prober"
             # mkinitcpio 
-            arch_chroot "sed -i 's|HOOKS=(|# HOOKS=(|'' /etc/mkinitcpio.conf "
-            arch_chroot "sed -i 's|# HOOKS=(.*|\0\nHOOKS=(base udev autodetect keyboard vconsole modconf block encrypt filesystems keyboard fsck)|'' /etc/mkinitcpio.conf"
+            sed -i "s|HOOKS=(|# HOOKS=(|" /mnt/etc/mkinitcpio.conf 
+            sed -i "s|# HOOKS=(.*|\0\nHOOKS=(base udev autodetect keyboard vconsole modconf block encrypt filesystems keyboard fsck)|" /mnt/etc/mkinitcpio.conf
             arch_chroot "mkinitcpio -p $kern"
 
             git clone https://github.com/magyarchlinux/magyarch_grub.git
@@ -3235,7 +3244,7 @@ install_run() {
             cp -r  magyarch_grub/MagyArchlinux /mnt/boot/grub/themes/
 
             _uuid="UUID=$(lsblk -lno TYPE,UUID $root_part | grep -v "crypto" | awk '{print $2}')"
-            arch_chroot "sed -i 's|GRUB_CMDLINE_LINUX=\"|GRUB_CMDLINE_LINUX=\"cryptdevice=${_uuid}:luks:allow-discards|'' /etc/default/grub"
+            sed -i "s|GRUB_CMDLINE_LINUX=\"|GRUB_CMDLINE_LINUX=\"cryptdevice=${_uuid}:luks:allow-discards|" /mnt/etc/default/grub
 
 
             arch_chroot "grub-mkconfig -o /boot/grub/grub.cfg"
@@ -3277,7 +3286,7 @@ install_run() {
 
     echo "100"
     echo "# $INS011"
-    ) | yad --window-icon=icons/magyarch_logo.png --no-escape --title="$TITLE" --width=400 --height=250 --progress --auto-close --enable-log --log-expanded --no-buttons
+    ) | tee -a $LOG_FILE |  yad --window-icon=icons/magyarch_logo.png --no-escape --title="$TITLE" --width=400 --height=250 --progress --auto-close --enable-log --log-expanded --no-buttons
 
     yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/complate.png --title="$TITLE" --buttons-layout=center --text="$INS011"
     cev="$?"
