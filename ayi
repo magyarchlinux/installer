@@ -3202,7 +3202,7 @@ install_run() {
             #arch_chroot "os-prober"
             # mkinitcpio 
             sed -i "s|HOOKS=(|# HOOKS=(|" /mnt/etc/mkinitcpio.conf
-            sed -i "s|# HOOKS=(.*|\0\nHOOKS=(base udev autodetect keyboard vconsole modconf block encrypt filesystems keyboard fsck)|" /mnt/etc/mkinitcpio.conf
+            sed -i "s|# HOOKS=(.*|\0\nHOOKS=(base udev autodetect keyboard keymap modconf block encrypt filesystems keyboard fsck)|" /mnt/etc/mkinitcpio.conf
             arch_chroot "mkinitcpio -p $kern"
 
             arch_chroot "grub-install --target=i386-pc $grb_dev"
@@ -3246,7 +3246,7 @@ install_run() {
             arch_chroot "grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=magyarchlinux1 --recheck"
 
             sed -i "s|HOOKS=(|# HOOKS=(|" /mnt/etc/mkinitcpio.conf 
-            sed -i "s|# HOOKS=(.*|\0\nHOOKS=(base udev autodetect keyboard vconsole modconf block encrypt filesystems keyboard fsck)|" /mnt/etc/mkinitcpio.conf
+            sed -i "s|# HOOKS=(.*|\0\nHOOKS=(base udev autodetect keyboard keymap modconf block encrypt filesystems keyboard fsck)|" /mnt/etc/mkinitcpio.conf
             arch_chroot "mkinitcpio -p $kern"
 
 
@@ -3258,7 +3258,7 @@ install_run() {
 
             _uuid="UUID=$(lsblk -lno TYPE,UUID "$root_part" | grep -v "crypt" | awk '{print $2}')"
             echo $_uuid
-            
+
             sed -i "s|GRUB_CMDLINE_LINUX=\"|GRUB_CMDLINE_LINUX=\"cryptdevice=`echo ${_uuid}`:luks:allow-discards|" /mnt/etc/default/grub
 
 
