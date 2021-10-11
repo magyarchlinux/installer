@@ -1195,7 +1195,7 @@ auto_part() {
     then
         device="$(yad --window-icon=icons/magyarch_logo.png --no-escape --width=400 --center --title="$TITLE" --text="$MAIN012" \
             --buttons-layout=center --image=icons/disks.png \
-            --form --item-separator=";" \
+            --form --item-separator=";" --separator=";" \
             --field="Disk":CB "${devices:0:-1}")"
     elif [ "${ins_type}" = "${DISKTYPE002}" ]
     then
@@ -1206,7 +1206,14 @@ auto_part() {
             --field="$ENCRYPT_PASS001":H \
             --field="$ENCRYPT_PASS002":H \
             "${devices:0:-1}")"
+    elif [ "${ins_type}" = "${DISKTYPE003}" ]
+    then
+        device="$(yad --window-icon=icons/magyarch_logo.png --no-escape --width=400 --center --title="$TITLE" --text="$MAIN012" \
+            --buttons-layout=center --image=icons/disks.png \
+            --form --item-separator=";" --separator=";" \
+            --field="Disk":CB "${devices:0:-1}")"
     fi
+
 
     if [ "${ins_type}" = "${DISKTYPE002}" ]
     then
@@ -1231,7 +1238,8 @@ auto_disk_set() {
         return 1
     fi
 
-    yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/help.png --title="$TITLE" --buttons-layout=center --text="$QUEPART000 $device $QUEPART001" --button="${NO}!gtk-no:1" --button="${YES}!gtk-yes:0"
+    # device_sel=$(echo $device | awk -F ";" '{print $1}')
+    yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/help.png --title="$TITLE" --buttons-layout=center --text="$QUEPART000 $(echo $device | awk -F ";" '{print $1}') $QUEPART001" --button="${NO}!gtk-no:1" --button="${YES}!gtk-yes:0"
     ans="$?"
     _msg "ans  button: $ans"
 
@@ -1251,6 +1259,9 @@ auto_disk_set() {
         then
             gpt_part=${dev}1
             root_part=${dev}2
+        
+        # Normal encrypt
+
         elif [ "${dev:0:9}" = "/dev/nvme" -a "$SYSTEM" = "BIOS" -a "$ins_type" = "$DISKTYPE002" ]
         then
             boot_part=${dev}p1
@@ -1265,6 +1276,48 @@ auto_disk_set() {
             boot_part=${dev}1
             root_part=${dev}2
         elif [ "${dev:0:9}" != "/dev/nvme" -a "$SYSTEM" != "BIOS" -a "$ins_type" = "$DISKTYPE002" ]  
+        then
+            gpt_part=${dev}1
+            root_part=${dev}2
+            boot_part="${gpt_part}"
+
+        # LVM
+
+        elif [ "${dev:0:9}" = "/dev/nvme" -a "$SYSTEM" = "BIOS" -a "$ins_type" = "$DISKTYPE003" ]
+        then
+            boot_part=${dev}p1
+            root_part=${dev}p2
+        elif [ "${dev:0:9}" = "/dev/nvme" -a "$SYSTEM" != "BIOS" -a "$ins_type" = "$DISKTYPE003" ]
+        then
+            gpt_part=${dev}p1
+            root_part=${dev}p2
+            boot_part="${gpt_part}"
+        elif [ "${dev:0:9}" != "/dev/nvme" -a "$SYSTEM" = "BIOS" -a "$ins_type" = "$DISKTYPE003" ]  
+        then
+            boot_part=${dev}1
+            root_part=${dev}2
+        elif [ "${dev:0:9}" != "/dev/nvme" -a "$SYSTEM" != "BIOS" -a "$ins_type" = "$DISKTYPE003" ]  
+        then
+            gpt_part=${dev}1
+            root_part=${dev}2
+            boot_part="${gpt_part}"
+
+        # LVM encrypt
+
+        elif [ "${dev:0:9}" = "/dev/nvme" -a "$SYSTEM" = "BIOS" -a "$ins_type" = "$DISKTYPE004" ]
+        then
+            boot_part=${dev}p1
+            root_part=${dev}p2
+        elif [ "${dev:0:9}" = "/dev/nvme" -a "$SYSTEM" != "BIOS" -a "$ins_type" = "$DISKTYPE004" ]
+        then
+            gpt_part=${dev}p1
+            root_part=${dev}p2
+            boot_part="${gpt_part}"
+        elif [ "${dev:0:9}" != "/dev/nvme" -a "$SYSTEM" = "BIOS" -a "$ins_type" = "$DISKTYPE004" ]  
+        then
+            boot_part=${dev}1
+            root_part=${dev}2
+        elif [ "${dev:0:9}" != "/dev/nvme" -a "$SYSTEM" != "BIOS" -a "$ins_type" = "$DISKTYPE004" ]  
         then
             gpt_part=${dev}1
             root_part=${dev}2
@@ -1305,14 +1358,41 @@ auto_disk_set() {
 
             partition_type="auto_uefi"
 
+        # Normal encrypt
+
         elif [ "$SYSTEM" != "BIOS" -a "$ins_type" = "$DISKTYPE002" ]
         then
 
             partition_type="auto_uefi_encrypt"
+
         elif [ "$SYSTEM" = "BIOS" -a "$ins_type" = "$DISKTYPE002" ]
         then
 
             partition_type="auto_bios_encrypt"
+        
+        # LVM
+
+        elif [ "$SYSTEM" != "BIOS" -a "$ins_type" = "$DISKTYPE003" ]
+        then
+
+            partition_type="auto_uefi_lvm"
+
+        elif [ "$SYSTEM" = "BIOS" -a "$ins_type" = "$DISKTYPE003" ]
+        then
+
+            partition_type="auto_bios_lvm"
+
+        # LVM enceypt
+
+        elif [ "$SYSTEM" != "BIOS" -a "$ins_type" = "$DISKTYPE004" ]
+        then
+
+            partition_type="auto_uefi_lvm_encrypt"
+
+        elif [ "$SYSTEM" = "BIOS" -a "$ins_type" = "$DISKTYPE004" ]
+        then
+
+            partition_type="auto_bios_lvm_encrypt"
 
             # (echo "# $CRUEFI"
             # dd if=/dev/zero of="$dev" bs=512 count=1
@@ -2363,7 +2443,35 @@ install_run() {
         swapfile="yes"
     fi
 
+    if [ "$partition_type" = "auto_uefi_lvm" ]
+    then
+        echo "# $CRUEFI"
+        dd if=/dev/zero of="$dev" bs=512 count=1
+        Parted "mklabel gpt"
+        Parted "mkpart primary fat32 1MiB 513MiB"
+        Parted "mkpart primary ext4 513MiB 100%"
+        Parted "set 1 boot on"
+        
+        # LVM
 
+        pvcreate "${root_part}"
+        vgcreate vg0 "${root_part}"
+        lvcreate --size "${swap_space}M" vg0 --name swap
+        lvcreate -l 100%FREE vg0 --name root
+
+
+        
+
+        mkfs.fat -F32 "$gpt_part"
+        mkswap /dev/mapper/vg0-swap
+        mkfs.ext4 /dev/mapper/vg0-root
+        swapon /dev/mapper/vg0-swap
+
+        mount /dev/mapper/vg0-root /mnt
+        mkdir /mnt/boot
+        mount /dev/sda1 /mnt/boot
+        # swapfile="yes"
+    fi
 
     if [ "$partition_type" = "man_swap_part" ]
     then
@@ -3248,32 +3356,6 @@ install_run() {
             arch_chroot "grub-mkconfig -o /boot/grub/grub.cfg"
             
 
-        elif [ "$SYSTEM" = 'BIOS' -a "${ins_type}" = "${DISKTYPE002}" ]
-        then
-            echo "# $INS010"
-
-            echo "bios diskt2"
-            arch_chroot "pacman -S --noconfirm --need grub "
-            #arch_chroot "os-prober"
-            # mkinitcpio 
-            sed -i "s|HOOKS=(|# HOOKS=(|" /mnt/etc/mkinitcpio.conf
-            sed -i "s|# HOOKS=(.*|\0\nHOOKS=(base udev autodetect keyboard keymap modconf block encrypt filesystems keyboard fsck)|" /mnt/etc/mkinitcpio.conf
-            arch_chroot "mkinitcpio -p $kern"
-
-            arch_chroot "grub-install --target=i386-pc $grb_dev"
-
-            git clone https://github.com/magyarchlinux/magyarch_grub.git
-            cp magyarch_grub/grub /mnt/etc/default/
-            cp -r  magyarch_grub/MagyArchlinux /mnt/boot/grub/themes/
-            # grub set
-            _uuid="UUID=$(lsblk -lno TYPE,UUID "$root_part" | grep -v "crypt" | awk '{print $2}')"
-            echo $_uuid
-            sed -i "s|GRUB_CMDLINE_LINUX=\"|GRUB_CMDLINE_LINUX=\"cryptdevice=`echo ${_uuid}`:luks:allow-discards|" /mnt/etc/default/grub
-
-            arch_chroot "grub-mkconfig -o /boot/grub/grub.cfg"
-
-
-
         elif [ "$SYSTEM" != 'BIOS' -a "${ins_type}" = "${DISKTYPE001}" ]
         then
             echo "# $INS010"
@@ -3288,9 +3370,9 @@ install_run() {
             cp magyarch_grub/grub /mnt/etc/default/
             cp -r  magyarch_grub/MagyArchlinux /mnt/boot/grub/themes/
 
-            
-
             arch_chroot "grub-mkconfig -o /boot/grub/grub.cfg"
+
+        # Normal encrypt
 
         elif [ "$SYSTEM" != 'BIOS' -a "${ins_type}" = "${DISKTYPE002}" ]
         then
@@ -3320,6 +3402,76 @@ install_run() {
 
 
             arch_chroot "grub-mkconfig -o /boot/grub/grub.cfg"
+
+        elif [ "$SYSTEM" = 'BIOS' -a "${ins_type}" = "${DISKTYPE002}" ]
+        then
+            echo "# $INS010"
+
+            echo "bios diskt2"
+            arch_chroot "pacman -S --noconfirm --need grub "
+            #arch_chroot "os-prober"
+            # mkinitcpio 
+            sed -i "s|HOOKS=(|# HOOKS=(|" /mnt/etc/mkinitcpio.conf
+            sed -i "s|# HOOKS=(.*|\0\nHOOKS=(base udev autodetect keyboard keymap modconf block encrypt filesystems keyboard fsck)|" /mnt/etc/mkinitcpio.conf
+            arch_chroot "mkinitcpio -p $kern"
+
+            arch_chroot "grub-install --target=i386-pc $grb_dev"
+
+            git clone https://github.com/magyarchlinux/magyarch_grub.git
+            cp magyarch_grub/grub /mnt/etc/default/
+            cp -r  magyarch_grub/MagyArchlinux /mnt/boot/grub/themes/
+            # grub set
+            _uuid="UUID=$(lsblk -lno TYPE,UUID "$root_part" | grep -v "crypt" | awk '{print $2}')"
+            echo $_uuid
+            sed -i "s|GRUB_CMDLINE_LINUX=\"|GRUB_CMDLINE_LINUX=\"cryptdevice=`echo ${_uuid}`:luks:allow-discards|" /mnt/etc/default/grub
+
+            arch_chroot "grub-mkconfig -o /boot/grub/grub.cfg"
+
+        # LVM
+
+    elif [ "$SYSTEM" != 'BIOS' -a "${ins_type}" = "${DISKTYPE003}" ]
+        then
+            echo "# $INS010"
+            echo "uefi diskt2"
+            pacstrap /mnt grub efibootmgr lvm2
+            
+            # arch_chroot "os-prober"
+            # mkinitcpio 
+            arch_chroot "grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=magyarchlinux1 --recheck"
+
+            sed -i "s|HOOKS=(|# HOOKS=(|" /mnt/etc/mkinitcpio.conf 
+            sed -i "s|# HOOKS=(.*|\0\nHOOKS=(base udev autodetect modconf block lvm2 filesystems keyboard fsck)|" /mnt/etc/mkinitcpio.conf
+            arch_chroot "mkinitcpio -p $kern"
+
+
+            git clone https://github.com/magyarchlinux/magyarch_grub.git
+            cp magyarch_grub/grub /mnt/etc/default/
+            cp -r  magyarch_grub/MagyArchlinux /mnt/boot/grub/themes/
+
+            arch_chroot "grub-mkconfig -o /boot/grub/grub.cfg"
+            
+
+        elif [ "$SYSTEM" = 'BIOS' -a "${ins_type}" = "${DISKTYPE003}" ]
+        then
+            echo "# $INS010"
+
+            echo "bios diskt2"
+            arch_chroot "pacman -S --noconfirm --need grub lvm2"
+            #arch_chroot "os-prober"
+            # mkinitcpio 
+            sed -i "s|HOOKS=(|# HOOKS=(|" /mnt/etc/mkinitcpio.conf
+            sed -i "s|# HOOKS=(.*|\0\nHOOKS=(base udev autodetect modconf block lvm2 filesystems keyboard fsck)|" /mnt/etc/mkinitcpio.conf
+            arch_chroot "mkinitcpio -p $kern"
+
+            arch_chroot "grub-install --target=i386-pc $grb_dev"
+
+            git clone https://github.com/magyarchlinux/magyarch_grub.git
+            cp magyarch_grub/grub /mnt/etc/default/
+            cp -r  magyarch_grub/MagyArchlinux /mnt/boot/grub/themes/
+
+            arch_chroot "grub-mkconfig -o /boot/grub/grub.cfg"
+
+
 
 
         fi
