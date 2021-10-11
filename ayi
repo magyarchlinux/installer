@@ -3481,7 +3481,7 @@ install_run() {
 
         # LVM
 
-    elif [ "$SYSTEM" != 'BIOS' -a "${ins_type}" = "${DISKTYPE003}" ]
+        elif [ "$SYSTEM" != 'BIOS' -a "${ins_type}" = "${DISKTYPE003}" ]
         then
             echo "# $INS010"
             echo "uefi diskt2"
