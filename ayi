@@ -2499,7 +2499,7 @@ install_run() {
         echo ${dev}
         
         dd if=/dev/zero of="$dev" bs=512 count=1
-        Parted "mklabel gpt"
+        Parted "mklabel msdos"
         Parted "mkpart primary ext4 1MiB 513MiB"
         Parted "mkpart primary ext4 513MiB 100%"
         Parted "set 1 boot on"
@@ -2514,9 +2514,9 @@ install_run() {
 
         
 
-        mkfs.fat -F32 "$boot_part"
+        mkfs.ext4 -F "$boot_part"
         mkswap /dev/mapper/vg0-swap
-        mkfs.ext4 /dev/mapper/vg0-root
+        mkfs.ext4 -F /dev/mapper/vg0-root
 
         mount /dev/mapper/vg0-root /mnt
         mkdir /mnt/boot
