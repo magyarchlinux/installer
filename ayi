@@ -2465,11 +2465,11 @@ install_run() {
         mkfs.fat -F32 "$gpt_part"
         mkswap /dev/mapper/vg0-swap
         mkfs.ext4 /dev/mapper/vg0-root
-        swapon /dev/mapper/vg0-swap
 
         mount /dev/mapper/vg0-root /mnt
         mkdir /mnt/boot
         mount "$boot_part" /mnt/boot
+        swapon /dev/mapper/vg0-swap
         # swapfile="yes"
     fi
 
