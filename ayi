@@ -2416,6 +2416,7 @@ install_run() {
         echo "# $CRUEFI"
 
         echo "Be bios encrypt"
+        echo "$dev"
 
         dd if=/dev/zero of="$dev" bs=512 count=1
         Parted "mklabel msdos"
