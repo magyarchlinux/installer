@@ -2491,6 +2491,40 @@ install_run() {
         # swapfile="yes"
     fi
 
+    if [ "${partition_type}" = "auto_bios_lvm" ]
+    then
+        echo "# $CRUEFI"
+
+        echo "Be uefi lvm"
+        echo ${dev}
+        
+        dd if=/dev/zero of="$dev" bs=512 count=1
+        Parted "mklabel gpt"
+        Parted "mkpart primary ext4 1MiB 513MiB"
+        Parted "mkpart primary ext4 513MiB 100%"
+        Parted "set 1 boot on"
+        
+        # LVM
+
+        pvcreate "${root_part}"
+        vgcreate vg0 "${root_part}"
+        lvcreate --size "${swap_space}M" vg0 --name swap
+        lvcreate -l 100%FREE vg0 --name root
+
+
+        
+
+        mkfs.fat -F32 "$boot_part"
+        mkswap /dev/mapper/vg0-swap
+        mkfs.ext4 /dev/mapper/vg0-root
+
+        mount /dev/mapper/vg0-root /mnt
+        mkdir /mnt/boot
+        mount "$boot_part" /mnt/boot
+        swapon /dev/mapper/vg0-swap
+        # swapfile="yes"
+    fi
+
     if [ "${partition_type}" = "man_swap_part" ]
     then
 
