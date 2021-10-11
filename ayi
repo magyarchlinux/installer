@@ -2469,7 +2469,7 @@ install_run() {
 
         mount /dev/mapper/vg0-root /mnt
         mkdir /mnt/boot
-        mount /dev/sda1 /mnt/boot
+        mount "$boot_part" /mnt/boot
         # swapfile="yes"
     fi
 
