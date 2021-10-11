@@ -2376,6 +2376,9 @@ install_run() {
     if [ "$partition_type" = "auto_uefi_encrypt" ]
     then
         echo "# $CRUEFI"
+
+        echo "Be uefi encrypt"
+
         dd if=/dev/zero of="$dev" bs=512 count=1
         Parted "mklabel gpt"
         Parted "mkpart primary fat32 1MiB 513MiB"
@@ -2411,6 +2414,9 @@ install_run() {
     if [ "$partition_type" = "auto_bios_encrypt" ]
     then
         echo "# $CRUEFI"
+
+        echo "Be bios encrypt"
+
         dd if=/dev/zero of="$dev" bs=512 count=1
         Parted "mklabel msdos"
 
@@ -2447,6 +2453,9 @@ install_run() {
     if [ "$partition_type" = "auto_uefi_lvm" ]
     then
         echo "# $CRUEFI"
+
+        echo "Be uefi lvm"
+        
         dd if=/dev/zero of="${dev}" bs=512 count=1
         Parted "mklabel gpt"
         Parted "mkpart primary fat32 1MiB 513MiB"
