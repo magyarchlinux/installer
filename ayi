@@ -1172,7 +1172,7 @@ encrypt_pass_check() {
         return 1
     fi
 
-    dev="$(echo "$1" | awk '{print $1}')"
+    # dev="$(echo "$1" | awk '{print $1}')"
     _msg "Device: $dev"
     IFS=$OLDIFS
     auto_disk_set
@@ -1206,6 +1206,7 @@ auto_part() {
             --field="$ENCRYPT_PASS001":H \
             --field="$ENCRYPT_PASS002":H \
             "${devices:0:-1}")"
+
     elif [ "${ins_type}" = "${DISKTYPE003}" ]
     then
         device="$(yad --window-icon=icons/magyarch_logo.png --no-escape --width=400 --center --title="$TITLE" --text="$MAIN012" \
@@ -1214,6 +1215,9 @@ auto_part() {
             --field="Disk":CB "${devices:0:-1}")"
     fi
 
+    echo "$device" 
+    dev="$(echo "$device" | cut -d " " -f1)"
+    echo $dev > sas
 
     if [ "${ins_type}" = "${DISKTYPE002}" ]
     then
@@ -1222,7 +1226,7 @@ auto_part() {
         return 1
     fi
     
-    dev="$(echo "$device" | awk '{print $1}')"
+
     _msg "Device: $dev"
 
     auto_disk_set
@@ -2332,10 +2336,12 @@ $MAIN011\n\t$boot_load\n":LBL )"
 
 install_run() {
 
+    echo $dev
+
     # Start partitions and mount
 
     (
-    if [ "$partition_type" = "auto_bios" ]
+    if [ "${partition_type}" = "auto_bios" ]
     then
         echo "# $CRBIOS"
         dd if=/dev/zero of="$dev" bs=512 count=1
@@ -2352,7 +2358,7 @@ install_run() {
         swapfile="yes"
     fi
 
-    if [ "$partition_type" = "auto_uefi" ]
+    if [ "${partition_type}" = "auto_uefi" ]
     then
         echo "# $CRUEFI"
         dd if=/dev/zero of="$dev" bs=512 count=1
@@ -2373,7 +2379,7 @@ install_run() {
         swapfile="yes"
     fi
 
-    if [ "$partition_type" = "auto_uefi_encrypt" ]
+    if [ "${partition_type}" = "auto_uefi_encrypt" ]
     then
         echo "# $CRUEFI"
 
@@ -2411,7 +2417,7 @@ install_run() {
         swapfile="yes"
     fi
 
-    if [ "$partition_type" = "auto_bios_encrypt" ]
+    if [ "${partition_type}" = "auto_bios_encrypt" ]
     then
         echo "# $CRUEFI"
 
@@ -2451,14 +2457,14 @@ install_run() {
         swapfile="yes"
     fi
 
-    if [ "$partition_type" = "auto_uefi_lvm" ]
+    if [ "${partition_type}" = "auto_uefi_lvm" ]
     then
         echo "# $CRUEFI"
 
         echo "Be uefi lvm"
         echo ${dev}
         
-        dd if=/dev/zero of="${dev}" bs=512 count=1
+        dd if=/dev/zero of=${dev} bs=512 count=1
         Parted "mklabel gpt"
         Parted "mkpart primary fat32 1MiB 513MiB"
         Parted "mkpart primary ext4 513MiB 100%"
@@ -2485,7 +2491,7 @@ install_run() {
         # swapfile="yes"
     fi
 
-    if [ "$partition_type" = "man_swap_part" ]
+    if [ "${partition_type}" = "man_swap_part" ]
     then
 
         echo "# $MAIN012"
@@ -2550,7 +2556,7 @@ install_run() {
         fi
     fi
 
-    if [ "$partition_type" = "man_swap_file" ]
+    if [ "${partition_type}" = "man_swap_file" ]
     then
 
         echo "# $MAIN012"
@@ -2624,7 +2630,7 @@ install_run() {
         swapon /mnt/swapfile
     fi
 
-    if [ "$partition_type" = "man_no_swap" ]
+    if [ "${partition_type}" = "man_no_swap" ]
     then
 
         echo "# $MAIN012"
