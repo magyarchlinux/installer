@@ -1416,7 +1416,6 @@ auto_disk_set() {
         partition_set
     fi
     echo $partition_type
-
 }
 
 
@@ -2448,7 +2447,6 @@ install_run() {
     if [ "$partition_type" = "auto_uefi_lvm" ]
     then
         echo "# $CRUEFI"
-        echo ${dev}"
         dd if=/dev/zero of="${dev}" bs=512 count=1
         Parted "mklabel gpt"
         Parted "mkpart primary fat32 1MiB 513MiB"
