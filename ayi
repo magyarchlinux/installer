@@ -1268,9 +1268,9 @@ check_fstype_lvm_encry() {
         if  [ "${ins_type}" = "${DISKTYPE003}" -o "${ins_type}" = "${DISKTYPE004}" ] 
         then
             error_encrypt="$(yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/error.png --title="$TITLE" --buttons-layout=center --text="$ERROR006")"
-            err_ebcrypt="$?"
+            err_encrypt="$?"
 
-            if [ "$err_lvm" = "0" ]
+            if [ "$err_encrypt" = "0" ]
             then
                 blivet-gui
                 check_fstype_lvm_encry
