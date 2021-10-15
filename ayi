@@ -446,6 +446,8 @@ Partition and format your hard disk, as this is not done by the installer!")
     ERROR002=$(EGETTEXT "No boot partition selected!\nA boot partition is required for UEFI installation.")
     ERROR003=$(GETTEXT "You have chosen the same partition multiple times!")
     ERROR004=$(EGETTEXT "Refind cannot be installed in \$SYSTEM mode.")
+    ERROR005=$(EGETTEXT "LVM partition. It must be deleted manually. Clicking the ok button will open a program that you can use to do this.")
+    ERROR006=$(EGETTEXT "Encrypt partition. It must be deleted manually. Clicking the ok button will open a program that you can use to do this.")
     
     BTL000=$(GETTEXT "Bootloader")
     BTL001=$(GETTEXT "Grub install")
@@ -1175,7 +1177,7 @@ encrypt_pass_check() {
     # dev="$(echo "$1" | awk '{print $1}')"
     _msg "Device: $dev"
     IFS=$OLDIFS
-    auto_disk_set
+    check_fstype_lvm_encry
 
 }
 
@@ -1229,8 +1231,61 @@ auto_part() {
 
     _msg "Device: $dev"
 
-    auto_disk_set
+    check_fstype_lvm_encry
     
+}
+
+check_fstype_lvm_encry() {
+
+    echo ${ins_type}
+
+    CRYPT="$(lsblk -lno path,fstype "$dev" | grep 'crypt')"
+    LVM_part="$(lsblk -lno path,fstype "$dev" | grep -i 'lvm')"
+
+    echo $CRYPT
+    echo $LVM_part
+
+    # Exist LVM
+
+    if [ "$(echo $LVM_part)" != "" ]
+    then
+        error_lvm="$(yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/error.png --title="$TITLE" --buttons-layout=center --text="$ERROR005")"
+        err_lvm="$?"
+
+        if [ "$err_lvm" = "0" ]
+        then
+            blivet-gui
+            check_fstype_lvm_encry
+            return 1
+        else
+            partition_set
+            return 1
+        fi
+
+
+    elif [ "$(echo $CRYPT)" != "" ]
+    then
+        if  [ "${ins_type}" = "${DISKTYPE003}" -o "${ins_type}" = "${DISKTYPE004}" ] 
+        then
+            error_encrypt="$(yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/error.png --title="$TITLE" --buttons-layout=center --text="$ERROR006")"
+            err_ebcrypt="$?"
+
+            if [ "$err_lvm" = "0" ]
+            then
+                blivet-gui
+                check_fstype_lvm_encry
+                return 1
+            else
+                partition_set
+                return 1
+            fi
+        fi
+    else
+        yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/help.png --title="$TITLE" --buttons-layout=center --text="$QUEPART000 $(echo $device | awk -F ";" '{print $1}') $QUEPART001" --button="${NO}!gtk-no:1" --button="${YES}!gtk-yes:0"
+        ans="$?"
+    fi
+
+    auto_disk_set
 }
 
 auto_disk_set() {
@@ -1243,8 +1298,7 @@ auto_disk_set() {
     fi
 
     # device_sel=$(echo $device | awk -F ";" '{print $1}')
-    yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/help.png --title="$TITLE" --buttons-layout=center --text="$QUEPART000 $(echo $device | awk -F ";" '{print $1}') $QUEPART001" --button="${NO}!gtk-no:1" --button="${YES}!gtk-yes:0"
-    ans="$?"
+    
     _msg "ans  button: $ans"
 
     if [ "$ans" = "0" ]
