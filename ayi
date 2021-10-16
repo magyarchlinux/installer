@@ -2562,7 +2562,8 @@ install_run() {
 
         mkfs.fat -F32 "$gpt_part"
         mkswap /dev/mapper/vg0-swap
-        mkfs.ext4 /dev/mapper/vg0-root
+        lvm_root="/dev/mapper/vg0-root"
+        mkfs.ext4 "${lvm_root}"
 
         mount /dev/mapper/vg0-root /mnt
         mkdir /mnt/boot
@@ -2598,7 +2599,7 @@ install_run() {
         mkswap /dev/mapper/vg0-swap
         mkfs.ext4 -F /dev/mapper/vg0-root
 
-        mount /dev/mapper/vg0-root /mnt
+        mount "${lvm_root}" /mnt
         mkdir /mnt/boot
         mount "$boot_part" /mnt/boot
         swapon /dev/mapper/vg0-swap
@@ -2644,9 +2645,11 @@ install_run() {
 
         mkfs.fat -F32 "$gpt_part"
         mkswap /dev/mapper/vg0-swap
-        mkfs.ext4 /dev/mapper/vg0-root
+        # mkfs.ext4 /dev/mapper/vg0-root
+        lvm_root="/dev/mapper/vg0-root"
+        mkfs.ext4 "${lvm_root}"
 
-        mount /dev/mapper/vg0-root /mnt
+        mount "${lvm_root}" /mnt
         mkdir /mnt/boot
         mount "$boot_part" /mnt/boot
         swapon /dev/mapper/vg0-swap
@@ -3810,12 +3813,13 @@ install_run() {
             # arch_chroot "grub-mkconfig -o /boot/grub/grub.cfg"
             # rootuuid=$(lsblk -lno PARTUUID ${root_part})
             # _uuid="UUID=$(lsblk -lno TYPE,UUID "$root_part" | grep -v "crypt" | awk '{print $2}')"
-            rootuuid=$(lsblk -lno TYPE,PARTUUID "${root_part}" | grep -v "crypt\|lvm" | awk '{print $2}')
+            # rootuuid=$(lsblk -lno TYPE,PARTUUID "${root_part}" | grep -v "crypt\|lvm" | awk '{print $2}')
+             lvmuuid=$(lsblk -lno UUID "${lvm_root}")
 
             arch_chroot "refind-install"
-            echo "\"MagyArch Linux\" \"root=PARTUUID=${rootuuid} rw \"" > /mnt/boot/refind_linux.conf
-            echo "\"MagyArch Linux Fallback\" \"root=PARTUUID=${rootuuid} rw initrd=/initramfs-linux-fallback.img\"" >> /mnt/boot/refind_linux.conf
-            echo "\"MagyArch Linux Terminal\" \"root=PARTUUID=${rootuuid} rw systemd.unit=multi-user.target\"" >> /mnt/boot/refind_linux.conf
+            echo "\"MagyArch Linux\" \"root=UUID=${lvmuuid} rw \"" > /mnt/boot/refind_linux.conf
+            echo "\"MagyArch Linux Fallback\" \"root=UUID=${lvmuuid} rw initrd=/initramfs-linux-fallback.img\"" >> /mnt/boot/refind_linux.conf
+            echo "\"MagyArch Linux Terminal\" \"root=UUID=${lvmuuid} rw systemd.unit=multi-user.target\"" >> /mnt/boot/refind_linux.conf
         fi
 
 
@@ -3837,11 +3841,13 @@ install_run() {
             # rootuuid=$(lsblk -lno PARTUUID ${root_part})
             # _uuid="UUID=$(lsblk -lno TYPE,UUID "$root_part" | grep -v "crypt" | awk '{print $2}')"
             rootuuid=$(lsblk -lno TYPE,PARTUUID "${root_part}" | grep -v "crypt\|lvm" | awk '{print $2}')
+            lvmuuid=$(lsblk -lno UUID "${lvm_root}")
+
 
             arch_chroot "refind-install"
-            echo "\"MagyArch Linux\" \"cryptdevice=PARTUUID=${rootuuid}:luks root=/dev/mapper/luks rw \"" > /mnt/boot/refind_linux.conf
-            echo "\"MagyArch Linux Fallback\" \"cryptdevice=PARTUUID=${rootuuid}:luks root=/dev/mapper/luks rw initrd=/initramfs-linux-fallback.img\"" >> /mnt/boot/refind_linux.conf
-            echo "\"MagyArch Linux Terminal\" \"cryptdevice=PARTUUID=${rootuuid}:luks root=/dev/mapper/luks rw systemd.unit=multi-user.target\"" >> /mnt/boot/refind_linux.conf
+            echo "\"MagyArch Linux\" \"cryptdevice=PARTUUID=${rootuuid}:luks root=UUID=${lvmuuid} rw \"" > /mnt/boot/refind_linux.conf
+            echo "\"MagyArch Linux Fallback\" \"cryptdevice=PARTUUID=${rootuuid}:luks root=UUID=${lvmuuid} rw initrd=/initramfs-linux-fallback.img\"" >> /mnt/boot/refind_linux.conf
+            echo "\"MagyArch Linux Terminal\" \"cryptdevice=PARTUUID=${rootuuid}:luks root=UUID=${lvmuuid} rw systemd.unit=multi-user.target\"" >> /mnt/boot/refind_linux.conf
 
         fi
     fi
