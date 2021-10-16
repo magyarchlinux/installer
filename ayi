@@ -3808,9 +3808,9 @@ install_run() {
             sed -i "s|# HOOKS=(.*|\0\nHOOKS=(base udev autodetect modconf block lvm2 filesystems keyboard fsck)|" /mnt/etc/mkinitcpio.conf
             arch_chroot "mkinitcpio -p $kern"
             # arch_chroot "grub-mkconfig -o /boot/grub/grub.cfg"
-            rootuuid=$(lsblk -lno PARTUUID ${root_part})
+            # rootuuid=$(lsblk -lno PARTUUID ${root_part})
             # _uuid="UUID=$(lsblk -lno TYPE,UUID "$root_part" | grep -v "crypt" | awk '{print $2}')"
-            # rootuuid=$(lsblk -lno TYPE,PARTUUID "${root_part}" | grep -v "crypt" | awk '{print $2}')
+            rootuuid=$(lsblk -lno TYPE,PARTUUID "${root_part}" | grep -v "crypt\|lvm" | awk '{print $2}')
 
             arch_chroot "refind-install"
             echo "\"MagyArch Linux\" \"root=PARTUUID=${rootuuid} rw \"" > /mnt/boot/refind_linux.conf
@@ -3836,7 +3836,7 @@ install_run() {
             # arch_chroot "grub-mkconfig -o /boot/grub/grub.cfg"
             # rootuuid=$(lsblk -lno PARTUUID ${root_part})
             # _uuid="UUID=$(lsblk -lno TYPE,UUID "$root_part" | grep -v "crypt" | awk '{print $2}')"
-            rootuuid=$(lsblk -lno TYPE,PARTUUID "${root_part}" | grep -v "crypt" | awk '{print $2}')
+            rootuuid=$(lsblk -lno TYPE,PARTUUID "${root_part}" | grep -v "crypt\|lvm" | awk '{print $2}')
 
             arch_chroot "refind-install"
             echo "\"MagyArch Linux\" \"cryptdevice=PARTUUID=${rootuuid}:luks root=/dev/mapper/luks rw \"" > /mnt/boot/refind_linux.conf
