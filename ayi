@@ -1235,6 +1235,8 @@ auto_part() {
     
 }
 
+COUNTER=0
+
 check_fstype_lvm_encry() {
 
     echo ${ins_type}
@@ -1254,6 +1256,7 @@ check_fstype_lvm_encry() {
 
         if [ "$err_lvm" = "0" ]
         then
+            let COUNTER++
             blivet-gui
             check_fstype_lvm_encry
             return 1
@@ -1272,6 +1275,7 @@ check_fstype_lvm_encry() {
 
             if [ "$err_encrypt" = "0" ]
             then
+                let COUNTER++
                 blivet-gui
                 check_fstype_lvm_encry
                 return 1
@@ -1281,8 +1285,13 @@ check_fstype_lvm_encry() {
             fi
         fi
     else
-        yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/help.png --title="$TITLE" --buttons-layout=center --text="$QUEPART000 $(echo $device | awk -F ";" '{print $1}') $QUEPART001" --button="${NO}!gtk-no:1" --button="${YES}!gtk-yes:0"
-        ans="$?"
+        if [ "$COUNTER" != 0 ]
+        then
+            ans="0"
+        else
+            yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/help.png --title="$TITLE" --buttons-layout=center --text="$QUEPART000 $(echo $device | awk -F ";" '{print $1}') $QUEPART001" --button="${NO}!gtk-no:1" --button="${YES}!gtk-yes:0"
+            ans="$?"
+        fi
     fi
 
     auto_disk_set
