@@ -1231,7 +1231,7 @@ auto_part() {
     dev="$(echo "$device" | cut -d " " -f1)"
     echo $dev > sas
 
-    if [ "${ins_type}" = "${DISKTYPE002}" ]
+    if [ "${ins_type}" = "${DISKTYPE002}" -o "${ins_type}" = "${DISKTYPE004}" ]
     then
         IFS=";"
         encrypt_pass_check $device
@@ -3621,7 +3621,7 @@ install_run() {
 
             
 
-            _uuid="UUID=$(lsblk -lno TYPE,UUID "$root_part" | grep  "crypt" | awk '{print $2}')"
+            _uuid="UUID=$(lsblk -lno TYPE,UUID "$root_part" | grep -v "crypt" | awk '{print $2}')"
             echo $_uuid
 
             sed -i "s|GRUB_CMDLINE_LINUX=\"|GRUB_CMDLINE_LINUX=\"cryptdevice=`echo ${_uuid}`:luks:allow-discards|" /mnt/etc/default/grub
@@ -3647,7 +3647,7 @@ install_run() {
             cp magyarch_grub/grub /mnt/etc/default/
             cp -r  magyarch_grub/MagyArchlinux /mnt/boot/grub/themes/
             # grub set
-            _uuid="UUID=$(lsblk -lno TYPE,UUID "$root_part" | grep  "crypt" | awk '{print $2}')"
+            _uuid="UUID=$(lsblk -lno TYPE,UUID "$root_part" | grep -v "crypt" | awk '{print $2}')"
             echo $_uuid
             sed -i "s|GRUB_CMDLINE_LINUX=\"|GRUB_CMDLINE_LINUX=\"cryptdevice=`echo ${_uuid}`:luks:allow-discards|" /mnt/etc/default/grub
 
@@ -3717,7 +3717,7 @@ install_run() {
             cp magyarch_grub/grub /mnt/etc/default/
             cp -r  magyarch_grub/MagyArchlinux /mnt/boot/grub/themes/
             # grub set
-            _uuid="UUID=$(lsblk -lno TYPE,UUID "$root_part" | grep  "crypt" | awk '{print $2}')"
+            _uuid="UUID=$(lsblk -lno TYPE,UUID "$root_part" | grep -v "crypt\|lvm" | awk '{print $2}')"
             echo $_uuid
             sed -i "s|GRUB_CMDLINE_LINUX=\"|GRUB_CMDLINE_LINUX=\"cryptdevice=`echo ${_uuid}`:luks:allow-discards|" /mnt/etc/default/grub
 
@@ -3744,7 +3744,7 @@ install_run() {
 
             
 
-            _uuid="UUID=$(lsblk -lno TYPE,UUID "$root_part" | grep  "crypt" | awk '{print $2}')"
+            _uuid="UUID=$(lsblk -lno TYPE,UUID "$root_part" | grep -v "crypt\|lvm" | awk '{print $2}')"
             echo $_uuid
 
             sed -i "s|GRUB_CMDLINE_LINUX=\"|GRUB_CMDLINE_LINUX=\"cryptdevice=`echo ${_uuid}`:luks:allow-discards|" /mnt/etc/default/grub
