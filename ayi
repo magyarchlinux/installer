@@ -1280,9 +1280,9 @@ check_fstype_lvm_encry() {
                 let COUNTER++
                 check_fstype_lvm_encry
                 return 1
-            else
-                partition_set
-                return 1
+            # else
+            #     partition_set
+            #     return 1
             fi
         fi
     else
