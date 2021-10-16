@@ -1215,6 +1215,16 @@ auto_part() {
             --buttons-layout=center --image=icons/disks.png \
             --form --item-separator=";" --separator=";" \
             --field="Disk":CB "${devices:0:-1}")"
+
+    elif [ "${ins_type}" = "${DISKTYPE004}" ]
+    then
+        device="$(yad --window-icon=icons/magyarch_logo.png --no-escape --width=400 --center --title="$TITLE" --text="$MAIN012" \
+            --buttons-layout=center --image=icons/disks.png \
+            --form --item-separator=";" --separator=";" \
+            --field="Disk":CB \
+            --field="$ENCRYPT_PASS001":H \
+            --field="$ENCRYPT_PASS002":H \
+            "${devices:0:-1}")"
     fi
 
     echo "$device" 
