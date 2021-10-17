@@ -3749,6 +3749,7 @@ install_run() {
 
             _uuid="UUID=$(lsblk -lno TYPE,UUID "$root_part" | grep -v "crypt\|lvm" | awk '{print $2}')"
             echo $_uuid
+            # rootuuid="$(cat /mnt/etc/fstab  | sed 's/#.*$//g;/^$/d' | head -n1 | awk '{print $1}')"
 
             sed -i "s|GRUB_CMDLINE_LINUX=\"|GRUB_CMDLINE_LINUX=\"cryptdevice=`echo ${_uuid}`:luks:allow-discards|" /mnt/etc/default/grub
 
@@ -3845,14 +3846,15 @@ install_run() {
             # arch_chroot "grub-mkconfig -o /boot/grub/grub.cfg"
             # rootuuid=$(lsblk -lno PARTUUID ${root_part})
             # _uuid="UUID=$(lsblk -lno TYPE,UUID "$root_part" | grep -v "crypt" | awk '{print $2}')"
-            rootuuid=$(lsblk -lno TYPE,PARTUUID "${root_part}" | grep -v "crypt\|lvm" | awk '{print $2}')
-            lvmuuid=$(lsblk -lno UUID "${lvm_root}")
+            # lvmuuid=$(lsblk -lno UUID "${lvm_root}")
+            cryptuuid="UUID=$(lsblk -lno TYPE,UUID "${root_part}" | grep -v "crypt" | awk '{print $2}')"
+            rootuuid="$(cat /mnt/etc/fstab  | sed 's/#.*$//g;/^$/d' | head -n1 | awk '{print $1}')"
 
 
             arch_chroot "refind-install"
-            echo "\"MagyArch Linux\" \"cryptdevice=PARTUUID=${rootuuid}:luks root=UUID=${lvmuuid} rw \"" > /mnt/boot/refind_linux.conf
-            echo "\"MagyArch Linux Fallback\" \"cryptdevice=PARTUUID=${rootuuid}:luks root=UUID=${lvmuuid} rw initrd=/initramfs-linux-fallback.img\"" >> /mnt/boot/refind_linux.conf
-            echo "\"MagyArch Linux Terminal\" \"cryptdevice=PARTUUID=${rootuuid}:luks root=UUID=${lvmuuid} rw systemd.unit=multi-user.target\"" >> /mnt/boot/refind_linux.conf
+            echo "\"MagyArch Linux\" \"cryptdevice=${cryptuuid}:luks root=${rootuuid} rw \"" > /mnt/boot/refind_linux.conf
+            echo "\"MagyArch Linux Fallback\" \"cryptdevice=${cryptuuid}:luks root=${rootuuid} rw initrd=/initramfs-linux-fallback.img\"" >> /mnt/boot/refind_linux.conf
+            echo "\"MagyArch Linux Terminal\" \"cryptdevice=${cryptuuid}:luks root=${rootuuid} rw systemd.unit=multi-user.target\"" >> /mnt/boot/refind_linux.conf
 
         fi
     fi
