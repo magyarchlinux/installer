@@ -3848,7 +3848,7 @@ install_run() {
             # _uuid="UUID=$(lsblk -lno TYPE,UUID "$root_part" | grep -v "crypt" | awk '{print $2}')"
             # lvmuuid=$(lsblk -lno UUID "${lvm_root}")
             cryptuuid="UUID=$(lsblk -lno TYPE,UUID "${root_part}" | grep -v "crypt" | awk '{print $2}')"
-            rootuuid="$(cat /mnt/etc/fstab  | sed 's/#.*$//g;/^$/d' | head -n1 | awk '{print $1}')"
+            rootuuid=$(cat /mnt/etc/fstab  | sed 's/#.*$//g;/^$/d' | head -n1 | awk '{print $1}')
 
 
             arch_chroot "refind-install"
