@@ -71,7 +71,7 @@ installer_lang() {
         --buttons-layout=center --image=icons/language.png \
         --form --item-separator="," \
         --field="$LAN":CB \
-        "^English,Magyar")"
+        "English,^Magyar")"
     okcancel=$(echo "$?")
     _msg "Select language button: "${okcancel}""
     
@@ -448,6 +448,7 @@ Partition and format your hard disk, as this is not done by the installer!")
     ERROR004=$(EGETTEXT "Refind cannot be installed in \$SYSTEM mode.")
     ERROR005=$(EGETTEXT "LVM partition. It must be deleted manually. Clicking the ok button will open a program that you can use to do this.")
     ERROR006=$(EGETTEXT "Encrypt partition. It must be deleted manually. Clicking the ok button will open a program that you can use to do this.")
+    ERROR007=$(EGETTEXT "This feature is not yet available with manual partitioning. (Encrypt, LVM, LVM encrypt.)")
     
     BTL000=$(GETTEXT "Bootloader")
     BTL001=$(GETTEXT "Grub install")
@@ -2343,7 +2344,14 @@ partition_set() {
         auto_part
     elif [ "$(echo "$partition" | cut -d "|" -f2)" = "$PART001" ]
     then
-        man_part
+        if [ "$ins_type" = "${DISKTYPE001}" ]
+        then
+            man_part
+        else
+            yad --window-icon=icons/magyarch_logo.png --no-escape --image=icons/error.png --title="$TITLE" --buttons-layout=center --text="$ERROR007"
+            partition_set
+            return 1
+        fi
     fi
 }
 

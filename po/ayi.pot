@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-07 10:14+0200\n"
+"POT-Creation-Date: 2021-10-17 18:15+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,499 +17,499 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../ayi:59 ../ayi:84
+#: ../ayi:65 ../ayi:90
 #, sh-format
 msgid "MagyArch Installer - $SYSTEM mode"
 msgstr ""
 
-#: ../ayi:60 ../ayi:89
+#: ../ayi:66 ../ayi:95
 msgid "Installer language"
 msgstr ""
 
-#: ../ayi:62 ../ayi:105
+#: ../ayi:68 ../ayi:111
 msgid "Language"
 msgstr ""
 
-#: ../ayi:85
+#: ../ayi:91
 msgid "Yes"
 msgstr ""
 
-#: ../ayi:86
+#: ../ayi:92
 msgid "No"
 msgstr ""
 
-#: ../ayi:87
+#: ../ayi:93
 msgid "Select"
 msgstr ""
 
-#: ../ayi:88
+#: ../ayi:94
 msgid "Reply from list:"
 msgstr ""
 
-#: ../ayi:90
+#: ../ayi:96
 msgid "System language"
 msgstr ""
 
-#: ../ayi:91
+#: ../ayi:97
 msgid "Keyboard settings"
 msgstr ""
 
-#: ../ayi:92
+#: ../ayi:98
 msgid "Choose your location"
 msgstr ""
 
-#: ../ayi:93
+#: ../ayi:99
 msgid "Hostname settings"
 msgstr ""
 
-#: ../ayi:94
+#: ../ayi:100
 msgid "Username, password and root password settings"
 msgstr ""
 
-#: ../ayi:95
+#: ../ayi:101
 msgid "Kernel, shell and printer settings"
 msgstr ""
 
-#: ../ayi:96
+#: ../ayi:102
 msgid "Video card settings"
 msgstr ""
 
-#: ../ayi:97
+#: ../ayi:103
 msgid "Display manager and desktop settings"
 msgstr ""
 
-#: ../ayi:98
+#: ../ayi:104
 msgid "Other applications"
 msgstr ""
 
-#: ../ayi:99
+#: ../ayi:105
 msgid "Bootloader settings"
 msgstr ""
 
-#: ../ayi:100
+#: ../ayi:106
 msgid "Partition settings"
 msgstr ""
 
-#: ../ayi:101
+#: ../ayi:107
 msgid "Install"
 msgstr ""
 
-#: ../ayi:102
+#: ../ayi:108
 msgid "Installation is complete."
 msgstr ""
 
-#: ../ayi:103
+#: ../ayi:109
 msgid "Summary"
 msgstr ""
 
-#: ../ayi:106
+#: ../ayi:112
 msgid "Keyboard layouts"
 msgstr ""
 
-#: ../ayi:107
+#: ../ayi:113
 msgid "Keyboard models"
 msgstr ""
 
-#: ../ayi:108
+#: ../ayi:114
 msgid "Zone"
 msgstr ""
 
-#: ../ayi:109
+#: ../ayi:115
 msgid "Sub zone"
 msgstr ""
 
-#: ../ayi:110
+#: ../ayi:116
 msgid "Use UTC or local time?"
 msgstr ""
 
-#: ../ayi:111
+#: ../ayi:117
 msgid "Time"
 msgstr ""
 
-#: ../ayi:112
+#: ../ayi:118
 msgid "Please enter a hostname!\\nUse lowercase letters only."
 msgstr ""
 
-#: ../ayi:113
+#: ../ayi:119
 msgid "Hostname"
 msgstr ""
 
-#: ../ayi:114
+#: ../ayi:120
 msgid "User name"
 msgstr ""
 
-#: ../ayi:115
+#: ../ayi:121
 msgid "User password"
 msgstr ""
 
-#: ../ayi:116
+#: ../ayi:122
 msgid "Repeat user password"
 msgstr ""
 
-#: ../ayi:117
+#: ../ayi:123
 msgid "Root password"
 msgstr ""
 
-#: ../ayi:118
+#: ../ayi:124
 msgid "Repeat root password"
 msgstr ""
 
-#: ../ayi:119
+#: ../ayi:125
 msgid "User passwords do not match, please try again."
 msgstr ""
 
-#: ../ayi:120
+#: ../ayi:126
 msgid "Root passwords do not match, please try again."
 msgstr ""
 
-#: ../ayi:121
+#: ../ayi:127
 msgid "Password fields cannot be blank, please try again."
 msgstr ""
 
-#: ../ayi:122
+#: ../ayi:128
 msgid "Hostname field cannot be blank, please try again."
 msgstr ""
 
-#: ../ayi:123
+#: ../ayi:129
 msgid "Username field cannot be blank, please try again."
 msgstr ""
 
-#: ../ayi:124
+#: ../ayi:130
 msgid "Kernel"
 msgstr ""
 
-#: ../ayi:125
+#: ../ayi:131
 msgid "Shell"
 msgstr ""
 
-#: ../ayi:126
+#: ../ayi:132
 msgid "Printer support (cups)"
 msgstr ""
 
-#: ../ayi:127
+#: ../ayi:133
 msgid "Samba support (File manager)"
 msgstr ""
 
-#: ../ayi:128
+#: ../ayi:134
 msgid "Video card"
 msgstr ""
 
-#: ../ayi:129
+#: ../ayi:135
 #, sh-format
 msgid "\\n\\nDetected:\\n$DETECT_CARD\\n"
 msgstr ""
 
-#: ../ayi:130
+#: ../ayi:136
 msgid "Default"
 msgstr ""
 
-#: ../ayi:131
+#: ../ayi:137
 msgid "Display manager"
 msgstr ""
 
-#: ../ayi:132
+#: ../ayi:138
 msgid "Desktop and WM"
 msgstr ""
 
-#: ../ayi:134
+#: ../ayi:140
 msgid "Internet"
 msgstr ""
 
-#: ../ayi:135
+#: ../ayi:141
 msgid "Security"
 msgstr ""
 
-#: ../ayi:136
+#: ../ayi:142
 msgid "Media"
 msgstr ""
 
-#: ../ayi:137
+#: ../ayi:143
 msgid "Office"
 msgstr ""
 
-#: ../ayi:138
+#: ../ayi:144
 msgid "Utility"
 msgstr ""
 
-#: ../ayi:139
+#: ../ayi:145
 msgid "Terminal base applications"
 msgstr ""
 
-#: ../ayi:145
+#: ../ayi:151
 msgid "A web browser built for speed, simplicity, and security"
 msgstr ""
 
-#: ../ayi:148
+#: ../ayi:154
 msgid "Standalone web browser from mozilla.org"
 msgstr ""
 
-#: ../ayi:151
+#: ../ayi:157
 msgid "Lightweight and fast web browser"
 msgstr ""
 
-#: ../ayi:154
+#: ../ayi:160
 msgid "Fast and reliable FTP, FTPS and SFTP client"
 msgstr ""
 
-#: ../ayi:157
+#: ../ayi:163
 msgid "Manage your email, contacts and schedule"
 msgstr ""
 
-#: ../ayi:160
+#: ../ayi:166
 msgid "A lightweight email client for the GNOME desktop"
 msgstr ""
 
-#: ../ayi:163
+#: ../ayi:169
 msgid "Standalone mail and news reader from mozilla.org"
 msgstr ""
 
-#: ../ayi:166
+#: ../ayi:172
 msgid "Fast, easy, and free BitTorrent client (GTK+ GUI)"
 msgstr ""
 
-#: ../ayi:169
+#: ../ayi:175
 msgid "Fast, easy, and free BitTorrent client (Qt GUI)"
 msgstr ""
 
-#: ../ayi:172
+#: ../ayi:178
 msgid ""
 "An advanced BitTorrent client programmed in C++, based on Qt toolkit and "
 "libtorrent-rasterbar."
 msgstr ""
 
-#: ../ayi:175
+#: ../ayi:181
 msgid "Ncurses BitTorrent client based on libTorrent"
 msgstr ""
 
-#: ../ayi:178
+#: ../ayi:184
 msgid "A popular and easy to use graphical IRC (chat) client"
 msgstr ""
 
-#: ../ayi:181
+#: ../ayi:187
 msgid "All-in-one voice and text chat for gamers that's free and secure."
 msgstr ""
 
-#: ../ayi:184
+#: ../ayi:190
 msgid "Web browser that blocks ads and trackers by default"
 msgstr ""
 
-#: ../ayi:198
+#: ../ayi:204
 msgid "Cross platform password manager"
 msgstr ""
 
-#: ../ayi:201
+#: ../ayi:207
 msgid "Disk encryption with strong security based on TrueCrypt"
 msgstr ""
 
-#: ../ayi:204
+#: ../ayi:210
 msgid "Uncomplicated way to manage your Linux firewall"
 msgstr ""
 
-#: ../ayi:207
+#: ../ayi:213
 msgid "Anti-virus toolkit for Unix"
 msgstr ""
 
-#: ../ayi:210
+#: ../ayi:216
 msgid "Easy to use, light-weight, on-demand virus scanner for Linux systems"
 msgstr ""
 
-#: ../ayi:219
+#: ../ayi:225
 msgid "GNU Image Manipulation Program"
 msgstr ""
 
-#: ../ayi:222
+#: ../ayi:228
 msgid "Multi-platform MPEG, VCD/DVD, and DivX player"
 msgstr ""
 
-#: ../ayi:225
+#: ../ayi:231
 msgid "Movie player for the GNOME desktop based on GStreamer"
 msgstr ""
 
-#: ../ayi:228
+#: ../ayi:234
 msgid "Modern media player based on the GStreamer framework"
 msgstr ""
 
-#: ../ayi:231
+#: ../ayi:237
 msgid "Lightweight, advanced audio player focused on audio quality"
 msgstr ""
 
-#: ../ayi:234
+#: ../ayi:240
 msgid "A modern music player and library organizer"
 msgstr ""
 
-#: ../ayi:237
+#: ../ayi:243
 msgid "Image browser and viewer for the GNOME Desktop"
 msgstr ""
 
-#: ../ayi:240
+#: ../ayi:246
 msgid "A digital photo organizer designed for the GNOME desktop environment"
 msgstr ""
 
-#: ../ayi:243
+#: ../ayi:249
 msgid "Fast and lightweight picture-viewer for Xfce4"
 msgstr ""
 
-#: ../ayi:246
+#: ../ayi:252
 msgid "Lightweight image viewer"
 msgstr ""
 
-#: ../ayi:249
+#: ../ayi:255
 msgid "A program that lets you manipulate digital audio waveforms"
 msgstr ""
 
-#: ../ayi:252
+#: ../ayi:258
 msgid "A feature-rich screen recorder that supports X11 and OpenGL."
 msgstr ""
 
-#: ../ayi:269
+#: ../ayi:275
 msgid "A set of applications for productivity and creative usage"
 msgstr ""
 
-#: ../ayi:272
+#: ../ayi:278
 msgid "Fully-featured word processor"
 msgstr ""
 
-#: ../ayi:275
+#: ../ayi:281
 msgid "A GNOME Spreadsheet Program"
 msgstr ""
 
-#: ../ayi:278
+#: ../ayi:284
 msgid "Simple application for modifying PDF written in C Sharp"
 msgstr ""
 
-#: ../ayi:281
+#: ../ayi:287
 msgid ""
 "Document viewer (PDF, Postscript, djvu, tiff, dvi, XPS, SyncTex support with "
 "gedit"
 msgstr ""
 
-#: ../ayi:284
+#: ../ayi:290
 msgid "Lightweight PDF document viewer"
 msgstr ""
 
-#: ../ayi:287
+#: ../ayi:293
 msgid "An e-book reader for Linux"
 msgstr ""
 
-#: ../ayi:290
+#: ../ayi:296
 msgid "LibreOffice branch which contains new features and program enhancements"
 msgstr ""
 
-#: ../ayi:293
+#: ../ayi:299
 msgid "LibreOffice maintenance branch"
 msgstr ""
 
-#: ../ayi:306
+#: ../ayi:312
 msgid "Interactive process viewer"
 msgstr ""
 
-#: ../ayi:309
+#: ../ayi:315
 msgid "Disk Management Utility for GNOME"
 msgstr ""
 
-#: ../ayi:312
+#: ../ayi:318
 msgid "A Partition Magic clone, frontend to GNU Parted"
 msgstr ""
 
-#: ../ayi:315
+#: ../ayi:321
 msgid ""
 "Adjusts the color temperature of your screen according to your surroundings."
 msgstr ""
 
-#: ../ayi:318
+#: ../ayi:324
 msgid "Fast and lightweight IDE"
 msgstr ""
 
-#: ../ayi:321
+#: ../ayi:327
 msgid "Lightweight GTK+ clipboard manager"
 msgstr ""
 
-#: ../ayi:324
+#: ../ayi:330
 msgid "GTK+ GUI for rsync to synchronize folders, files and make backups"
 msgstr ""
 
-#: ../ayi:327
+#: ../ayi:333
 msgid "Drop-down terminal for GNOME"
 msgstr ""
 
-#: ../ayi:330
+#: ../ayi:336
 msgid "NTFS filesystem driver and utilities"
 msgstr ""
 
-#: ../ayi:333
+#: ../ayi:339
 msgid "Btrfs filesystem utilities"
 msgstr ""
 
-#: ../ayi:336
+#: ../ayi:342
 msgid "Create and modify archives"
 msgstr ""
 
-#: ../ayi:354
+#: ../ayi:360
 msgid "Fast and light imlib2-based image viewer"
 msgstr ""
 
-#: ../ayi:357
+#: ../ayi:363
 msgid ""
 "Vi Improved, a highly configurable, improved version of the vi text editor"
 msgstr ""
 
-#: ../ayi:360
+#: ../ayi:366
 msgid "Pico editor clone with enhancements"
 msgstr ""
 
-#: ../ayi:363
+#: ../ayi:369
 msgid "Wallpaper setting utility for X"
 msgstr ""
 
-#: ../ayi:366
+#: ../ayi:372
 msgid "Customizable and lightweight notification-daemon"
 msgstr ""
 
-#: ../ayi:369
+#: ../ayi:375
 msgid "A version of mutt with added features"
 msgstr ""
 
-#: ../ayi:372
+#: ../ayi:378
 msgid "Minimalistic document viewer"
 msgstr ""
 
-#: ../ayi:375
+#: ../ayi:381
 msgid "Simple, vim-like file manager"
 msgstr ""
 
-#: ../ayi:381
+#: ../ayi:387
 msgid "A simple web browser based on WebKit/GTK+."
 msgstr ""
 
-#: ../ayi:384
+#: ../ayi:390
 msgid "A cross-platform, GPU-accelerated terminal emulator"
 msgstr ""
 
-#: ../ayi:401
+#: ../ayi:407
 msgid "Automatic partitioning"
 msgstr ""
 
-#: ../ayi:402
+#: ../ayi:408
 msgid "Manual partitioning"
 msgstr ""
 
-#: ../ayi:406
+#: ../ayi:412
 msgid "ATTENTION!\\nThis will erase ALL data here: "
 msgstr ""
 
-#: ../ayi:407
+#: ../ayi:413
 msgid "\\nAre you sure you want to continue?"
 msgstr ""
 
-#: ../ayi:409
+#: ../ayi:415
 msgid "Creating BIOS partition..."
 msgstr ""
 
-#: ../ayi:410
+#: ../ayi:416
 msgid "Creating UEFI partition..."
 msgstr ""
 
-#: ../ayi:412
+#: ../ayi:418
 #, sh-format
 msgid ""
 "Do you need to partition?\\nIf you select ${YES}, the GParted partitioning "
@@ -517,173 +517,199 @@ msgid ""
 "done by the installer!"
 msgstr ""
 
-#: ../ayi:416
+#: ../ayi:422
 msgid "Swap partition"
 msgstr ""
 
-#: ../ayi:417
+#: ../ayi:423
 msgid "Swap file"
 msgstr ""
 
-#: ../ayi:418
+#: ../ayi:424
 msgid "No swap"
 msgstr ""
 
-#: ../ayi:419
+#: ../ayi:425
 msgid "What kind of swap do you want?"
 msgstr ""
 
-#: ../ayi:420 ../ayi:421
+#: ../ayi:426 ../ayi:427
 msgid "Choose swapfile size"
 msgstr ""
 
-#: ../ayi:425
+#: ../ayi:431
 msgid "Mount point (/)"
 msgstr ""
 
-#: ../ayi:426
+#: ../ayi:432
 msgid "Mount point (/boot)"
 msgstr ""
 
-#: ../ayi:427
+#: ../ayi:433
 msgid "Mount point (/boot/efi)"
 msgstr ""
 
-#: ../ayi:428
+#: ../ayi:434
 msgid "Mount point (/home)"
 msgstr ""
 
-#: ../ayi:429
+#: ../ayi:435
 msgid "Mount point (/opt)"
 msgstr ""
 
-#: ../ayi:430
+#: ../ayi:436
 msgid "Mount point (swap)"
 msgstr ""
 
-#: ../ayi:431
+#: ../ayi:437
 msgid "Mount point (/srv)"
 msgstr ""
 
-#: ../ayi:432
+#: ../ayi:438
 msgid "Mount point (/tmp)"
 msgstr ""
 
-#: ../ayi:433
+#: ../ayi:439
 msgid "Mount point (/usr)"
 msgstr ""
 
-#: ../ayi:434
+#: ../ayi:440
 msgid "Mount point (/var)"
 msgstr ""
 
-#: ../ayi:435
+#: ../ayi:441
 msgid "Mount point (/mnt)"
 msgstr ""
 
-#: ../ayi:436
+#: ../ayi:442
 msgid "None"
 msgstr ""
 
-#: ../ayi:438
+#: ../ayi:444
 msgid "No root partition selected!"
 msgstr ""
 
-#: ../ayi:439
+#: ../ayi:445
 msgid "No swap partition selected!"
 msgstr ""
 
-#: ../ayi:440
+#: ../ayi:446
 msgid ""
 "No boot partition selected!\\nA boot partition is required for UEFI "
 "installation."
 msgstr ""
 
-#: ../ayi:441
+#: ../ayi:447
 msgid "You have chosen the same partition multiple times!"
 msgstr ""
 
-#: ../ayi:442
+#: ../ayi:448
 #, sh-format
 msgid "Refind cannot be installed in $SYSTEM mode."
 msgstr ""
 
-#: ../ayi:444
-msgid "Bootloader"
-msgstr ""
-
-#: ../ayi:445
-msgid "Grub install"
-msgstr ""
-
-#: ../ayi:447
-msgid "Creating mirror list..."
-msgstr ""
-
-#: ../ayi:448
-msgid "Making fstab..."
-msgstr ""
-
 #: ../ayi:449
-msgid "Set the root password..."
+msgid ""
+"LVM partition. It must be deleted manually. Clicking the ok button will open "
+"a program that you can use to do this."
 msgstr ""
 
 #: ../ayi:450
-msgid "Set the user password..."
+msgid ""
+"Encrypt partition. It must be deleted manually. Clicking the ok button will "
+"open a program that you can use to do this."
 msgstr ""
 
 #: ../ayi:451
-msgid "Set Language..."
-msgstr ""
-
-#: ../ayi:452
-msgid "Set timezone..."
+msgid ""
+"This feature is not yet available with manual partitioning. (Encrypt, LVM, "
+"LVM encrypt.)"
 msgstr ""
 
 #: ../ayi:453
-msgid "Install default applications..."
+msgid "Bootloader"
 msgstr ""
 
 #: ../ayi:454
-msgid "Set video card..."
-msgstr ""
-
-#: ../ayi:455
-msgid "Create a swap file..."
+msgid "Grub install"
 msgstr ""
 
 #: ../ayi:456
-msgid "Other install..."
+msgid "Creating mirror list..."
 msgstr ""
 
 #: ../ayi:457
-msgid "Install base..."
+msgid "Making fstab..."
 msgstr ""
 
 #: ../ayi:458
-msgid "Installing bootloader..."
+msgid "Set the root password..."
 msgstr ""
 
 #: ../ayi:459
-msgid "Installation is complete!"
+msgid "Set the user password..."
+msgstr ""
+
+#: ../ayi:460
+msgid "Set Language..."
+msgstr ""
+
+#: ../ayi:461
+msgid "Set timezone..."
 msgstr ""
 
 #: ../ayi:462
-msgid "Installation method"
+msgid "Install default applications..."
 msgstr ""
 
 #: ../ayi:463
-msgid "Normal"
+msgid "Set video card..."
 msgstr ""
 
 #: ../ayi:464
-msgid "Normal + LUKS (encrypt)"
+msgid "Create a swap file..."
 msgstr ""
 
 #: ../ayi:465
-msgid "LVM"
+msgid "Other install..."
 msgstr ""
 
 #: ../ayi:466
+msgid "Install base..."
+msgstr ""
+
+#: ../ayi:467
+msgid "Installing bootloader..."
+msgstr ""
+
+#: ../ayi:468
+msgid "Installation is complete!"
+msgstr ""
+
+#: ../ayi:471
+msgid "Installation method"
+msgstr ""
+
+#: ../ayi:472
+msgid "Normal"
+msgstr ""
+
+#: ../ayi:473
+msgid "Normal + LUKS (encrypt)"
+msgstr ""
+
+#: ../ayi:474
+msgid "LVM"
+msgstr ""
+
+#: ../ayi:475
 msgid "LVM + LUKS (encrypt)"
+msgstr ""
+
+#: ../ayi:476
+msgid "Encrypt password"
+msgstr ""
+
+#: ../ayi:477
+msgid "Repeat encrypt password"
 msgstr ""
