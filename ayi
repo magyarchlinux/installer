@@ -3450,7 +3450,7 @@ install_run() {
     then
         #ch_chroot "pacman -S --noconfirm --needed  "
         arch_chroot "pacman -S --noconfirm --needed \
-            alacritty atool brave-bin calcurse cava discord dmenu docx2txt dosfstools dunst exfat-utils expac feh \
+            alacritty atool brave-bin calcurse cava discord dmenu docx2txt dosfstools dunst exfat-utils expac facter feh \
             ffmpeg fzf gnome-keyring gtop highlight htop imagemagick libnotify lxappearance maim maim mediainfo mpc \
             mpd mpv ncmpcpp neofetch neovim neovim networkmanager network-manager-applet newsboat odt2txt pavucontrol \
             pcmanfm picom-tryone-git polkit-gnome pulseaudio pulseaudio-alsa pulsemixer python-mpd2 python-psutil python-requests \
