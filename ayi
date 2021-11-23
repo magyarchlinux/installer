@@ -171,7 +171,7 @@ installer_lang() {
     INTERSEL012=("false" "discord" "$INTER012")
     
     INTER013=$(GETTEXT "Web browser that blocks ads and trackers by default")
-    INTERSEL013=("false" "brave-bin" "$INTER013")
+    INTERSEL013=("false" "firefox" "$INTER013")
 
 
     data_int=(INTERSEL000 INTERSEL001 INTERSEL013 INTERSEL002 INTERSEL003 INTERSEL004\
@@ -2677,7 +2677,7 @@ install_run() {
     then
         
         arch_chroot "pacman -S --noconfirm --needed \
-            alacritty arandr atool awesome bc brave-bin calcurse discord dmenu2 docx2txt dosfstools dunst \
+            alacritty arandr atool awesome bc firefox calcurse discord dmenu2 docx2txt dosfstools dunst \
             ed exfat-utils expac feh ffmpeg firefox fzf gnome-keyring highlight htop imagemagick libnotify \
             lxappearance maim mediainfo mpc mpd mpv ncmpcpp neofetch neovim networkmanager newsboat ntfs-3g \
             odt2txt pavucontrol pcmanfm picom polkit-gnome polybar pulseaudio pulseaudio-alsa \
@@ -2719,7 +2719,7 @@ install_run() {
     then
         #ch_chroot "pacman -S --noconfirm --needed  "
         arch_chroot "pacman -S --noconfirm --needed \
-            alacritty arandr atool bc brave-bin bspwm calcurse discord dmenu2 docx2txt dosfstools dunst ed \
+            alacritty arandr atool bc firefox bspwm calcurse discord dmenu2 docx2txt dosfstools dunst ed \
             exfat-utils expac feh ffmpeg firefox fzf gnome-keyring highlight htop imagemagick libnotify \
             lxappearance maim mediainfo mpc mpd mpv ncmpcpp neofetch neovim networkmanager newsboat \
             ntfs-3g odt2txt pavucontrol pcmanfm picom polkit-gnome polybar pulseaudio pulseaudio-alsa \
@@ -2737,7 +2737,7 @@ install_run() {
     then
         #ch_chroot "pacman -S --noconfirm --needed  "
         arch_chroot "pacman -S --noconfirm --needed \
-            alacritty arandr atool bc brave-bin calcurse discord dmenu2 docx2txt dosfstools dunst ed exfat-utils expac \
+            alacritty arandr atool bc firefox calcurse discord dmenu2 docx2txt dosfstools dunst ed exfat-utils expac \
             feh ffmpeg firefox fzf gnome-keyring highlight htop imagemagick libnotify lxappearance maim mediainfo mpc mpd \
             mpv ncmpcpp neofetch neovim networkmanager newsboat ntfs-3g odt2txt pavucontrol pcmanfm picom polkit-gnome \
             pulseaudio pulseaudio-alsa pulseaudio-equalizer-ladspa pulsemixer rofi rofi-greenclip rxvt-unicode rxvt-unicode scrot \
@@ -2766,7 +2766,7 @@ install_run() {
     then
         #ch_chroot "pacman -S --noconfirm --needed  "
         arch_chroot "pacman -S --noconfirm --needed \
-            alacritty brave-bin discord dmenu2 dunst expac expac feh figlet firefox htop lolcat \
+            alacritty firefox discord dmenu2 dunst expac expac feh figlet firefox htop lolcat \
             lxappearance magyarch_xmenu maim mpd mpv ncmpcpp neofetch neovim newsboat pavucontrol pcmanfm picom polkit-gnome \
             rofi rxvt-unicode scrot spectrwm-git sublime-text-4 sxhkd sxiv sxiv terminus-font \
             ttf-font-awesome-4 ttf-jetbrains-mono ttf-joypixels unclutter unrar unzip urxvt-perls vifm \
@@ -2782,7 +2782,7 @@ install_run() {
         #ch_chroot "pacman -S --noconfirm --needed  "
 
         arch_chroot "pacman -S --noconfirm --needed \
-            alacritty brave-bin calcurse discord dmenu dosfstools dunst ed exfat-utils expac feh \
+            alacritty firefox calcurse discord dmenu dosfstools dunst ed exfat-utils expac feh \
             ffmpeg fzf gnome-keyring highlight htop i3blocks i3-gaps imagemagick jq libnotify lxappearance \
             maim mediainfo mpc mpd mpv ncmpcpp neofetch neovim networkmanager ntfs-3g pavucontrol \
             pcmanfm picom polkit-gnome poppler pulseaudio pulseaudio-alsa pulseaudio-equalizer-ladspa \
@@ -2799,7 +2799,7 @@ install_run() {
         #ch_chroot "pacman -S --noconfirm --needed  "
 
         arch_chroot "pacman -S --noconfirm --needed \
-            alacritty brave-bin calcurse discord dmenu dosfstools dunst ed exfat-utils expac feh \
+            alacritty firefox calcurse discord dmenu dosfstools dunst ed exfat-utils expac feh \
             ffmpeg fzf gnome-keyring highlight htop i3blocks i3-gaps imagemagick jq libnotify lxappearance \
             maim mediainfo mpc mpd mpv ncmpcpp neofetch neovim networkmanager ntfs-3g pavucontrol \
             pcmanfm picom polkit-gnome poppler polybar pulseaudio pulseaudio-alsa pulseaudio-equalizer-ladspa \
@@ -2820,7 +2820,7 @@ install_run() {
     then
         #ch_chroot "pacman -S --noconfirm --needed  "
         arch_chroot "pacman -S --noconfirm --needed \
-            alacritty atool brave-bin calcurse cava discord dmenu docx2txt dosfstools dunst exfat-utils expac feh \
+            alacritty atool firefox calcurse cava discord dmenu docx2txt dosfstools dunst exfat-utils expac feh \
             ffmpeg fzf gnome-keyring gtop highlight htop imagemagick libnotify lxappearance maim maim mediainfo mpc \
             mpd mpv ncmpcpp neofetch neovim neovim networkmanager network-manager-applet newsboat odt2txt pavucontrol \
             pcmanfm picom-tryone-git polkit-gnome pulseaudio pulseaudio-alsa pulsemixer python-mpd2 python-psutil python-requests \
@@ -2839,7 +2839,7 @@ install_run() {
     elif [ "$de_set" = "herbstluftwm (MagyArch)" ]
     then
         arch_chroot "pacman -S --noconfirm --needed \
-            alacritty atool brave-bin calcurse discord dmenu2 dzen2 expac herbstluftwm lf-bin maim mpc mpd mpv ncmpcpp \
+            alacritty atool firefox calcurse discord dmenu2 dzen2 expac herbstluftwm lf-bin maim mpc mpd mpv ncmpcpp \
             neofetch neovim newsboat pavucontrol pcmanfm picom polkit-gnome polybar rofi rxvt-unicode sublime-text-4 sxhkd \
             sxiv ttf-font-awesome-4 ttf-jetbrains-mono ttf-joypixels unrar unzip urxvt-perls vifm vim wmctrl wmctrl xcape \
             xclip xdo xorg-xsetroot xwallpaper zathura zathura-pdf-poppler"
@@ -2852,7 +2852,7 @@ install_run() {
     then
         #ch_chroot "pacman -S --noconfirm --needed  "
         arch_chroot "pacman -S --noconfirm --needed \
-            alacritty arandr brave-bin calcurse discord dmenu2 docx2txt dosfstools dunst ed exfat-utils expac feh \
+            alacritty arandr firefox calcurse discord dmenu2 docx2txt dosfstools dunst ed exfat-utils expac feh \
             ffmpeg firefox fzf gnome-keyring highlight htop imagemagick jgmenu libnotify lxappearance magyarch_xmonad_pacman_hook maim mediainfo mpc mpd mpv \
             ncmpcpp neofetch neovim networkmanager newsboat ntfs-3g odt2txt pavucontrol pcmanfm picom polkit-gnome pulseaudio \
             pulseaudio-alsa pulseaudio-equalizer-ladspa pulsemixer rofi rxvt-unicode rxvt-unicode scrot socat stalonetray sublime-text-4 \
@@ -2869,7 +2869,7 @@ install_run() {
     then
         #ch_chroot "pacman -S --noconfirm --needed  "
         arch_chroot "pacman -S --noconfirm --needed \
-            alacritty arandr brave-bin calcurse discord dmenu2 docx2txt dosfstools dunst ed exfat-utils expac feh \
+            alacritty arandr firefox calcurse discord dmenu2 docx2txt dosfstools dunst ed exfat-utils expac feh \
             ffmpeg firefox fzf gnome-keyring haskell-dbus highlight htop imagemagick libnotify lxappearance magyarch_xmonad_pacman_hook maim mediainfo mpc mpd mpv \
             ncmpcpp neofetch neovim networkmanager newsboat ntfs-3g odt2txt pavucontrol pcmanfm picom polkit-gnome polybar pulseaudio \
             pulseaudio-alsa pulseaudio-equalizer-ladspa pulsemixer rofi rxvt-unicode rxvt-unicode scrot socat sublime-text-4 \
