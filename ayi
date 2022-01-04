@@ -60,8 +60,8 @@ installer_lang() {
         --field="$LAN":CB \
         "^English,Magyar")"
     echo "$?"
-    
-    
+
+
 
     if [ "$(echo "$lang" | cut -d '|' -f1)" = "Magyar" ]
     then
@@ -71,7 +71,7 @@ installer_lang() {
         export LANGUAGE=en_GB
         echo "Installer language: $(echo "$lang" | cut -d '|' -f1)"
     fi
-    
+
     # Variables
 
     TITLE=$(EGETTEXT "MagyArch Installer - \$SYSTEM mode")
@@ -169,7 +169,7 @@ installer_lang() {
 
     INTER012=$(GETTEXT "All-in-one voice and text chat for gamers that's free and secure.")
     INTERSEL012=("false" "discord" "$INTER012")
-    
+
     INTER013=$(GETTEXT "Web browser that blocks ads and trackers by default")
     INTERSEL013=("false" "firefox" "$INTER013")
 
@@ -423,13 +423,13 @@ Partition and format your hard disk, as this is not done by the installer!")
     MNT010=$(GETTEXT "Mount point (/var)")
     MNT011=$(GETTEXT "Mount point (/mnt)")
     NONE=$(GETTEXT "None")
-    
+
     ERROR000=$(GETTEXT "No root partition selected!")
     ERROR001=$(GETTEXT "No swap partition selected!")
     ERROR002=$(EGETTEXT "No boot / efi partition selected!\nA boot / efi partition is required for UEFI installation.")
     ERROR003=$(GETTEXT "You have chosen the same partition multiple times!")
     ERROR004=$(EGETTEXT "Refind cannot be installed in \$SYSTEM mode.")
-    
+
     BTL000=$(GETTEXT "Bootloader")
     BTL001=$(GETTEXT "Grub install")
 
@@ -453,7 +453,7 @@ Partition and format your hard disk, as this is not done by the installer!")
     DISKTYPE002=$(GETTEXT "LVM + LUKS (encrypt)")
 
 
-            
+
     MAIN_LIST=("false" "$MAIN001" "true" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
         "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
         "false" "$MAIN009" "false" "$MAIN011" "false" "$MAIN013")
@@ -479,7 +479,7 @@ system_lang() {
     echo "System language: $(echo $sys_lang | cut -d '|' -f1)"
 
     KEYBOARD_LAYOUT=$(echo "${sys_lang,,}" | sed "s/.utf-8|//" | cut -d '_' -f2)
-    
+
     unset MAIN_LIST
 
     MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "true" "$MAIN003" "false" "$MAIN004" \
@@ -508,7 +508,7 @@ keyboard_set() {
     setxkbmap $(echo $kb_set | cut -d '|' -f1)
 
     unset MAIN_LIST
-    
+
     MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "true" "$MAIN004" \
         "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
         "false" "$MAIN009" "false" "$MAIN011" "false" "$MAIN013")
@@ -536,7 +536,7 @@ timezone_set() {
 
     TZONE=$(echo $tzzone_set | cut -d "|" -f1)
     echo "Select timezone: $TZONE"
-    
+
     if [ "$DEFAULT_ZONE" = "$(echo "$tzzone_set" | cut -d "|" -f1)" ]
     then
         tzszone_set=$(yad --width=400 --center --title="$TITLE" --text="$MAIN004" \
@@ -566,7 +566,7 @@ timezone_set() {
     echo "Select clock set: $(echo $clock | cut -d '|' -f1)"
 
     unset MAIN_LIST
-    
+
     MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
         "true" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
         "false" "$MAIN009" "false" "$MAIN011" "false" "$MAIN013")
@@ -586,7 +586,7 @@ hname() {
     echo "$?"
     # echo "Select hostname set: $(echo $hsname | cut -d '|' -f1)"
 
-    unset MAIN_LIST 
+    unset MAIN_LIST
     MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
         "true" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
         "false" "$MAIN009" "false" "$MAIN011" "false" "$MAIN013")
@@ -658,7 +658,7 @@ kernel_shell_cups_set() {
         "^${NO},${YES}" )"
 
     unset MAIN_LIST
-    
+
     MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
         "false" "$MAIN006" "false" "$MAIN007" "true" "$MAIN008" \
         "false" "$MAIN009" "false" "$MAIN011")
@@ -674,7 +674,7 @@ graphics_set() {
         "${NONE},amdgpu,i915,nouveau,nvidia,virtualbox")"
 
     unset MAIN_LIST
-    
+
     MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
         "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
         "true" "$MAIN009" "false" "$MAIN011" "false" "$MAIN013")
@@ -694,7 +694,7 @@ xmonad+polybar (MagyArch),awesome,bspwm,budgie-desktop,cinnamon,deepin,dwm,gnome
 
 
     unset MAIN_LIST
-    
+
     MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
         "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
         "false" "$MAIN009" "true" "$MAIN011" "false" "$MAIN013")
@@ -702,11 +702,11 @@ xmonad+polybar (MagyArch),awesome,bspwm,budgie-desktop,cinnamon,deepin,dwm,gnome
 
 
 other_apps_int() {
- 
-    
+
+
     if [ "$pack_int" != "" ]
     then
-        
+
         pack_list_int=(${pack_int})
         for k in ${data_int[@]}
         do
@@ -721,10 +721,10 @@ other_apps_int() {
 
                 if [ "$j" == "${!ch_l}" ]
                 then
-                    
+
                     unset OTHER_LIST_INT
                     eval ${i}[0]='"true"'
-                    
+
                     OTHER_LIST_INT=("${INTERSEL000[@]}" "${INTERSEL001[@]}" "${INTERSEL013[@]}" "${INTERSEL002[@]}"\
                         "${INTERSEL003[@]}" "${INTERSEL004[@]}" "${INTERSEL005[@]}" "${INTERSEL006[@]}" "${INTERSEL007[@]}"\
                         "${INTERSEL008[@]}" "${INTERSEL009[@]}" "${INTERSEL010[@]}" "${INTERSEL011[@]}" "${INTERSEL012[@]}")
@@ -752,7 +752,7 @@ other_apps_sec() {
 
     if [ "$pack_sec" != "" ]
     then
-        
+
         pack_list_sec=(${pack_sec})
         for k in ${data_int1[@]}
         do
@@ -767,10 +767,10 @@ other_apps_sec() {
 
                 if [ "$j" == "${!ch_l1}" ]
                 then
-                    
+
                     unset OTHER_LIST_SEC
                     eval ${i}[0]='"true"'
-                    
+
                     OTHER_LIST_SEC=("${SECSEL001[@]}" "${SECSEL003[@]}" "${SECSEL003[@]}" "${SECSEL004[@]}" "${SECSEL005[@]}")
 
                 fi
@@ -786,7 +786,7 @@ other_apps_sec() {
     pack_sec=$(echo $oth_sec | sed "s/ TRUE/;TRUE/g" | tr ";" "\n" | cut -d '|' -f2 | tr '\n' " ")
     echo $pack_sec
 
-    
+
     unset OTHER_LIST
 
     OTHER_LIST=("false" "$OTHER000" "false" "$OTHER001" "true" "$OTHER002" \
@@ -798,12 +798,12 @@ other_apps_med() {
 
     if [ "$pack_med" != "" ]
     then
-        
+
         pack_list_med=(${pack_med})
         for k in ${data_int2[@]}
         do
             eval ${k}[0]='"false"'
-            
+
         done
 
         for j in "${pack_list_med[@]}"
@@ -814,10 +814,10 @@ other_apps_med() {
 
                 if [ "$j" == "${!ch_l2}" ]
                 then
-                    
+
                     unset OTHER_LIST_MED
                     eval ${i}[0]='"true"'
-                    
+
                     OTHER_LIST_MED=("${MEDISEL000[@]}" "${MEDISEL001[@]}" "${MEDISEL002[@]}" \
                         "${MEDISEL003[@]}" "${MEDISEL004[@]}" "${MEDISEL005[@]}" "${MEDISEL006[@]}" "${MEDISEL007[@]}" \
                         "${MEDISEL008[@]}" "${MEDISEL009[@]}" "${MEDISEL010[@]}" "${MEDISEL011[@]}")
@@ -834,7 +834,7 @@ other_apps_med() {
     pack_med=$(echo $oth_med | sed "s/ TRUE/;TRUE/g" | tr ";" "\n" | cut -d '|' -f2 | tr '\n' " ")
     echo $pack_med
 
-   
+
    unset OTHER_LIST
 
    OTHER_LIST=("false" "$OTHER000" "false" "$OTHER001" "false" "$OTHER002" \
@@ -846,7 +846,7 @@ other_apps_ofi() {
 
     if [ "$pack_ofi" != "" ]
     then
-        
+
         pack_list_ofi=(${pack_ofi})
         for k in ${data_int3[@]}
         do
@@ -861,10 +861,10 @@ other_apps_ofi() {
 
                 if [ "$j" == "${!ch_l3}" ]
                 then
-                    
+
                     unset OTHER_LIST_OFI
                     eval ${i}[0]='"true"'
-                    
+
                     OTHER_LIST_OFI=("${OFFISEL000[@]}" "${OFFISEL001[@]}" "${OFFISEL002[@]}" \
                         "${OFFISEL003[@]}" "${OFFISEL004[@]}" "${OFFISEL005[@]}" "${OFFISEL006[@]}" "${OFFISEL007[@]}" \
                         "${OFFISEL008[@]}")
@@ -893,7 +893,7 @@ other_apps_uti() {
 
     if [ "$pack_uti" != "" ]
     then
-        
+
         pack_list_uti=(${pack_uti})
         for k in ${data_int4[@]}
         do
@@ -908,10 +908,10 @@ other_apps_uti() {
 
                 if [ "$j" == "${!ch_l4}" ]
                 then
-                    
+
                     unset OTHER_LIST_UTI
                     eval ${i}[0]='"true"'
-                    
+
                     OTHER_LIST_UTI=("${UTISEL000[@]}" "${UTISEL001[@]}" "${UTISEL002[@]}" \
                         "${UTISEL003[@]}" "${UTISEL004[@]}" "${UTISEL005[@]}" "${UTISEL006[@]}" "${UTISEL007[@]}" \
                         "${UTISEL008[@]}" "${UTISEL009[@]}" "${UTISEL010[@]}")
@@ -933,7 +933,7 @@ other_apps_uti() {
     OTHER_LIST=("false" "$OTHER000"  "false" "$OTHER001" "false" "$OTHER002" \
         "false" "$OTHER003" "false" "$OTHER004" "true" "$OTHER005")
 
-    
+
    # OTHER_LIST=("false" "$OTHER000" "false" "$OTHER001" "false" "$OTHER002" \
    #     "false" "$OTHER003" "true" "$OTHER004" )
 }
@@ -942,7 +942,7 @@ other_apps_ter() {
 
     if [ "$pack_ter" != "" ]
     then
-        
+
         pack_list_ter=(${pack_ter})
         for k in ${data_int5[@]}
         do
@@ -957,10 +957,10 @@ other_apps_ter() {
 
                 if [ "$j" == "${!ch_l5}" ]
                 then
-                    
+
                     unset OTHER_LIST_TER
                     eval ${i}[0]='"true"'
-                    
+
                     OTHER_LIST_TER=("${TERSEL000[@]}" "${TERSEL003[@]}" "${TERSEL002[@]}" \
                         "${TERSEL001[@]}" "${TERSEL004[@]}" "${TERSEL005[@]}" "${TERSEL006[@]}" "${TERSEL007[@]}" \
                         "${TERSEL009[@]}" "${TERSEL010[@]}")
@@ -985,25 +985,25 @@ other_app_set() {
         --buttons-layout=center --title="$TITLE" --text="$MAIN010" \
         --no-selection  --image=preferences --radiolist --list --no-headers \
         --column="" --column="" "${OTHER_LIST[@]}")"
-    
+
     if [ "$(echo "$oth_app" | cut -d "|" -f2)" = "$OTHER000" ]
     then
         other_apps_int;other_app_set
         return 1
-        
-    
+
+
     elif [ "$(echo "$oth_app" | cut -d "|" -f2)" = "$OTHER001" ]
     then
-        other_apps_sec;other_app_set    
-    
+        other_apps_sec;other_app_set
+
     elif [ "$(echo "$oth_app" | cut -d "|" -f2)" = "$OTHER002" ]
     then
         other_apps_med;other_app_set
-    
+
     elif [ "$(echo "$oth_app" | cut -d "|" -f2)" = "$OTHER003" ]
     then
         other_apps_ofi;other_app_set
-    
+
     elif [ "$(echo "$oth_app" | cut -d "|" -f2)" = "$OTHER004" ]
     then
         other_apps_uti;other_app_set
@@ -1012,9 +1012,9 @@ other_app_set() {
     then
         other_apps_ter
     fi
-    
+
     unset MAIN_LIST
-    
+
     MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "false" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
         "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
         "false" "$MAIN009" "false" "$MAIN011" "false" "$MAIN013")
@@ -1057,7 +1057,7 @@ bootloader_set() {
         bootloader_set
         return 1
     fi
-    
+
 }
 
 
@@ -1074,7 +1074,7 @@ auto_part() {
         --buttons-layout=center --image=preferences \
         --form --item-separator=";" \
         --field="Disk":CB "${devices:0:-1}")"
-    
+
     dev="$(echo "$device" | awk '{print $1}')"
     echo "$dev"
     if [ "$dev" = "" ]
@@ -1099,12 +1099,12 @@ auto_part() {
         elif [ "${dev:0:9}" != "/dev/nvme" -a "$SYSTEM" = "BIOS" ]
         then
             root_part=${dev}1
-        elif [ "${dev:0:9}" != "/dev/nvme" -a "$SYSTEM" != "BIOS" ]  
+        elif [ "${dev:0:9}" != "/dev/nvme" -a "$SYSTEM" != "BIOS" ]
         then
             gpt_part=${dev}1
             root_part=${dev}2
         fi
-        
+
         ram="$(grep MemTotal /proc/meminfo | awk '{print $2/1024}' | sed 's/\..*//')"
         num=4000
 
@@ -1172,13 +1172,13 @@ man_part() {
         kswp
     else
         kswp
-    fi      
+    fi
 }
 
 
 kswp() {
 
-    
+
 
     swap_query="$(yad  --width=400 --height=200 --center --no-headers \
         --buttons-layout=center --title="$TITLE" --text="$KSWP003" \
@@ -1252,7 +1252,7 @@ check_kswpnofile() {
         kswpnofile
         return 1
     fi
-    
+
     # Hányszor szerepel a partíció
     #sas=($root_part $boot_part $bootefi_part $home_part  $opt_part $swap_part $srv_part $tmp_part $usr_part $var_part)
     for i in { $root_part $boot_part $bootefi_part $home_part $mnt_part $opt_part $swap_part $srv_part $tmp_part $usr_part $var_part }
@@ -1327,7 +1327,7 @@ check_kswpnofile() {
         "$optszamlal" -gt "1" -o "$swapszamlal" -gt "1" -o \
         "$srvszamlal" -gt "1" -o "$tmpszamlal" -gt "1" -o \
         "$usrszamlal" -gt "1" -o "$varszamlal" -gt "1" ]
-        then 
+        then
             yad --image=error --title="$TITLE" --buttons-layout=center --text="$ERROR003"
             kswpnofile
             return 1
@@ -1337,7 +1337,7 @@ check_kswpnofile() {
 
     # # Mount
     # mount "$root_part" /mnt
-    
+
     # # mkdir -p /mnt/boot/efi
     # # mount "$bootefi_part" /mnt/boot/efi
 
@@ -1476,8 +1476,8 @@ check_kswpf() {
 
     echo "ez a 2"
     echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10}
-    echo $root_part 
-    echo $boot_part 
+    echo $root_part
+    echo $boot_part
     echo -e "$bootefi_part $home_part $mnt_part $opt_part $srv_part $tmp_part $usr_part $var_part"
 
     # Root csatolás nem lehet üres...
@@ -1498,7 +1498,7 @@ check_kswpf() {
         kswpf
         return 1
     fi
-    
+
     # Hányszor szerepel a partíció
     #sas=($root_part $boot_part $bootefi_part $home_part  $opt_part $swap_part $srv_part $tmp_part $usr_part $var_part)
     for i in { $root_part $boot_part $bootefi_part $home_part $mnt_part $opt_part $srv_part $tmp_part $usr_part $var_part }
@@ -1573,7 +1573,7 @@ check_kswpf() {
         "$mntszamlal" -gt "1" -o "$optszamlal" -gt "1" -o \
         "$srvszamlal" -gt "1" -o "$tmpszamlal" -gt "1" -o \
         "$usrszamlal" -gt "1" -o "$varszamlal" -gt "1" ]
-        then 
+        then
             yad --image=error --title="$TITLE" --buttons-layout=center --text="$ERROR003"
             kswpf
             return 1
@@ -1581,7 +1581,7 @@ check_kswpf() {
 
     # Mount
     # mount $root_part /mnt
-    
+
     # mkdir -p /mnt/boot/efi
     # mount "$bootefi_part" /mnt/boot/efi
 
@@ -1660,14 +1660,14 @@ check_kswpf() {
 
 kswpfsize() {
 
-    # FALSE "3072" FALSE "4096" 
+    # FALSE "3072" FALSE "4096"
     swapsize=$(yad --width=400 --center --title="$TITLE" --text="$KSWP004" \
         --buttons-layout=center --image=preferences \
         --form  --item-separator="," --separator=" " \
         --field="$KSWP001":CB \
         "1024,2048,3072,4096")
     swaps=$(echo $swapsize | cut -d "|" -f2)
-        
+
     if [ "$?" = "0" ]
     then
         swapfile="yes"
@@ -1722,7 +1722,7 @@ kswpf() {
     IFS=";"
     check_kswpf $selpart
 
-     
+
 }
 
 
@@ -1776,7 +1776,7 @@ check_kswpno() {
         kswpno
         return 1
     fi
-    
+
     # Hányszor szerepel a partíció
     #sas=($root_part $boot_part $bootefi_part $home_part  $opt_part $swap_part $srv_part $tmp_part $usr_part $var_part)
     for i in { $root_part $boot_part $bootefi_part $home_part $mnt_part $opt_part $srv_part $tmp_part $usr_part $var_part }
@@ -1851,7 +1851,7 @@ check_kswpno() {
         "$mntszamlal" -gt "1" -o "$optszamlal" -gt "1" -o \
         "$srvszamlal" -gt "1" -o "$tmpszamlal" -gt "1" -o \
         "$usrszamlal" -gt "1" -o "$varszamlal" -gt "1" ]
-        then 
+        then
             yad --image=error --title="$TITLE" --buttons-layout=center --text="$ERROR003"
             kswpno
             return 1
@@ -1861,7 +1861,7 @@ check_kswpno() {
 
     # # Mount
     # mount "$root_part" /mnt
-    
+
     # # mkdir -p /mnt/boot/efi
     # # mount "$bootefi_part" /mnt/boot/efi
 
@@ -1970,9 +1970,9 @@ partition_set() {
         --no-selection  --image=preferences --radiolist --list --no-headers \
         --column="" --column="" "${PART_LIST[@]}")"
 
-     
+
     unset MAIN_LIST
-    
+
     MAIN_LIST=("false" "$MAIN001" "false" "$MAIN012" "true" "$MAIN002" "false" "$MAIN003" "false" "$MAIN004" \
         "false" "$MAIN006" "false" "$MAIN007" "false" "$MAIN008" \
         "false" "$MAIN009" "false" "$MAIN011" "false" "$MAIN013")
@@ -2009,8 +2009,8 @@ install_summary() {
     grb_dev=$(echo $grb_set | cut -d '|' -f2)
 
     unset MAIN_LIST
-    
-    
+
+
 
     if [ "$boot_sel" = "grub" ]
     then
@@ -2037,7 +2037,7 @@ $MAIN009\n\t${DMDE001}:  $dm_set\n\t${DMDE002}:  $de_set\n\n\
 $MAIN011\n\t$boot_load\n":LBL )"
     ans_sum="$?"
     echo $ans_sum
-    
+
     if [ "$ans_sum" = "1" ]
     then
         unset MAIN_LIST
@@ -2100,58 +2100,58 @@ install_run() {
         echo "# $MAIN012"
         # Mount
         mount "$root_part" /mnt
-        
+
         mkswap "$swap_part"
         swapon "$swap_part"
-    
+
         if [ "$boot_part" != "$NONE" ]
         then
             mkdir /mnt/boot/
             mount "$boot_part" /mnt/boot
         fi
-    
+
         if [ "$bootefi_part" != "$NONE" ]
         then
             mkdir -p /mnt/boot/efi
             mount "$bootefi_part" /mnt/boot/efi
         fi
-    
+
         if [ "$home_part" != "$NONE" ]
         then
             mkdir /mnt/home
             mount "$home_part" /mnt/home
         fi
-    
+
         if [ "$mnt_part" != "$NONE" ]
         then
             mkdir -p /mnt/mnt/disk
             mount "$mnt_part" /mnt/mnt/disk
         fi
-    
+
         if [ "$opt_part" != "$NONE" ]
         then
             mkdir /mnt/opt
             mount "$opt_part" /mnt/opt
         fi
-    
+
         if [ "$srv_part" != "$NONE" ]
         then
             mkdir /mnt/srv
             mount "$srv_part" /mnt/srv
         fi
-    
+
         if [ "$tmp_part" != "$NONE" ]
         then
             mkdir /mnt/tmp
             mount "$tmp_part" /mnt/tmp
         fi
-    
+
         if [ "$usr_part" != "$NONE" ]
         then
             mkdir /mnt/usr
             mount "$usr_part" /mnt/usr
         fi
-    
+
         if [ "$var_part" != "$NONE" ]
         then
             mkdir /mnt/var
@@ -2170,55 +2170,55 @@ install_run() {
             mount "$root_part" /mnt
             echo $root_part
         fi
-    
+
         if [ "$boot_part" != "$NONE" ]
         then
             mkdir -p /mnt/boot
             mount "$boot_part" /mnt/boot
         fi
-    
+
         if [ "$bootefi_part" != "$NONE" ]
         then
             mkdir -p /mnt/boot/efi
             mount "$bootefi_part" /mnt/boot/efi
         fi
-    
+
         if [ "$home_part" != "$NONE" ]
         then
             mkdir /mnt/home
             mount "$home_part" /mnt/home
         fi
-    
+
         if [ "$mnt_part" != "$NONE" ]
         then
             mkdir -p /mnt/mnt/disk
             mount "$home_part" /mnt/mnt/disk
         fi
-    
+
         if [ "$opt_part" != "$NONE" ]
         then
             mkdir /mnt/opt
             mount "$opt_part" /mnt/opt
         fi
-    
+
         if [ "$srv_part" != "$NONE" ]
         then
             mkdir /mnt/srv
             mount "$srv_part" /mnt/srv
         fi
-    
+
         if [ "$tmp_part" != "$NONE" ]
         then
             mkdir /mnt/tmp
             mount "$tmp_part" /mnt/tmp
         fi
-    
+
         if [ "$usr_part" != "$NONE" ]
         then
             mkdir /mnt/usr
             mount "$usr_part" /mnt/usr
         fi
-    
+
         if [ "$var_part" != "$NONE" ]
         then
             mkdir /mnt/var
@@ -2240,55 +2240,55 @@ install_run() {
 
         # Mount
         mount "$root_part" /mnt
-    
+
         if [ "$boot_part" != "$NONE" ]
         then
             mkdir -p /mnt/boot
             mount "$boot_part" /mnt/boot
         fi
-    
+
         if [ "$bootefi_part" != "$NONE" ]
         then
             mkdir -p /mnt/boot/efi
             mount "$bootefi_part" /mnt/boot/efi
         fi
-    
+
         if [ "$home_part" != "$NONE" ]
         then
             mkdir /mnt/home
             mount "$home_part" /mnt/home
         fi
-    
+
         if [ "$mnt_part" != "$NONE" ]
         then
             mkdir -p /mnt/mnt/disk
             mount "$home_part" /mnt/mnt/disk
         fi
-    
+
         if [ "$opt_part" != "$NONE" ]
         then
             mkdir /mnt/opt
             mount "$opt_part" /mnt/opt
         fi
-    
+
         if [ "$srv_part" != "$NONE" ]
         then
             mkdir /mnt/srv
             mount "$srv_part" /mnt/srv
         fi
-    
+
         if [ "$tmp_part" != "$NONE" ]
         then
             mkdir /mnt/tmp
             mount "$tmp_part" /mnt/tmp
         fi
-    
+
         if [ "$usr_part" != "$NONE" ]
         then
             mkdir /mnt/usr
             mount "$usr_part" /mnt/usr
         fi
-    
+
         if [ "$var_part" != "$NONE" ]
         then
             mkdir /mnt/var
@@ -2298,7 +2298,8 @@ install_run() {
 
 
     echo "# $INS000"
-    reflector --verbose -l 4 -p https --sort rate --save /etc/pacman.d/mirrorlist
+    #reflector --verbose -l 4 -p https --sort rate --save /etc/pacman.d/mirrorlist
+    reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist
 
     echo "10"
 
@@ -2409,13 +2410,13 @@ install_run() {
             arch_chroot "git clone -b $VERSION https://github.com/bazeeel/magyarch-spectrwm.git /mnt/mnt/etc/skel/"
         fi
         arch_chroot "cp -rfT /mnt/mnt/etc/skel/ /etc/skel/"
-       
+
     fi
 
     if [ "$de_set" = "xfce4 (MagyArch)" ]
     then
         # arch_chroot "mkdir -p /mnt/mnt/etc/skel"
-        # git clone https://github.com/magyarchlinux/magyarch_xfce4.git 
+        # git clone https://github.com/magyarchlinux/magyarch_xfce4.git
         # cp -rf magyarch_xfce4/.config/ /mnt/etc/skel/
         arch_chroot "pacman -S --noconfirm --need magyarch-xfce4 nano discord sublime-text-4"
     fi
@@ -2426,9 +2427,9 @@ install_run() {
         echo "qtile"
         if [ "$VERSION" = "Test" ]
         then
-            git clone https://github.com/magyarchlinux/magyarch-qtile.git 
+            git clone https://github.com/magyarchlinux/magyarch-qtile.git
         else
-            git clone -b $VERSION https://github.com/magyarchlinux/magyarch-qtile.git 
+            git clone -b $VERSION https://github.com/magyarchlinux/magyarch-qtile.git
         fi
         cp -rfT magyarch-qtile/ /mnt/etc/skel/
     fi
@@ -2439,9 +2440,9 @@ install_run() {
         echo "qtile"
         if [ "$VERSION" = "Test" ]
         then
-            git clone https://github.com/bazeeel/magyarch-xmonad.git 
+            git clone https://github.com/bazeeel/magyarch-xmonad.git
         else
-            git clone -b $VERSION https://github.com/bazeeel/magyarch-xmonad.git 
+            git clone -b $VERSION https://github.com/bazeeel/magyarch-xmonad.git
         fi
         cp -rfT magyarch-xmonad/ /mnt/etc/skel/
     fi
@@ -2452,9 +2453,9 @@ install_run() {
         echo "qtile"
         if [ "$VERSION" = "Test" ]
         then
-            git clone https://github.com/bazeeel/magyarch-xmonad-polybar.git 
+            git clone https://github.com/bazeeel/magyarch-xmonad-polybar.git
         else
-            git clone -b $VERSION https://github.com/bazeeel/magyarch-xmonad-polybar.git 
+            git clone -b $VERSION https://github.com/bazeeel/magyarch-xmonad-polybar.git
         fi
         cp -rfT magyarch-xmonad-polybar/ /mnt/etc/skel/
     fi
@@ -2479,8 +2480,8 @@ install_run() {
     echo -e "$rootpass1\n$rootpass2" > .passwd
     arch_chroot "passwd root" < .passwd >/dev/null
     rm .passwd
-    
-    
+
+
     arch_chroot "useradd -m -g users -G adm,lp,wheel,power,audio,video -s /bin/bash $user_name"
     touch .passwd
     echo -e "$userpass1\n$userpass2" > .passwd
@@ -2514,7 +2515,7 @@ install_run() {
     arch_chroot "ln -s /usr/share/zoneinfo/${tzz}/${tzsz} /etc/localtime"
 
     arch_chroot "hwclock --systohc --${tim}"
-    
+
     arch_chroot "timedatectl set-ntp true"
 
     arch_chroot "echo ${hsnm} > /etc/hostname"
@@ -2533,7 +2534,7 @@ install_run() {
 
     cp /installer/lsb-release /mnt/etc/
 
-    # aur_hlp="cd /home/${user_name} ; su ${user_name} -c 'git clone https://aur.archlinux.org/yay-bin' ; cd yay-bin ; su ${user_name} -c 'makepkg' ; pacman -U yay-bin*x86_64* --noconfirm ; cd .. ; rm -rf yay-bin" 
+    # aur_hlp="cd /home/${user_name} ; su ${user_name} -c 'git clone https://aur.archlinux.org/yay-bin' ; cd yay-bin ; su ${user_name} -c 'makepkg' ; pacman -U yay-bin*x86_64* --noconfirm ; cd .. ; rm -rf yay-bin"
 
     # arch_chroot "cd /home/${user_name} ; su ${user_name} -c 'git clone https://aur.archlinux.org/yay-bin' ; cd yay-bin ; su ${user_name} -c 'makepkg' ; pacman -U yay-bin*x86_64* --noconfirm ; cd .. ; rm -rf yay-bin"
     arch_chroot "pacman -S paru-bin bat vifm tdrop-git --needed --noconfirm"
@@ -2620,13 +2621,13 @@ install_run() {
         then
             arch_chroot "pacman -S --noconfirm --needed sddm "
             arch_chroot "systemctl enable sddm.service"
-        else 
-            
+        else
+
             arch_chroot "pacman -S --noconfirm --needed magyarch-lightdm"
             arch_chroot "systemctl enable lightdm.service"
             # arch_chroot "pacman -S --noconfirm --needed lightdm lightdm-gtk-greeter-settings lightdm-gtk-greeter "
             # arch_chroot "systemctl enable lightdm.service"
-            # git clone https://github.com/magyarchlinux/magyarch_xfce4.git 
+            # git clone https://github.com/magyarchlinux/magyarch_xfce4.git
             # mkdir -p /mnt/usr/share/backgrounds
             # cp -rf magyarch_xfce4/usr/share/backgrounds/magyarch/ /mnt/usr/share/backgrounds/
             # cp -rf magyarch_xfce4/usr/share/icons/braincolor-green /mnt/usr/share/icons/
@@ -2635,7 +2636,7 @@ install_run() {
             # cp -rf magyarch_xfce4/usr/share/themes/MagyArch-braincolor /mnt/usr/share/themes/""
 
         fi
-    
+
     elif [ "$dm_set" = "lightdm" ]
     then
         # arch_chroot "pacman -S --noconfirm --needed lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings "
@@ -2656,14 +2657,14 @@ install_run() {
     arch_chroot "systemctl enable NetworkManager"
 
 
-    
+
     if [ "$de_set" = "gnome" ]
     then
         arch_chroot "pacman -S --noconfirm --needed gnome gnome-extra "
     elif [ "$de_set" = "plasma" ]
     then
         arch_chroot "pacman -S --noconfirm --needed plasma kde-applications "
-    
+
     elif [ "$de_set" = "xfce4" ]
     then
         arch_chroot "pacman -S --noconfirm --needed xfce4 xfce4-goodies "
@@ -2675,7 +2676,7 @@ install_run() {
 
     elif [ "$de_set" = "awesome (MagyArch)" ]
     then
-        
+
         arch_chroot "pacman -S --noconfirm --needed \
             alacritty arandr atool awesome bc firefox calcurse discord dmenu2 docx2txt dosfstools dunst \
             ed exfat-utils expac feh ffmpeg firefox fzf gnome-keyring highlight htop imagemagick libnotify \
@@ -2746,7 +2747,7 @@ install_run() {
             urxvt-perls vifm w3m wmctrl xcape xclip xdo xdo xdotool xorg-server xorg-xbacklight xorg-xdpyinfo xorg-xinit \
             xorg-xprop xorg-xsetroot xorg-xwininfo xtitle-git xwallpaper youtube-dl zathura zathura-djvu \
             zathura-pdf-poppler zathura-ps"
-        
+
         arch_chroot "cd /mnt/mnt/etc/skel/.config/suckless/dwm && make && make clean install"
         arch_chroot "cd /mnt/mnt/etc/skel/.config/suckless/slstatus && make && make clean install"
         # arch_chroot "cd /mnt/mnt/etc/skel/.config/suckless/st && make && make clean install"
@@ -2793,7 +2794,7 @@ install_run() {
 
         arch_chroot "rm -rf /mnt/mnt"
         arch_chroot "cd /home/$user_name/; rm -rf .git/ LICENSE README.md git.sh setup-git.sh "
-    
+
     elif [ "$de_set" = "i3+polybar (MagyArch)" ]
     then
         #ch_chroot "pacman -S --noconfirm --needed  "
@@ -2810,7 +2811,7 @@ install_run() {
 
         arch_chroot "rm -rf /mnt/mnt"
         arch_chroot "cd /home/$user_name/; rm -rf .git/ LICENSE README.md git.sh setup-git.sh "
-    
+
     elif [ "$de_set" = "spectrwm" ]
     then
         arch_chroot "pacman -S --noconfirm --needed spectrwm scrot xlockmore terminus-font"
@@ -2897,7 +2898,7 @@ install_run() {
         arch_chroot "pacman -S --noconfirm --needed $de_set "
 
     fi
-    
+
 
     if [ "$shel_l" = "zsh" ]
     then
@@ -2905,8 +2906,8 @@ install_run() {
     elif [ "$shel_l" = "fish" ]
     then
         arch_chroot "pacman -S --noconfirm fish;chsh -s /usr/bin/fish $user_name"
-    else 
-        arch_chroot "pacman -S --noconfirm --needed bash bash-completion;chsh -s /bin/bash $user_name" 
+    else
+        arch_chroot "pacman -S --noconfirm --needed bash bash-completion;chsh -s /bin/bash $user_name"
     fi
 
     echo "# $INS008"
@@ -2943,7 +2944,7 @@ install_run() {
 
     # Set makepkg.conf
     sed -i 's/#MAKEFLAGS="-j[0-9]"/MAKEFLAGS="-j'$(nproc)'"/;s/COMPRESSXZ=(xz -c -z -)/COMPRESSXZ=(xz -c -T '$(nproc)' -z -)/;s/COMPRESSZST=(zstd -c -z -q -)/COMPRESSZST=(zstd -c -T'$(nproc)' -z -q -)/' /mnt/etc/makepkg.conf
-    
+
 
     echo "80"
 
@@ -3036,7 +3037,7 @@ main() {
         partition_set;main
     elif [ "$(echo "$main_diag" | cut -d "|" -f2)" = "$MAIN002" ]
     then
-        system_lang;main    
+        system_lang;main
     elif [ "$(echo "$main_diag" | cut -d "|" -f2)" = "$MAIN003" ]
     then
         keyboard_set;main
@@ -3045,7 +3046,7 @@ main() {
         timezone_set;main
     # elif [ "$(echo "$main_diag" | cut -d "|" -f2)" = "$MAIN005" ]
     # then
-    #     hname;main    
+    #     hname;main
     elif [ "$(echo "$main_diag" | cut -d "|" -f2)" = "$MAIN006" ]
     then
         user_root_set;main
@@ -3069,7 +3070,7 @@ main() {
         install_summary
     fi
 
-    
+
 
 }
 
